@@ -12,6 +12,10 @@ const Meta = ({ title, keywords, description }) => {
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap"
         rel="stylesheet"
       />
+      <meta
+        http-equiv="Content-Security-Policy"
+        content="upgrade-insecure-requests"
+      />
       <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
       <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-storage.js"></script>
       <title>Contemplato</title>
