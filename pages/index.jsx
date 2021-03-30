@@ -359,7 +359,7 @@ class Avalie extends React.Component {
         <div
           className="ico cover"
           style={{
-            backgroundImage: `url(header-bottom.png)`,
+            backgroundImage: `url(/images/header-bottom.png)`,
             backgroundPosition: "bottom center",
             height: "80px",
           }}
