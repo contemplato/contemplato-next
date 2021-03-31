@@ -364,10 +364,33 @@ button:hover {
   outline: none;
 }
 
-.about-profile:hover {
-  transform: scale(1.2);
-  transition: all 0.5s;
+.about-profile {
+  transform: scale(0.7);
   cursor: pointer;
+}
+.about-profile:hover {
+  transform: scale(1);
+  transition: 0.5s;
+}
+.about-profile img {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray;
+}
+.about-profile:hover img {
+  -webkit-filter: initial;
+  filter: initial;
+  filter: initial;
+  transition: 0.3s;
+}
+.about-profile .title {
+  font-size: 18px;
+  color: #434443;
+  font-weight: bold;
+}
+.about-profile:hover .title {
+  color: #ff9632;
+  transition: 0.3s;
 }
 
 .absol {

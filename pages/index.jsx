@@ -1,17 +1,17 @@
-import React from "react"
-import axios from "axios"
+import React from "react";
+import axios from "axios";
 // CSS
 // import "../styles/app.css"
 //COMMON
-import firebase from "../components/common/data/firebase"
-import ListEquipe from "../components/common/data/ListEquipe"
+import firebase from "../components/common/data/firebase";
+import ListEquipe from "../components/common/data/ListEquipe";
 
-import Footer from "../components/common/footer/Footer"
-import maskPhone from "../components/common/utils/masks/phone"
+import Footer from "../components/common/footer/Footer";
+import maskPhone from "../components/common/utils/masks/phone";
 
-import EquipeCard from "../components/common/Avalie/EquipeCard"
-import WikiList from "../components/common/data/WikiList"
-import Wiki from "../components/common/Home/WikiCard"
+import EquipeCard from "../components/common/Avalie/EquipeCard";
+import WikiList from "../components/common/data/WikiList";
+import Wiki from "../components/common/Home/WikiCard";
 // images
 // import headerBottom from "../images/header-bottom.png"
 // import icoAnexo from "../images/ico-anexo.png"
@@ -37,38 +37,38 @@ import Wiki from "../components/common/Home/WikiCard"
 
 class Avalie extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       start: 0,
       end: 3,
       input: {},
       errors: {},
       image: null,
-    }
+    };
 
-    this.handleChange = this.handleChange.bind(this)
-    this.handleUpload = this.handleUpload.bind(this)
+    this.handleChange = this.handleChange.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
   handleChange = (event) => {
     if (event.target.files) {
       document.getElementById("image-anexo").src =
-        "https://image.flaticon.com/icons/png/512/98/98866.png"
-      this.state.image = event.target.files
+        "https://image.flaticon.com/icons/png/512/98/98866.png";
+      this.state.image = event.target.files;
     }
-  }
+  };
 
   onChange = (event) => {
-    let input = this.state.input
+    let input = this.state.input;
     input[event.target.name] =
       event.target.name === "phone"
         ? maskPhone(event.target.value)
-        : event.target.value
-    this.setState({ input })
-  }
+        : event.target.value;
+    this.setState({ input });
+  };
 
   handleUpload = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const { data } = await axios.post(
       "http://core-content-cc-co.umbler.net/p/post/contemplato/avalie/default",
       {
@@ -82,56 +82,47 @@ class Avalie extends React.Component {
           Authorization: "APP-NAME",
         },
       }
-    )
+    );
 
-    if (!data.status) alert(data.message)
+    if (!data.status) alert(data.message);
     else {
-      let file = this.state.image
-      let upload = []
+      let file = this.state.image;
+      let upload = [];
 
       if (file[0]) {
         for (let _ of file) {
-          const type = _.type.split("/")[1]
-          const rename = Math.random().toString(36).substring(5)
+          const type = _.type.split("/")[1];
+          const rename = Math.random().toString(36).substring(5);
           let task = await firebase
             .storage()
             .ref(`Documentos/CRM/Avaliacao/${data.key}/${rename}.${type}`)
-            .put(_, { contentType: _.type })
-          upload.push(task)
+            .put(_, { contentType: _.type });
+          upload.push(task);
         }
 
         try {
-          Promise.all([...upload])
-          document.location.href = "/enviado"
+          Promise.all([...upload]);
+          document.location.href = "/enviado";
         } catch (error) {
-          alert(error)
+          alert(error);
         }
       } else {
-        document.location.href = "/enviado"
+        document.location.href = "/enviado";
       }
     }
-  }
+  };
 
   //Paginacao
-  next = () => {
-    if (this.state.end >= ListEquipe.length) {
-      return
-    }
-    this.setState({
-      start: this.state.start + 3,
-      end: this.state.end + 3,
-    })
-  }
 
   prev = () => {
-    if (this.state.start === 0) {
-      return
-    }
-    this.setState({
-      start: this.state.start - 3,
-      end: this.state.end - 3,
-    })
-  }
+    let screen = document.querySelector(".slide").offsetWidth;
+    document.querySelector(".slide").scrollLeft -= screen;
+  };
+
+  next = () => {
+    let screen = document.querySelector(".slide").offsetWidth;
+    document.querySelector(".slide").scrollLeft += screen;
+  };
 
   render() {
     return (
@@ -810,7 +801,7 @@ class Avalie extends React.Component {
           <div className="row wrap">
             <div className="2s 5p row center" style={{ maxWidth: "230px" }}>
               <img
-                src="https://www.pinheironeto.com.br/style%20library/_imgs/logo.png"
+                src="/images/logo-PinheiroNeto.png"
                 alt="PinheiroNeto Advogados"
                 width="100%"
                 style={{
@@ -825,7 +816,7 @@ class Avalie extends React.Component {
               style={{ maxWidth: "230px", marginLeft: "10px" }}
             >
               <img
-                src="https://www.conteacapital.com.br/wp-content/uploads/2020/01/logo_contea2_hor.png"
+                src="/images/logo-contea.png"
                 alt="Contea Capital"
                 width="100%"
                 style={{ maxWidth: "230px" }}
@@ -859,17 +850,15 @@ class Avalie extends React.Component {
           Nossa equipe{" "}
         </h1>
         <div className="1280y cen slide">
-          {ListEquipe.slice(this.state.start, this.state.end).map(
-            (el, index) => (
-              <EquipeCard
-                idy={index.toString()}
-                start={this.state.start}
-                img={el.img}
-                title={el.title}
-                description={el.description}
-              />
-            )
-          )}
+          {ListEquipe.map((el, index) => (
+            <EquipeCard
+              idy={index.toString()}
+              start={this.state.start}
+              img={el.img}
+              title={el.title}
+              description={el.description}
+            />
+          ))}
         </div>
         <div className="cen 10p">
           <button
@@ -941,8 +930,8 @@ class Avalie extends React.Component {
 
         <Footer />
       </>
-    )
+    );
   }
 }
 
-export default Avalie
+export default Avalie;
