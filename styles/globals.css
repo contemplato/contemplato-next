@@ -364,9 +364,10 @@ button:hover {
   outline: none;
 }
 
-.about-profile {
-  transform: scale(0.7);
-  cursor: pointer;
+.about-profile { 
+  transform: scale(0.8); 
+  cursor: pointer; 
+  min-width:calc(100%/3);
 }
 .about-profile:hover {
   transform: scale(1);
@@ -477,6 +478,10 @@ button:hover {
   }
 }
 @media screen and (max-width: 600px) {
+  .about-profile { 
+    min-width:100%;
+  }
+  
   body {
     font-size: 94%;
   }

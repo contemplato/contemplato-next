@@ -10,7 +10,6 @@ class EquipeCard extends Component {
         key={this.props.idy}
         className="20p cen about-profile"
         style={{
-          minWidth: "425px",
           margin: "0px auto",
         }}
       >
