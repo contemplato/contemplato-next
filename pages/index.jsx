@@ -44,10 +44,18 @@ class Avalie extends React.Component {
       input: {},
       errors: {},
       image: null,
+      showMenu: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
+
+    this.showMenu = this.showMenu.bind(this);
+    this.closeMenu = this.showMenu.bind(this);
+  }
+
+  showMenu(event) {
+    this.setState({ showMenu: !this.state.showMenu });
   }
 
   handleChange = (event) => {
@@ -145,7 +153,7 @@ class Avalie extends React.Component {
                 />
               </a>
             </div>
-            <div className="2s 5p row">
+            <div className="2s 5p row ocult">
               {/* <a
                 href="/produto/?filter=contemplado;nao-contemplado;cancelado&amp;item=imovel;carro;moto&amp;credit=;&amp;debit=;"
                 className="blanc 5p"
@@ -168,6 +176,54 @@ class Avalie extends React.Component {
                 Portal do corretor
               </a>
             </div>
+            {/* menu Mobile */}
+            <div className="none show">
+              <button
+                onClick={this.showMenu}
+                className="10r"
+                style={{
+                  backgroundColor: "Transparent",
+                  backgroundRepeat: "no-repeat",
+                  border: "none",
+                  cursor: "pointer",
+                  overflow: "hidden",
+                }}
+              >
+                {" "}
+                <img
+                  src="https://image.flaticon.com/icons/png/512/59/59165.png"
+                  alt="menu"
+                  style={{ width: "25px" }}
+                />{" "}
+              </button>
+
+              {this.state.showMenu ? (
+                <div
+                  className="menu"
+                  ref={(element) => {
+                    this.dropdownMenu = element;
+                  }}
+                >
+                  <ul class="menu-menu">
+                    <li>
+                      <a
+                        href="https://contemplato.wikidot.com/"
+                        target="_blank"
+                      >
+                        Wiki
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.contemplay.com.br/" target="_blank">
+                        Portal do corretor
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+
+            {/*menu mobile  */}
           </div>
           <div
             className="row center 960y 10p wrap"

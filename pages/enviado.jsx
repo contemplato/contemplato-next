@@ -1,11 +1,11 @@
-import React from "react"
-import Footer from "../components/common/footer/Footer"
+import React from "react";
+import Footer from "../components/common/footer/Footer";
 // import background from "../images/header-banner-1.png"
 // import logo from "../images/logo-contemplato.png"
-import ListEquipe from "../components/common/data/ListEquipe"
-import EquipeCard from "../components/common/Avalie/EquipeCard"
-import WikiList from "../components/common/data/WikiList"
-import Wiki from "../components/common/Home/WikiCard"
+import ListEquipe from "../components/common/data/ListEquipe";
+import EquipeCard from "../components/common/Avalie/EquipeCard";
+import WikiList from "../components/common/data/WikiList";
+import Wiki from "../components/common/Home/WikiCard";
 // import headerBottom from "../images/header-bottom.png"
 // import icon1 from "../images/ico-n-1.png"
 // import icon2 from "../images/ico-n-2.png"
@@ -26,33 +26,23 @@ import Wiki from "../components/common/Home/WikiCard"
 
 class EnvioForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       start: 0,
       end: 3,
-    }
+    };
   }
 
   //Paginacao
-  next = () => {
-    if (this.state.end >= ListEquipe.length) {
-      return
-    }
-    this.setState({
-      start: this.state.start + 3,
-      end: this.state.end + 3,
-    })
-  }
-
   prev = () => {
-    if (this.state.start === 0) {
-      return
-    }
-    this.setState({
-      start: this.state.start - 3,
-      end: this.state.end - 3,
-    })
-  }
+    let screen = document.querySelector(".slide").offsetWidth;
+    document.querySelector(".slide").scrollLeft -= screen;
+  };
+
+  next = () => {
+    let screen = document.querySelector(".slide").offsetWidth;
+    document.querySelector(".slide").scrollLeft += screen;
+  };
 
   render() {
     return (
@@ -619,17 +609,15 @@ class EnvioForm extends React.Component {
           Nossa equipe{" "}
         </h1>
         <div className="1280y cen slide">
-          {ListEquipe.slice(this.state.start, this.state.end).map(
-            (el, index) => (
-              <EquipeCard
-                idy={index.toString()}
-                start={this.state.start}
-                img={el.img}
-                title={el.title}
-                description={el.description}
-              />
-            )
-          )}
+          {ListEquipe.map((el, index) => (
+            <EquipeCard
+              idy={index.toString()}
+              start={this.state.start}
+              img={el.img}
+              title={el.title}
+              description={el.description}
+            />
+          ))}
         </div>
         <div class="cen 10p">
           <button
@@ -646,8 +634,8 @@ class EnvioForm extends React.Component {
 
         <Footer />
       </>
-    )
+    );
   }
 }
 
-export default EnvioForm
+export default EnvioForm;
