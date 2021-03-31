@@ -97,7 +97,7 @@ class Avalie extends React.Component {
       let file = this.state.image;
       let upload = [];
 
-      if (file[0]) {
+      if (file!==null) {
         for (let _ of file) {
           const type = _.type.split("/")[1];
           const rename = Math.random().toString(36).substring(5);
