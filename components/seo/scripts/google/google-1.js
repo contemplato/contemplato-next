@@ -15,7 +15,7 @@ export default () => (
       fbq('init', '${PIXEL_CODE}');
       fbq('track', 'PageView');`,
       }}
-    />
+    ></script>
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=UA-157797116-1"
@@ -27,6 +27,5 @@ export default () => (
         gtag('js', new Date()); gtag('config', 'UA-157797116-1')`,
       }}
     ></script>
-    />
   </React.Fragment>
 )
