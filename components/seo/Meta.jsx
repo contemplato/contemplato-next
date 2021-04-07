@@ -8,6 +8,10 @@ const Meta = ({ title, keywords, description }) => {
   return (
     <Head>
       <GoogleTags />
+      <meta
+        name="facebook-domain-verification"
+        content="u78132bwyfei3esu519vivrgnbmill"
+      />
       <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap"
         rel="stylesheet"
