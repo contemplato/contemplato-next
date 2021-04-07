@@ -1,6 +1,4 @@
-import React from "react"
-
-const PIXEL_CODE = "5907752592583590"
+import React from "react";
 
 export default () => (
   <React.Fragment>
@@ -14,15 +12,15 @@ export default () => (
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '${PIXEL_CODE}');
+      fbq('init', '5907752592583590');
       fbq('track', 'PageView');`,
       }}
     />
     <noscript
       dangerouslySetInnerHTML={{
         __html: `<img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=${PIXEL_CODE}&ev=PageView&noscript=1" />`,
+      src="https://www.facebook.com/tr?id=5907752592583590&ev=PageView&noscript=1" />`,
       }}
     />
   </React.Fragment>
-)
+);
