@@ -14,8 +14,7 @@ import WikiList from "../components/common/data/WikiList";
 import Wiki from "../components/common/Home/WikiCard";
 
 import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import CloseIcon from "@material-ui/icons/Close";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 
 // images
@@ -186,11 +185,19 @@ class Avalie extends React.Component {
             <div className="none show">
               <Button onClick={this.showMenu}>
                 {" "}
-                <FormatListBulletedIcon
-                  className="menu-icon"
-                  fontSize="large"
-                  style={{ marginRight: "0px" }}
-                />{" "}
+                {this.state.showMenu ? (
+                  <CloseIcon
+                    className="menu-icon"
+                    fontSize="large"
+                    style={{ marginRight: "0px" }}
+                  />
+                ) : (
+                  <FormatListBulletedIcon
+                    className="menu-icon"
+                    fontSize="large"
+                    style={{ marginRight: "0px" }}
+                  />
+                )}{" "}
               </Button>
 
               {this.state.showMenu ? (
