@@ -12,6 +12,12 @@ import maskPhone from "../components/common/utils/masks/phone";
 import EquipeCard from "../components/common/Avalie/EquipeCard";
 import WikiList from "../components/common/data/WikiList";
 import Wiki from "../components/common/Home/WikiCard";
+
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+
 // images
 // import headerBottom from "../images/header-bottom.png"
 // import icoAnexo from "../images/ico-anexo.png"
@@ -97,7 +103,7 @@ class Avalie extends React.Component {
       let file = this.state.image;
       let upload = [];
 
-      if (file!==null) {
+      if (file !== null) {
         for (let _ of file) {
           const type = _.type.split("/")[1];
           const rename = Math.random().toString(36).substring(5);
@@ -178,24 +184,14 @@ class Avalie extends React.Component {
             </div>
             {/* menu Mobile */}
             <div className="none show">
-              <button
-                onClick={this.showMenu}
-                className="10r"
-                style={{
-                  backgroundColor: "Transparent",
-                  backgroundRepeat: "no-repeat",
-                  border: "none",
-                  cursor: "pointer",
-                  overflow: "hidden",
-                }}
-              >
+              <Button onClick={this.showMenu}>
                 {" "}
-                <img
-                  src="https://image.flaticon.com/icons/png/512/59/59165.png"
-                  alt="menu"
-                  style={{ width: "25px" }}
+                <FormatListBulletedIcon
+                  className="menu-icon"
+                  fontSize="large"
+                  style={{ marginRight: "0px" }}
                 />{" "}
-              </button>
+              </Button>
 
               {this.state.showMenu ? (
                 <div
@@ -207,6 +203,7 @@ class Avalie extends React.Component {
                   <ul class="menu-menu">
                     <li>
                       <a
+                        className="aMenu"
                         href="https://contemplato.wikidot.com/"
                         target="_blank"
                       >
@@ -214,7 +211,12 @@ class Avalie extends React.Component {
                       </a>
                     </li>
                     <li>
-                      <a href="https://www.contemplay.com.br/" target="_blank">
+                      <a
+                        className="aMenu"
+                        href="https://www.contemplay.com.br/"
+                        target="_blank"
+                      >
+                        {" "}
                         Portal do corretor
                       </a>
                     </li>

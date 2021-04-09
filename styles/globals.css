@@ -364,10 +364,10 @@ button:hover {
   outline: none;
 }
 
-.about-profile { 
-  transform: scale(0.8); 
-  cursor: pointer; 
-  min-width:calc(100%/3);
+.about-profile {
+  transform: scale(0.8);
+  cursor: pointer;
+  min-width: calc(100% / 3);
 }
 .about-profile:hover {
   transform: scale(1);
@@ -423,6 +423,21 @@ button:hover {
   background-color: var(--blue);
   font-weight: bold;
   box-sizing: border-box;
+}
+
+.aMenu {
+  display: block;
+  width: 160px;
+  height: 40px;
+  line-height: 20px;
+  padding: 10px 5px;
+  margin: 5px;
+  color: #000;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: left;
+  font-weight: bold;
+  font-family: Arial;
 }
 
 @media screen and (max-width: 800px) {
@@ -501,10 +516,10 @@ li {
 
 /*  */
 @media screen and (max-width: 600px) {
-  .about-profile { 
-    min-width:100%;
+  .about-profile {
+    min-width: 100%;
   }
-  
+
   body {
     font-size: 94%;
   }
