@@ -428,16 +428,14 @@ button:hover {
 .aMenu {
   display: block;
   width: 160px;
-  height: 40px;
   line-height: 20px;
-  padding: 10px 5px;
   margin: 5px;
-  color: #000;
+  color: #fff;
   border-radius: 5px;
+  font-family: Roboto, sans-serif;
   text-decoration: none;
   text-align: left;
   font-weight: bold;
-  font-family: Arial;
 }
 
 @media screen and (max-width: 800px) {
@@ -501,7 +499,7 @@ ul {
 }
 
 .menu-menu {
-  background: #fff;
+  background: #345d9d;
   border: 1px solid #ccc;
   border-radius: 0.3em;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
