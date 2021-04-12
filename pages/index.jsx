@@ -829,7 +829,7 @@ class Avalie extends React.Component {
               <b>eficiência e liquidez</b> ao mercado secundário de consórcio,
               com <b>tecnologia de ponta</b>,<b>segurança</b> e{" "}
               <b>agilidade nas transferências.</b> Comercializamos cotas{" "}
-              <b>contempladas, canceladas e em andamento</b> - de
+              <b>contempladas, canceladas e em andamento</b> - de{" "}
               <b>todas as administradoras</b> de consórcio do Brasil.
             </p>
           </div>
