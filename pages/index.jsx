@@ -137,7 +137,7 @@ class Avalie extends React.Component {
     document.querySelector(".slide").scrollLeft += screen;
   };
 
-  renderold() {
+  render() {
     return (
       <>
         <div

@@ -1,6 +1,9 @@
 import React, { createRef } from "react";
-import { useRouter } from "next/router";
 import axios from "axios";
+
+import CreditCardIcon from "@material-ui/icons/CreditCard";
+import DescriptionIcon from "@material-ui/icons/Description";
+import Button from "@material-ui/core/Button";
 
 const convertPricingStringToNumber = (pricing) => {
   return parseFloat(pricing.replace(/[.]/g, "").replace(",", "."));
@@ -43,7 +46,8 @@ class meuConsorcio extends React.Component {
   constructor(props) {
     super(props);
     // console.log("meu teste", this.props.router.query);
-    this.id = this.props.router.pathname.id;
+    // this.id = this.props.router.query.id;
+    this.id = this.props.id;
     this.emailRef = createRef();
     this.issuerRef = createRef();
     this.docTypeRef = createRef();
@@ -76,6 +80,7 @@ class meuConsorcio extends React.Component {
           max: "",
         },
       },
+      showpayment: false,
     };
   }
 
@@ -338,244 +343,367 @@ class meuConsorcio extends React.Component {
     }
   };
 
+  buttonPayment(e) {
+    let pay = "";
+    if (e === "Card") {
+      pay = "Realizar Pagamento";
+    } else if (e === "Bolet") {
+      pay = "Gerar boleto";
+    }
+    return pay;
+  }
+
   render() {
     return (
-      <div className="cen" style={{ width: "50%" }}>
+      <>
         <script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>
+        <div className="content 960y 10p wrap col">
+          <h1 className="title-h1" style={{ marginBottom: "20px" }}>
+            {" "}
+            Detalhes da cota
+          </h1>
+          <div
+            className="box-div cen"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <ul>
+              <li className="li-box">Credit</li>
+              <li className="li-box">Debit </li>
+              <li className="li-box">Paid </li>
+              <li className="li-box">Portion </li>
+              <li className="li-box">Pricing </li>
+              <li className="li-box">
+                totalDebit {this.state.extract.totalDebit}
+              </li>
+            </ul>
 
-        <h1 className="title-h1" style={{ marginBottom: "20px" }}>
-          {" "}
-          Detalhes da cota
-        </h1>
-        <div
-          className="box-div cen"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <ul>
-            <li className="li-box">Credit</li>
-            <li className="li-box">Debit </li>
-            <li className="li-box">Paid </li>
-            <li className="li-box">Portion </li>
-            <li className="li-box">Pricing </li>
-            <li className="li-box">
-              totalDebit {this.state.extract.totalDebit}
-            </li>
-          </ul>
-
-          <ul>
-            <li className="li-box">{this.state.extract.credit} XXXXXXXXXXXX</li>
-            <li className="li-box">{this.state.extract.debit} XXXXXXXXXXXX</li>
-            <li className="li-box">{this.state.extract.paid} XXXXXXXXXXXX</li>
-            <li className="li-box">
-              {this.state.extract.portion} XXXXXXXXXXXX
-            </li>
-            <li className="li-box">
-              {this.state.extract.pricing} XXXXXXXXXXXX
-            </li>
-            <li className="li-box">
-              {this.state.extract.totalDebit} XXXXXXXXXXXX
-            </li>
-          </ul>
+            <ul>
+              <li className="li-box">
+                {this.state.extract.credit} XXXXXXXXXXXX
+              </li>
+              <li className="li-box">
+                {this.state.extract.debit} XXXXXXXXXXXX
+              </li>
+              <li className="li-box">{this.state.extract.paid} XXXXXXXXXXXX</li>
+              <li className="li-box">
+                {this.state.extract.portion} XXXXXXXXXXXX
+              </li>
+              <li className="li-box">
+                {this.state.extract.pricing} XXXXXXXXXXXX
+              </li>
+              <li className="li-box">
+                {this.state.extract.totalDebit} XXXXXXXXXXXX
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <form
-          method="post"
-          ref={this.paymentFormRef}
-          onSubmit={this.handleOnSubmit}
-        >
-          <div>
-            {/* *Sugestão* */}
-            <p>
-              {/* {this.state.extract.pricingRange.min}&nbsp;-&nbsp;
-              {this.state.extract.pricingRange.max} */}
-            </p>
-            <input
-              type="text"
-              name="transactionAmount"
-              ref={this.transactionAmountRef}
-              maxLength={9}
-              onChange={(e) => this.currencyByElementMask(e)}
-              required
-            />
-          </div>
-          <div className="form-container">
-            <h1 className="title-h1">Detalhe do comprador</h1>
+        <div className="content 960y 10p wrap col">
+          <form
+            method="post"
+            ref={this.paymentFormRef}
+            onSubmit={this.handleOnSubmit}
+          >
             <div className="formField-container">
-              <label htmlFor="email">
-                <p className="fo16" style={{ color: "#434A53" }}>
-                  Email
-                </p>
-              </label>
-              <br />
-              <input id="email" name="email" type="email" ref={this.emailRef} />
+              *Sugestão*
+              <p style={{ marginBottom: "20px" }}>
+                XXX{this.state.extract.pricingRange.min}&nbsp;-&nbsp;
+                {this.state.extract.pricingRange.max}XXX
+              </p>
+              <input
+                type="text"
+                name="transactionAmount"
+                ref={this.transactionAmountRef}
+                maxLength={9}
+                onChange={(e) => this.currencyByElementMask(e)}
+                required
+              />
             </div>
-            <div>
-              <div>
-                <label htmlFor="docType">Tipo de documento</label>
-                <select
-                  id="docType"
-                  name="docType"
-                  ref={this.docTypeRef}
-                  data-checkout="docType"
-                  onChange={() => (this.docNumberRef.current.value = "")}
-                  type="text"
-                ></select>
-              </div>
-              <div>
-                <label htmlFor="docNumber">Número do documento</label>
+            <div className="form-container">
+              <h1 className="title-h1">Detalhe do comprador</h1>
+              <div className="formField-container">
+                <label htmlFor="email">
+                  <p
+                    className="fo16"
+                    style={{ color: "#434A53", textAlign: "left" }}
+                  >
+                    Email
+                  </p>
+                </label>
+                <br />
                 <input
-                  id="docNumber"
-                  name="docNumber"
-                  ref={this.docNumberRef}
-                  data-checkout="docNumber"
-                  onChange={() =>
-                    cpfCnpjByElementMask(
-                      this.docNumberRef,
-                      this.docTypeRef.current.value
-                    )
-                  }
-                  type="text"
+                  id="email"
+                  name="email"
+                  type="email"
+                  ref={this.emailRef}
                 />
               </div>
+              <div className="formField-container row">
+                <div>
+                  <label htmlFor="docType">
+                    <p
+                      className="fo16"
+                      style={{ color: "#434A53", textAlign: "left" }}
+                    >
+                      {" "}
+                      Documento{" "}
+                    </p>
+                  </label>
+                  <select
+                    id="docType"
+                    name="docType"
+                    ref={this.docTypeRef}
+                    data-checkout="docType"
+                    onChange={() => (this.docNumberRef.current.value = "")}
+                    type="text"
+                    style={{ marginTop: "21px" }}
+                  ></select>
+                </div>
+                <div
+                  className="formField-container"
+                  style={{
+                    width: "90%",
+                    marginTop: "46px",
+                    marginLeft: "10px",
+                  }}
+                >
+                  <input
+                    id="docNumber"
+                    name="docNumber"
+                    ref={this.docNumberRef}
+                    data-checkout="docNumber"
+                    onChange={() =>
+                      cpfCnpjByElementMask(
+                        this.docNumberRef,
+                        this.docTypeRef.current.value
+                      )
+                    }
+                    type="text"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          <br />
-          {/* buttons Cars and Bolet */}
-          <button
-            type="button"
-            onClick={() => (this.state.paymentType = "Card")}
-          >
-            Cartão
-          </button>
-          <button
-            type="button"
-            onClick={() => (this.state.paymentType = "Bolet")}
-          >
-            Boleto
-          </button>
-          {/* buttons Cars and Bolet */}
+            <br />
+            <h3 className="title-h1" style={{ textAlign: "center" }}>
+              Forma de pagamento
+            </h3>
+            {/* buttons Cars and Bolet */}
+            <div className="cen">
+              <Button
+                type="button"
+                onClick={(this.state.paymentType = "Card")}
+                style={{ marginRight: "5%" }}
+              >
+                <CreditCardIcon
+                  className="menu-icon"
+                  fontSize="large"
+                ></CreditCardIcon>
+              </Button>
+              <Button
+                type="button"
+                onClick={() => (this.state.paymentType = "Bolet")}
+              >
+                <DescriptionIcon
+                  className="menu-icon"
+                  fontSize="large"
+                ></DescriptionIcon>
+              </Button>
+            </div>
+            {/* buttons Card and Bolet */}
+            {/* detalhe cartao  */}
+            <div>
+              <h3 className="title-h1">Detalhes do cartão</h3>
+              <div className="form-container">
+                <div className="row formField-container">
+                  <div style={{ width: "80%" }}>
+                    <label
+                      htmlFor="cardNumber"
+                      style={{
+                        textAlign: "left",
+                      }}
+                    >
+                      {" "}
+                      Número do cartão{" "}
+                    </label>
+                    <input
+                      type="text"
+                      id="cardNumber"
+                      data-checkout="cardNumber"
+                      onselectstart="return false"
+                      onPaste={() => false}
+                      ref={this.cardNumberRef}
+                      onCopy={() => false}
+                      onCut={() => false}
+                      onDrag={() => false}
+                      onDrop={() => false}
+                      autoComplete="off"
+                    />
+                  </div>
 
-          {/* detalhe cartao */}
-          <h3>Detalhes do cartão</h3>
-          <div>
-            <div>
-              <label htmlFor="cardholderName">Titular do cartão</label>
-              <input
-                id="cardholderName"
-                data-checkout="cardholderName"
-                type="text"
-              />
-            </div>
-            <div>
-              <label htmlFor="">Data de vencimento</label>
-              <div>
-                <input
-                  type="number"
-                  min={1}
-                  max={12}
-                  placeholder="MM"
-                  id="cardExpirationMonth"
-                  data-checkout="cardExpirationMonth"
-                  onselectstart="return false"
-                  onPaste={() => false}
-                  onCopy={() => false}
-                  onCut={() => false}
-                  onDrag={() => false}
-                  onDrop={() => false}
-                  autoComplete="off"
-                />
-                <span className="date-separator">/</span>
-                <input
-                  type="number"
-                  min={1}
-                  max={99}
-                  placeholder="YY"
-                  id="cardExpirationYear"
-                  data-checkout="cardExpirationYear"
-                  onselectstart="return false"
-                  onPaste={() => false}
-                  onCopy={() => false}
-                  onCut={() => false}
-                  onDrag={() => false}
-                  onDrop={() => false}
-                  autoComplete="off"
-                />
+                  <div style={{ marginLeft: "2%", width: "17%" }}>
+                    <label
+                      htmlFor=""
+                      style={{
+                        textAlign: "left",
+                      }}
+                    >
+                      {" "}
+                      Data de vencimento
+                    </label>
+                    <div className="row">
+                      <input
+                        type="number"
+                        min={1}
+                        max={12}
+                        placeholder="MM"
+                        id="cardExpirationMonth"
+                        data-checkout="cardExpirationMonth"
+                        onselectstart="return false"
+                        onPaste={() => false}
+                        onCopy={() => false}
+                        onCut={() => false}
+                        onDrag={() => false}
+                        onDrop={() => false}
+                        autoComplete="off"
+                      />
+                      <span
+                        className="date-separator fo25"
+                        style={{ margin: "0px 5px 0px 5px" }}
+                      >
+                        {" "}
+                        /{" "}
+                      </span>
+                      <input
+                        type="number"
+                        min={1}
+                        max={99}
+                        placeholder="YY"
+                        id="cardExpirationYear"
+                        data-checkout="cardExpirationYear"
+                        onselectstart="return false"
+                        onPaste={() => false}
+                        onCopy={() => false}
+                        onCut={() => false}
+                        onDrag={() => false}
+                        onDrop={() => false}
+                        autoComplete="off"
+                      />
+                    </div>
+                  </div>
+                </div>
+                {/*  */}
+
+                <div className="row formField-container">
+                  <div style={{ width: "80%" }}>
+                    <div className="row">
+                      <label
+                        className="fo16"
+                        style={{
+                          textAlign: "left",
+                        }}
+                        htmlFor="cardholderName"
+                      >
+                        Nome do Titular
+                      </label>
+                      <b
+                        className="fo11"
+                        style={{
+                          textAlign: "left",
+                          marginBottom: "10px",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        (como está gravado no cartão)
+                      </b>
+                    </div>
+
+                    <input
+                      id="cardholderName"
+                      data-checkout="cardholderName"
+                      type="text"
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      marginLeft: "17px",
+                      marginTop: "5px",
+                      width: "17%",
+                    }}
+                  >
+                    <label
+                      htmlFor="securityCode"
+                      className="fo16"
+                      style={{
+                        textAlign: "left",
+                      }}
+                    >
+                      {" "}
+                      Código de segurança
+                    </label>
+                    <input
+                      id="securityCode"
+                      data-checkout="securityCode"
+                      type="text"
+                      onselectstart="return false"
+                      onPaste={() => false}
+                      onCopy={() => false}
+                      onCut={() => false}
+                      onDrag={() => false}
+                      onDrop={() => false}
+                      autoComplete="off"
+                    />
+                  </div>
+                </div>
+
+                <div id="issuerInput" hidden>
+                  <label htmlFor="issuer">Banco emissor</label>
+                  <select
+                    id="issuer"
+                    name="issuer"
+                    ref={this.issuerRef}
+                    data-checkout="issuer"
+                  ></select>
+                </div>
+
+                <div className="formField-container" style={{ width: "80%" }}>
+                  <div>
+                    <label htmlFor="installments">Parcelar em:</label>
+                    <select
+                      type="text"
+                      id="installments"
+                      name="installments"
+                      ref={this.installmentsRef}
+                    ></select>
+                  </div>
+                  <div>
+                    <input
+                      type="hidden"
+                      name="paymentMethodId"
+                      id="paymentMethodId"
+                      ref={this.paymentMethodRef}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
+            {/*  */}
             <div>
-              <label htmlFor="cardNumber">Número do cartão</label>
-              <input
-                type="text"
-                id="cardNumber"
-                data-checkout="cardNumber"
-                onselectstart="return false"
-                onPaste={() => false}
-                ref={this.cardNumberRef}
-                onCopy={() => false}
-                onCut={() => false}
-                onDrag={() => false}
-                onDrop={() => false}
-                autoComplete="off"
-              />
-            </div>
-            <div>
-              <label htmlFor="securityCode">Código de segurança</label>
-              <input
-                id="securityCode"
-                data-checkout="securityCode"
-                type="text"
-                onselectstart="return false"
-                onPaste={() => false}
-                onCopy={() => false}
-                onCut={() => false}
-                onDrag={() => false}
-                onDrop={() => false}
-                autoComplete="off"
-              />
-            </div>
-            <div id="issuerInput" hidden>
-              <label htmlFor="issuer">Banco emissor</label>
-              <select
-                id="issuer"
-                name="issuer"
-                ref={this.issuerRef}
-                data-checkout="issuer"
-              ></select>
-            </div>
-            <div>
-              <label htmlFor="installments">Parcelas</label>
-              <select
-                type="text"
-                id="installments"
-                name="installments"
-                ref={this.installmentsRef}
-              ></select>
-            </div>
-            <div>
-              <input
-                type="hidden"
-                name="paymentMethodId"
-                id="paymentMethodId"
-                ref={this.paymentMethodRef}
-              />
-            </div>
-          </div>
-          {/* detalhe cartao */}
-          <h3>Detalhes do boleto</h3>
-          <div>
-            <div>
-              <label htmlFor="cardNumber">Primeiro nome</label>
-              <input
-                type="text"
-                id="firstName"
-                ref={this.firstNameRef}
-                placeholder="Primeiro nome"
-              />
-            </div>
-            <div>
+              <h3 className="title-h1">Detalhes do boleto</h3>
+              <div className="formField-container fo16">
+                <div>
+                  <label htmlFor="cardNumber">Nome completo: </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    ref={this.firstNameRef}
+                    // placeholder="Nome completo"
+                  />
+                </div>
+                {/* <div>
               <label htmlFor="lastName">Ultimo nome</label>
               <input
                 type="text"
@@ -583,67 +711,83 @@ class meuConsorcio extends React.Component {
                 ref={this.lastNameRef}
                 placeholder="Ultimo nome"
               />
+            </div> */}
+                <div style={{ marginTop: "20px" }}>
+                  <label htmlFor="zipCode">CEP</label>
+                  <input
+                    type="text"
+                    id="zipCode"
+                    ref={this.zipCodeRef}
+                    // placeholder="CEP"
+                  />
+                </div>
+                <div style={{ marginTop: "20px" }}>
+                  <label htmlFor="streetName">Endereço</label>
+                  <input
+                    type="text"
+                    id="streetName"
+                    ref={this.streetNameRef}
+                    // placeholder="Endereço"
+                  />
+                </div>
+                <div style={{ marginTop: "20px" }}>
+                  <label htmlFor="streetNumber">Número</label>
+                  <input
+                    type="text"
+                    id="streetNumber"
+                    ref={this.streetNumberRef}
+                    // placeholder="Número"
+                  />
+                </div>
+                <div style={{ marginTop: "20px" }}>
+                  <label htmlFor="neighborhood">Bairro</label>
+                  <input
+                    type="text"
+                    id="neighborhood"
+                    ref={this.neighborhoodRef}
+                    // placeholder="Bairro"
+                  />
+                </div>
+                <div style={{ marginTop: "20px" }}>
+                  <label htmlFor="city">Cidade</label>
+                  <input
+                    type="text"
+                    id="city"
+                    ref={this.cityRef}
+                    // placeholder="Cidade"
+                  />
+                </div>
+                <div style={{ marginTop: "20px" }}>
+                  <label htmlFor="federalUnit">Estado</label>
+                  <input
+                    type="text"
+                    id="federalUnit"
+                    ref={this.federalUnitRef}
+                    // placeholder="Estado"
+                  />
+                </div>
+              </div>
             </div>
-            <div>
-              <label htmlFor="zipCode">CEP</label>
-              <input
-                type="text"
-                id="zipCode"
-                ref={this.zipCodeRef}
-                placeholder="CEP"
-              />
-            </div>
-            <div>
-              <label htmlFor="streetName">Endereço</label>
-              <input
-                type="text"
-                id="streetName"
-                ref={this.streetNameRef}
-                placeholder="Endereço"
-              />
-            </div>
-            <div>
-              <label htmlFor="streetNumber">Número</label>
-              <input
-                type="text"
-                id="streetNumber"
-                ref={this.streetNumberRef}
-                placeholder="Número"
-              />
-            </div>
-            <div>
-              <label htmlFor="neighborhood">Bairro</label>
-              <input
-                type="text"
-                id="neighborhood"
-                ref={this.neighborhoodRef}
-                placeholder="Bairro"
-              />
-            </div>
-            <div>
-              <label htmlFor="city">Cidade</label>
-              <input
-                type="text"
-                id="city"
-                ref={this.cityRef}
-                placeholder="Cidade"
-              />
-            </div>
-            <div>
-              <label htmlFor="federalUnit">UF</label>
-              <input
-                type="text"
-                id="federalUnit"
-                ref={this.federalUnitRef}
-                placeholder="Estado"
-              />
-            </div>
-          </div>
-          <br />
-          <button type="submit">Pagar</button>
-          <br />
-        </form>
-      </div>
+            ){/* Detalhe Boleto */}
+            <br />
+            <button
+              style={{
+                width: "100%",
+                height: "74px",
+                borderRadius: "5px",
+                backgroundColor: " #4AEE78",
+              }}
+              type="submit"
+            >
+              <p className="title-h1" style={{ textAlign: "center" }}>
+                {/* Realizar pagamento*/}
+                {this.buttonPayment(this.state.paymentType)}
+              </p>
+            </button>
+            <br />
+          </form>
+        </div>
+      </>
     );
   }
 }
