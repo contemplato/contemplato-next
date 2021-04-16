@@ -1,5 +1,6 @@
 import React, { createRef } from "react";
 import axios from "axios";
+import { withRouter, useRouter } from "next/router";
 
 import CreditCardIcon from "@material-ui/icons/CreditCard";
 import DescriptionIcon from "@material-ui/icons/Description";
@@ -45,9 +46,6 @@ const cpfCnpjByElementMask = (valueElement, type) => {
 class meuConsorcio extends React.Component {
   constructor(props) {
     super(props);
-    // console.log("meu teste", this.props.router.query);
-    // this.id = this.props.router.query.id;
-    this.id = this.props.id;
     this.emailRef = createRef();
     this.issuerRef = createRef();
     this.docTypeRef = createRef();
@@ -80,7 +78,7 @@ class meuConsorcio extends React.Component {
           max: "",
         },
       },
-      showpayment: false,
+      id: "",
     };
   }
 
@@ -175,29 +173,7 @@ class meuConsorcio extends React.Component {
       guessPaymentMethod
     );
 
-    axios
-      .post(
-        `http://core-content-cc-co.umbler.net/p/post/contemplato/meuconsorcio/${this.id}`,
-        {
-          headers: {
-            Authorization: "APP-NAME",
-          },
-        }
-      )
-      .then(({ data }) => {
-        if (data.status) {
-          const pricing = convertPricingStringToNumber(data.result.pricing);
-
-          const pricingRange = this.handleCalculatePricing(pricing);
-
-          this.setState({
-            extract: {
-              ...data.result,
-              pricingRange,
-            },
-          });
-        }
-      });
+    console.log(this.state.id);
   }
 
   currencyByValueMask = (e) => {
@@ -354,6 +330,34 @@ class meuConsorcio extends React.Component {
   }
 
   render() {
+    if (this.props.router.query.id && !this.state.extract.credit) {
+      console.log(this.state.extract);
+      axios
+        .post(
+          `http://core-content-cc-co.umbler.net/p/post/contemplato/meuconsorcio/${this.props.router.query.id}`,
+          {},
+          {
+            headers: {
+              Authorization: "APP-NAME",
+            },
+          }
+        )
+        .then(({ data }) => {
+          if (data.status) {
+            const pricing = convertPricingStringToNumber(data.result.pricing);
+
+            const pricingRange = this.handleCalculatePricing(pricing);
+
+            this.setState({
+              extract: {
+                ...data.result,
+                pricingRange,
+              },
+            });
+          }
+        });
+    }
+
     return (
       <>
         <script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>
@@ -423,7 +427,7 @@ class meuConsorcio extends React.Component {
               />
             </div>
             <div className="form-container">
-              <h1 className="title-h1">Detalhe do comprador</h1>
+              <h1 className="title-h1">Detalhes do comprador</h1>
               <div className="formField-container">
                 <label htmlFor="email">
                   <p
@@ -494,7 +498,7 @@ class meuConsorcio extends React.Component {
             <div className="cen">
               <Button
                 type="button"
-                onClick={(this.state.paymentType = "Card")}
+                onClick={() => this.setState({ paymentType: "Card" })}
                 style={{ marginRight: "5%" }}
               >
                 <CreditCardIcon
@@ -504,7 +508,7 @@ class meuConsorcio extends React.Component {
               </Button>
               <Button
                 type="button"
-                onClick={() => (this.state.paymentType = "Bolet")}
+                onClick={() => this.setState({ paymentType: "Bolet" })}
               >
                 <DescriptionIcon
                   className="menu-icon"
@@ -514,77 +518,28 @@ class meuConsorcio extends React.Component {
             </div>
             {/* buttons Card and Bolet */}
             {/* detalhe cartao  */}
-            <div>
-              <h3 className="title-h1">Detalhes do cartão</h3>
-              <div className="form-container">
-                <div className="row formField-container">
-                  <div style={{ width: "80%" }}>
-                    <label
-                      htmlFor="cardNumber"
-                      style={{
-                        textAlign: "left",
-                      }}
-                    >
-                      {" "}
-                      Número do cartão{" "}
-                    </label>
-                    <input
-                      type="text"
-                      id="cardNumber"
-                      data-checkout="cardNumber"
-                      onselectstart="return false"
-                      onPaste={() => false}
-                      ref={this.cardNumberRef}
-                      onCopy={() => false}
-                      onCut={() => false}
-                      onDrag={() => false}
-                      onDrop={() => false}
-                      autoComplete="off"
-                    />
-                  </div>
-
-                  <div style={{ marginLeft: "2%", width: "17%" }}>
-                    <label
-                      htmlFor=""
-                      style={{
-                        textAlign: "left",
-                      }}
-                    >
-                      {" "}
-                      Data de vencimento
-                    </label>
-                    <div className="row">
-                      <input
-                        type="number"
-                        min={1}
-                        max={12}
-                        placeholder="MM"
-                        id="cardExpirationMonth"
-                        data-checkout="cardExpirationMonth"
-                        onselectstart="return false"
-                        onPaste={() => false}
-                        onCopy={() => false}
-                        onCut={() => false}
-                        onDrag={() => false}
-                        onDrop={() => false}
-                        autoComplete="off"
-                      />
-                      <span
-                        className="date-separator fo25"
-                        style={{ margin: "0px 5px 0px 5px" }}
+            <div hidden={!this.state.paymentType}>
+              <div hidden={this.state.paymentType !== "Card"}>
+                <h3 className="title-h1">Detalhes do cartão</h3>
+                <div className="form-container">
+                  <div className="row formField-container">
+                    <div style={{ width: "80%" }}>
+                      <label
+                        htmlFor="cardNumber"
+                        style={{
+                          textAlign: "left",
+                        }}
                       >
                         {" "}
-                        /{" "}
-                      </span>
+                        Número do cartão{" "}
+                      </label>
                       <input
-                        type="number"
-                        min={1}
-                        max={99}
-                        placeholder="YY"
-                        id="cardExpirationYear"
-                        data-checkout="cardExpirationYear"
+                        type="text"
+                        id="cardNumber"
+                        data-checkout="cardNumber"
                         onselectstart="return false"
                         onPaste={() => false}
+                        ref={this.cardNumberRef}
                         onCopy={() => false}
                         onCut={() => false}
                         onDrag={() => false}
@@ -592,118 +547,168 @@ class meuConsorcio extends React.Component {
                         autoComplete="off"
                       />
                     </div>
-                  </div>
-                </div>
-                {/*  */}
 
-                <div className="row formField-container">
-                  <div style={{ width: "80%" }}>
-                    <div className="row">
+                    <div style={{ marginLeft: "2%", width: "17%" }}>
                       <label
+                        htmlFor=""
+                        style={{
+                          textAlign: "left",
+                        }}
+                      >
+                        {" "}
+                        Data de vencimento
+                      </label>
+                      <div className="row">
+                        <input
+                          type="number"
+                          min={1}
+                          max={12}
+                          placeholder="MM"
+                          id="cardExpirationMonth"
+                          data-checkout="cardExpirationMonth"
+                          onselectstart="return false"
+                          onPaste={() => false}
+                          onCopy={() => false}
+                          onCut={() => false}
+                          onDrag={() => false}
+                          onDrop={() => false}
+                          autoComplete="off"
+                        />
+                        <span
+                          className="date-separator fo25"
+                          style={{ margin: "0px 5px 0px 5px" }}
+                        >
+                          {" "}
+                          /{" "}
+                        </span>
+                        <input
+                          type="number"
+                          min={1}
+                          max={99}
+                          placeholder="YY"
+                          id="cardExpirationYear"
+                          data-checkout="cardExpirationYear"
+                          onselectstart="return false"
+                          onPaste={() => false}
+                          onCopy={() => false}
+                          onCut={() => false}
+                          onDrag={() => false}
+                          onDrop={() => false}
+                          autoComplete="off"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  {/*  */}
+
+                  <div className="row formField-container">
+                    <div style={{ width: "80%" }}>
+                      <div className="row">
+                        <label
+                          className="fo16"
+                          style={{
+                            textAlign: "left",
+                          }}
+                          htmlFor="cardholderName"
+                        >
+                          Nome do Titular
+                        </label>
+                        <b
+                          className="fo11"
+                          style={{
+                            textAlign: "left",
+                            marginBottom: "10px",
+                            marginLeft: "5px",
+                          }}
+                        >
+                          (como está gravado no cartão)
+                        </b>
+                      </div>
+
+                      <input
+                        id="cardholderName"
+                        data-checkout="cardholderName"
+                        type="text"
+                      />
+                    </div>
+
+                    <div
+                      style={{
+                        marginLeft: "17px",
+                        marginTop: "5px",
+                        width: "17%",
+                      }}
+                    >
+                      <label
+                        htmlFor="securityCode"
                         className="fo16"
                         style={{
                           textAlign: "left",
                         }}
-                        htmlFor="cardholderName"
                       >
-                        Nome do Titular
+                        {" "}
+                        Código de segurança
                       </label>
-                      <b
-                        className="fo11"
-                        style={{
-                          textAlign: "left",
-                          marginBottom: "10px",
-                          marginLeft: "5px",
-                        }}
-                      >
-                        (como está gravado no cartão)
-                      </b>
+                      <input
+                        id="securityCode"
+                        data-checkout="securityCode"
+                        type="text"
+                        onselectstart="return false"
+                        onPaste={() => false}
+                        onCopy={() => false}
+                        onCut={() => false}
+                        onDrag={() => false}
+                        onDrop={() => false}
+                        autoComplete="off"
+                      />
                     </div>
-
-                    <input
-                      id="cardholderName"
-                      data-checkout="cardholderName"
-                      type="text"
-                    />
                   </div>
 
-                  <div
-                    style={{
-                      marginLeft: "17px",
-                      marginTop: "5px",
-                      width: "17%",
-                    }}
-                  >
-                    <label
-                      htmlFor="securityCode"
-                      className="fo16"
-                      style={{
-                        textAlign: "left",
-                      }}
-                    >
-                      {" "}
-                      Código de segurança
-                    </label>
-                    <input
-                      id="securityCode"
-                      data-checkout="securityCode"
-                      type="text"
-                      onselectstart="return false"
-                      onPaste={() => false}
-                      onCopy={() => false}
-                      onCut={() => false}
-                      onDrag={() => false}
-                      onDrop={() => false}
-                      autoComplete="off"
-                    />
-                  </div>
-                </div>
-
-                <div id="issuerInput" hidden>
-                  <label htmlFor="issuer">Banco emissor</label>
-                  <select
-                    id="issuer"
-                    name="issuer"
-                    ref={this.issuerRef}
-                    data-checkout="issuer"
-                  ></select>
-                </div>
-
-                <div className="formField-container" style={{ width: "80%" }}>
-                  <div>
-                    <label htmlFor="installments">Parcelar em:</label>
+                  <div id="issuerInput" hidden>
+                    <label htmlFor="issuer">Banco emissor</label>
                     <select
-                      type="text"
-                      id="installments"
-                      name="installments"
-                      ref={this.installmentsRef}
+                      id="issuer"
+                      name="issuer"
+                      ref={this.issuerRef}
+                      data-checkout="issuer"
                     ></select>
                   </div>
-                  <div>
-                    <input
-                      type="hidden"
-                      name="paymentMethodId"
-                      id="paymentMethodId"
-                      ref={this.paymentMethodRef}
-                    />
+
+                  <div className="formField-container" style={{ width: "80%" }}>
+                    <div>
+                      <label htmlFor="installments">Parcelar em:</label>
+                      <select
+                        type="text"
+                        id="installments"
+                        name="installments"
+                        ref={this.installmentsRef}
+                      ></select>
+                    </div>
+                    <div>
+                      <input
+                        type="hidden"
+                        name="paymentMethodId"
+                        id="paymentMethodId"
+                        ref={this.paymentMethodRef}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {/*  */}
-            <div>
-              <h3 className="title-h1">Detalhes do boleto</h3>
-              <div className="formField-container fo16">
-                <div>
-                  <label htmlFor="cardNumber">Nome completo: </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    ref={this.firstNameRef}
-                    // placeholder="Nome completo"
-                  />
-                </div>
-                {/* <div>
+              {/*  */}
+              <div hidden={this.state.paymentType !== "Bolet"}>
+                <h3 className="title-h1">Detalhes do boleto</h3>
+                <div className="formField-container fo16">
+                  <div>
+                    <label htmlFor="cardNumber">Nome completo: </label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      ref={this.firstNameRef}
+                      // placeholder="Nome completo"
+                    />
+                  </div>
+                  {/* <div>
               <label htmlFor="lastName">Ultimo nome</label>
               <input
                 type="text"
@@ -712,78 +717,80 @@ class meuConsorcio extends React.Component {
                 placeholder="Ultimo nome"
               />
             </div> */}
-                <div style={{ marginTop: "20px" }}>
-                  <label htmlFor="zipCode">CEP</label>
-                  <input
-                    type="text"
-                    id="zipCode"
-                    ref={this.zipCodeRef}
-                    // placeholder="CEP"
-                  />
-                </div>
-                <div style={{ marginTop: "20px" }}>
-                  <label htmlFor="streetName">Endereço</label>
-                  <input
-                    type="text"
-                    id="streetName"
-                    ref={this.streetNameRef}
-                    // placeholder="Endereço"
-                  />
-                </div>
-                <div style={{ marginTop: "20px" }}>
-                  <label htmlFor="streetNumber">Número</label>
-                  <input
-                    type="text"
-                    id="streetNumber"
-                    ref={this.streetNumberRef}
-                    // placeholder="Número"
-                  />
-                </div>
-                <div style={{ marginTop: "20px" }}>
-                  <label htmlFor="neighborhood">Bairro</label>
-                  <input
-                    type="text"
-                    id="neighborhood"
-                    ref={this.neighborhoodRef}
-                    // placeholder="Bairro"
-                  />
-                </div>
-                <div style={{ marginTop: "20px" }}>
-                  <label htmlFor="city">Cidade</label>
-                  <input
-                    type="text"
-                    id="city"
-                    ref={this.cityRef}
-                    // placeholder="Cidade"
-                  />
-                </div>
-                <div style={{ marginTop: "20px" }}>
-                  <label htmlFor="federalUnit">Estado</label>
-                  <input
-                    type="text"
-                    id="federalUnit"
-                    ref={this.federalUnitRef}
-                    // placeholder="Estado"
-                  />
+                  <div style={{ marginTop: "20px" }}>
+                    <label htmlFor="zipCode">CEP</label>
+                    <input
+                      type="text"
+                      id="zipCode"
+                      ref={this.zipCodeRef}
+                      // placeholder="CEP"
+                    />
+                  </div>
+                  <div style={{ marginTop: "20px" }}>
+                    <label htmlFor="streetName">Endereço</label>
+                    <input
+                      type="text"
+                      id="streetName"
+                      ref={this.streetNameRef}
+                      // placeholder="Endereço"
+                    />
+                  </div>
+                  <div style={{ marginTop: "20px" }}>
+                    <label htmlFor="streetNumber">Número</label>
+                    <input
+                      type="text"
+                      id="streetNumber"
+                      ref={this.streetNumberRef}
+                      // placeholder="Número"
+                    />
+                  </div>
+                  <div style={{ marginTop: "20px" }}>
+                    <label htmlFor="neighborhood">Bairro</label>
+                    <input
+                      type="text"
+                      id="neighborhood"
+                      ref={this.neighborhoodRef}
+                      // placeholder="Bairro"
+                    />
+                  </div>
+                  <div style={{ marginTop: "20px" }}>
+                    <label htmlFor="city">Cidade</label>
+                    <input
+                      type="text"
+                      id="city"
+                      ref={this.cityRef}
+                      // placeholder="Cidade"
+                    />
+                  </div>
+                  <div style={{ marginTop: "20px" }}>
+                    <label htmlFor="federalUnit">Estado</label>
+                    <input
+                      type="text"
+                      id="federalUnit"
+                      ref={this.federalUnitRef}
+                      // placeholder="Estado"
+                    />
+                  </div>
                 </div>
               </div>
+              {/* Detalhe Boleto */}
+              <br />
+              <h2>Valor:</h2>
+              <button
+                style={{
+                  width: "100%",
+                  height: "74px",
+                  borderRadius: "5px",
+                  backgroundColor: " #4AEE78",
+                }}
+                type="submit"
+              >
+                <p className="title-h1" style={{ textAlign: "center" }}>
+                  {/* Realizar pagamento*/}
+                  {this.buttonPayment(this.state.paymentType)}
+                </p>
+              </button>
             </div>
-            ){/* Detalhe Boleto */}
-            <br />
-            <button
-              style={{
-                width: "100%",
-                height: "74px",
-                borderRadius: "5px",
-                backgroundColor: " #4AEE78",
-              }}
-              type="submit"
-            >
-              <p className="title-h1" style={{ textAlign: "center" }}>
-                {/* Realizar pagamento*/}
-                {this.buttonPayment(this.state.paymentType)}
-              </p>
-            </button>
             <br />
           </form>
         </div>
@@ -792,4 +799,4 @@ class meuConsorcio extends React.Component {
   }
 }
 
-export default meuConsorcio;
+export default withRouter(meuConsorcio);
