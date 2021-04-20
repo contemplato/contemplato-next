@@ -364,10 +364,10 @@ button:hover {
   outline: none;
 }
 
-.about-profile { 
-  transform: scale(0.8); 
-  cursor: pointer; 
-  min-width:calc(100%/3);
+.about-profile {
+  transform: scale(0.8);
+  cursor: pointer;
+  min-width: calc(100% / 3);
 }
 .about-profile:hover {
   transform: scale(1);
@@ -423,6 +423,80 @@ button:hover {
   background-color: var(--blue);
   font-weight: bold;
   box-sizing: border-box;
+}
+
+.aMenu {
+  display: block;
+  width: 160px;
+  line-height: 20px;
+  margin: 5px;
+  color: #fff;
+  border-radius: 5px;
+  font-family: Roboto, sans-serif;
+  text-decoration: none;
+  text-align: left;
+  font-weight: bold;
+}
+
+.title-h1 {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 30px;
+  text-align: left;
+  color: #000000;
+}
+
+.menu-icon {
+  color: #434a53;
+}
+
+.box-div {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(141, 141, 141, 0.5);
+  box-sizing: border-box;
+  border-radius: 5px;
+  padding: 12% 15% 12% 15%;
+}
+
+.li-box {
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 25px;
+  text-align: left;
+  color: #000000;
+}
+
+.formField-container {
+  margin-bottom: 0.5rem;
+}
+
+.formField-container p,
+.formField-container label {
+  font-weight: 300;
+  margin-bottom: -1rem;
+}
+
+.formField-container input,
+.formField-container textarea,
+.formField-container select {
+  border: 1px solid rgba(141, 141, 141, 0.5);
+  border-radius: 5px;
+  background-color: #ffff;
+  width: 100%;
+  outline: none;
+  padding: 10px 5px;
+  resize: none;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+  margin: auto;
+  padding-bottom: 0px;
 }
 
 @media screen and (max-width: 800px) {
@@ -486,7 +560,7 @@ ul {
 }
 
 .menu-menu {
-  background: #fff;
+  background: #345d9d;
   border: 1px solid #ccc;
   border-radius: 0.3em;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
@@ -501,10 +575,10 @@ li {
 
 /*  */
 @media screen and (max-width: 600px) {
-  .about-profile { 
-    min-width:100%;
+  .about-profile {
+    min-width: 100%;
   }
-  
+
   body {
     font-size: 94%;
   }
