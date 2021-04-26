@@ -12,6 +12,11 @@ import maskPhone from "../components/common/utils/masks/phone";
 import EquipeCard from "../components/common/Avalie/EquipeCard";
 import WikiList from "../components/common/data/WikiList";
 import Wiki from "../components/common/Home/WikiCard";
+
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+
 // images
 // import headerBottom from "../images/header-bottom.png"
 // import icoAnexo from "../images/ico-anexo.png"
@@ -91,19 +96,19 @@ class Avalie extends React.Component {
         },
       }
     );
-
+    console.log(data);
     if (!data.status) alert(data.message);
     else {
       let file = this.state.image;
       let upload = [];
 
-      if (file[0]) {
+      if (file !== null) {
         for (let _ of file) {
           const type = _.type.split("/")[1];
           const rename = Math.random().toString(36).substring(5);
           let task = await firebase
             .storage()
-            .ref(`Documentos/CRM/Avaliacao/${data.key}/${rename}.${type}`)
+            .ref(`Documentos/CRM/Avaliacao/${data.result.id}/${rename}.${type}`)
             .put(_, { contentType: _.type });
           upload.push(task);
         }
@@ -146,6 +151,7 @@ class Avalie extends React.Component {
             <div className="1s 5p">
               <a href="/">
                 <img
+                  className="ocult"
                   src="/images/logo-contemplato.png"
                   alt="image1"
                   width="135"
@@ -177,52 +183,71 @@ class Avalie extends React.Component {
               </a>
             </div>
             {/* menu Mobile */}
-            <div className="none show">
-              <button
-                onClick={this.showMenu}
-                className="10r"
+            <nav
+              style={{
+                backgroundColor: "#345d9d",
+                width: "100%",
+                padding: "10px",
+              }}
+              className="20r none show"
+            >
+              <div
                 style={{
-                  backgroundColor: "Transparent",
-                  backgroundRepeat: "no-repeat",
-                  border: "none",
-                  cursor: "pointer",
-                  overflow: "hidden",
+                  display: "flex",
+                  justifyContent: "space-between",
                 }}
               >
-                {" "}
-                <img
-                  src="https://image.flaticon.com/icons/png/512/59/59165.png"
-                  alt="menu"
-                  style={{ width: "25px" }}
-                />{" "}
-              </button>
-
-              {this.state.showMenu ? (
-                <div
-                  className="menu"
-                  ref={(element) => {
-                    this.dropdownMenu = element;
-                  }}
-                >
-                  <ul class="menu-menu">
-                    <li>
-                      <a
-                        href="https://contemplato.wikidot.com/"
-                        target="_blank"
-                      >
-                        Wiki
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://www.contemplay.com.br/" target="_blank">
-                        Portal do corretor
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              ) : null}
-            </div>
-
+                <a href="/">
+                  <img
+                    src="/images/logo-contemplato.png"
+                    alt="image1"
+                    width="180"
+                    border="0"
+                  />
+                </a>
+                <IconButton size="small" onClick={this.showMenu}>
+                  {" "}
+                  {this.state.showMenu ? (
+                    <CloseIcon
+                      className="blanc menu-icon "
+                      fontSize="large"
+                      style={{ marginRight: "0px", positon: "absolute" }}
+                    />
+                  ) : (
+                    <FormatListBulletedIcon
+                      className="blanc menu-icon 10r"
+                      fontSize="large"
+                    />
+                  )}{" "}
+                </IconButton>
+              </div>
+              <div
+                style={{ marginTop: "20px" }}
+                className={this.state.showMenu ? "" : "ocult"}
+              >
+                <ul>
+                  <li>
+                    <a
+                      className="aMenu"
+                      href="https://contemplato.wikidot.com/"
+                      target="_blank"
+                    >
+                      Wiki
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="aMenu"
+                      href="https://www.contemplay.com.br/"
+                      target="_blank"
+                    >
+                      {" "}
+                      Portal do corretor
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
             {/*menu mobile  */}
           </div>
           <div
@@ -804,7 +829,7 @@ class Avalie extends React.Component {
               <b>eficiência e liquidez</b> ao mercado secundário de consórcio,
               com <b>tecnologia de ponta</b>,<b>segurança</b> e{" "}
               <b>agilidade nas transferências.</b> Comercializamos cotas{" "}
-              <b>contempladas, canceladas e em andamento</b> - de
+              <b>contempladas, canceladas e em andamento</b> - de{" "}
               <b>todas as administradoras</b> de consórcio do Brasil.
             </p>
           </div>

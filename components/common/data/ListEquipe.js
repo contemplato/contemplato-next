@@ -12,33 +12,22 @@ const equipe = [
   {
     img: `/images/fernando.jpg`,
     title: "Fernando Gobbo",
-    description: "Engenheiro da Computação - UFSCar BTG Pactual, LDC, FG Agro",
+    description: "CEO",
   },
   {
     img: `/images/debora.jpg`,
     title: "Debora Martins",
-    description: "Analista comercial - Quinto andar, Amaro, Saraiva.",
+    description: "Analista comercial",
   },
   {
     img: `/images/profile_rodrigo.png`,
     title: "Rodrigo Buttura",
-    description:
-      "IT - Devlp. na PagSeguro PagBank, DispareMe, Yamaha Músical do Brasil.",
-  },
-  {
-    img: `/images/rafael.jpg`,
-    title: "Rafael Macedo",
-    description: "Membro do setor comercial | NEXOS",
-  },
-  {
-    img: `/images/vinicius.jpg`,
-    title: "Vinícius Zonta",
-    description: "Engenheiro Físico",
+    description:"CTO",
   },
   {
     img: `/images/Gabriel.jpg`,
     title: "Gabriel Lara",
-    description: "Marketing",
+    description: "Developer",
   },
   {
     img: `/images/Khaled.jpg`,
