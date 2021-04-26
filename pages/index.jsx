@@ -211,12 +211,17 @@ class Avalie extends React.Component {
                     <CloseIcon
                       className="blanc menu-icon "
                       fontSize="large"
-                      style={{ marginRight: "0px", positon: "absolute" }}
+                      style={{
+                        color: "white",
+                        marginRight: "0px",
+                        positon: "absolute",
+                      }}
                     />
                   ) : (
                     <FormatListBulletedIcon
                       className="blanc menu-icon 10r"
                       fontSize="large"
+                      style={{ color: "white" }}
                     />
                   )}{" "}
                 </IconButton>

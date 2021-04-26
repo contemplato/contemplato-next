@@ -1,8 +1,14 @@
-import React from "react"
+import React from "react";
 
 function Footer() {
   return (
-    <div className="Blue" style={{ width: "100%", float: "left" }}>
+    <div
+      className="Blue"
+      style={{
+        width: "100%",
+        float: "left",
+      }}
+    >
       <div className="1280y 50p row wrap">
         <div className="fo16 10p col mobilecenter">
           <img
@@ -77,6 +83,6 @@ function Footer() {
         © Contemplato 2021 - Todos os direitos reservados
       </div>
     </div>
-  )
+  );
 }
-export default Footer
+export default Footer;
