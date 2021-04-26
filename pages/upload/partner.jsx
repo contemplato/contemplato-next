@@ -30,7 +30,7 @@ class others extends Component {
     let input = this.state.input;
     input[event.target.name] = event.target.value;
     this.setState({ input });
-    console.log(input);
+    //console.log(input);
   };
 
   handleChange = (event) => {
@@ -38,56 +38,61 @@ class others extends Component {
       this.setState({ anexo: true });
       this.state.image = event.target.files;
     }
-    console.log(this.state.image.length);
+    //console.log(this.state.image.length);
   };
 
   handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { data } = await axios.post(
-      "http://core-content-cc-co.umbler.net/p/post/contemplato/upload_arch/default",
-      {
-        key: this.state.input.key || "",
-      },
-      {
-        headers: {
-          Authorization: "APP-NAME",
+    let file = this.state.image;
+
+    if(file!==null){
+      const { data } = await axios.post(
+        "http://localhost:3005/p/post/contemplato/upload_arch/default",
+        {
+          key: this.state.input.key || "",
         },
-      }
-    );
-    console.log(data);
-    if (!data.status) alert(data.message);
-    else {
-      let file = this.state.image;
-      let upload = [];
-
-      if (file !== null) {
-        for (let _ of file) {
-          const chave = this.state.input.key;
-          const rename = chave + "_" + Date.now();
-          const type = _.type.split("/")[1];
-          let d = new Date();
-          let mes = d.toLocaleString("pt-br", { month: "long" });
-          let ano = d.getFullYear();
-
-          let task = await firebase
-            .storage()
-            .ref(`/Documentos/Outros/Upload/${mes}_${ano}/${rename}.${type}`)
-            .put(_, { contentType: _.type });
-          upload.push(task);
+        {
+          headers: {
+            Authorization: "APP-NAME",
+          },
         }
+      );
+      //console.log(data);
+      if (!data.status) alert("Verifique sua chave de envio.");
+      else {
+        let upload = [];
+        if (file !== null) {
+          for (let _ of file) {
+            const chave = this.state.input.key;
+            const rename = chave + "_" + Date.now();
+            const type = _.type.split("/")[1];
+            let d = new Date();
+            let mes = d.toLocaleString("pt-br", { month: "long" });
+            let ano = d.getFullYear();
 
-        try {
-          Promise.all([...upload]);
+            let task = await firebase
+              .storage()
+              .ref(`/Documentos/Outros/Upload/${mes}_${ano}/${rename}.${type}`)
+              .put(_, { contentType: _.type });
+            upload.push(task);
+          }
+
+          try {
+            Promise.all([...upload]);
+            alert("Arquivo enviado com sucesso");
+            document.location.reload(true);
+          } catch (error) {
+            alert(error);
+          }
+        } else {
           alert("Arquivo enviado com sucesso");
-          document.location.reload(true);
-        } catch (error) {
-          alert(error);
         }
-      } else {
-        alert("Arquivo enviado com sucesso");
       }
+    } else {
+      alert("Não há arquivo anexado.");
     }
+
   };
 
   render() {
@@ -201,12 +206,8 @@ class others extends Component {
           className="960y form-container mobilecenter"
           style={{ marginTop: "50px" }}
         >
-          <h1 className="title-h1 mobilecenter">Envio de Documentos</h1>
+          <h1 className="title-h1 mobilecenter cen">Envio de Documentos</h1>
           <div className="formField-container" style={{ marginTop: "30px" }}>
-            <label htmlFor="key" className="fo12 black">
-              {" "}
-              Chave{" "}
-            </label>
             <input
               id="key"
               type="text"
@@ -251,7 +252,7 @@ class others extends Component {
           <button
             style={{
               width: "100%",
-              height: "74px",
+              border:0,
               borderRadius: "5px",
               backgroundColor: "#345d9d",
               marginBottom: "18%",
