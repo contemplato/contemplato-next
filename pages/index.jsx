@@ -96,7 +96,7 @@ class Avalie extends React.Component {
         },
       }
     );
-
+    console.log(data);
     if (!data.status) alert(data.message);
     else {
       let file = this.state.image;
@@ -108,7 +108,7 @@ class Avalie extends React.Component {
           const rename = Math.random().toString(36).substring(5);
           let task = await firebase
             .storage()
-            .ref(`Documentos/CRM/Avaliacao/${data.key}/${rename}.${type}`)
+            .ref(`Documentos/CRM/Avaliacao/${data.result.id}/${rename}.${type}`)
             .put(_, { contentType: _.type });
           upload.push(task);
         }
@@ -844,7 +844,7 @@ class Avalie extends React.Component {
               <br />
               <br />
               <img
-                src="/images/quem-somos-2.png"
+                src="/images/quem-somos-2.jpeg"
                 alt="image14"
                 width="100%"
                 style={{ maxWidth: "400px" }}
