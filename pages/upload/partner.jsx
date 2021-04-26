@@ -63,23 +63,24 @@ class others extends Component {
 
       if (file !== null) {
         for (let _ of file) {
-            const chave = this.state.input.key;
-            const rename = chave + "_" + Date.now();
-            const type = _.type.split("/")[1];
-            let d = new Date();
-            let mes = d.toLocaleString('pt-br', { month: 'long' });;
-            let ano = d.getFullYear();
-  
-            let task = await firebase
-              .storage()
-              .ref(`/Documentos/Outros/Upload/${mes}_${ano}/${rename}.${type}`)
-              .put(_, { contentType: _.type });
-            upload.push(task);
+          const chave = this.state.input.key;
+          const rename = chave + "_" + Date.now();
+          const type = _.type.split("/")[1];
+          let d = new Date();
+          let mes = d.toLocaleString("pt-br", { month: "long" });
+          let ano = d.getFullYear();
+
+          let task = await firebase
+            .storage()
+            .ref(`/Documentos/Outros/Upload/${mes}_${ano}/${rename}.${type}`)
+            .put(_, { contentType: _.type });
+          upload.push(task);
         }
 
         try {
           Promise.all([...upload]);
           alert("Arquivo enviado com sucesso");
+          document.location.reload(true);
         } catch (error) {
           alert(error);
         }

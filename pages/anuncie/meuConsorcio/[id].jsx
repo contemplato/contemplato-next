@@ -2,6 +2,7 @@ import React, { createRef } from "react";
 import axios from "axios";
 import { withRouter, useRouter } from "next/router";
 
+import Footer from "../../../components/common/footer/Footer";
 import CreditCardIcon from "@material-ui/icons/CreditCard";
 import DescriptionIcon from "@material-ui/icons/Description";
 import Button from "@material-ui/core/Button";
@@ -360,50 +361,106 @@ class meuConsorcio extends React.Component {
 
     return (
       <>
-        <script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>
-        <div className="content 960y 10p wrap col">
-          <h1 className="title-h1" style={{ marginBottom: "20px" }}>
-            {" "}
-            Detalhes da cota
-          </h1>
-          <div
-            className="box-div cen"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <ul>
-              <li className="li-box">Credit</li>
-              <li className="li-box">Debit </li>
-              <li className="li-box">Paid </li>
-              <li className="li-box">Portion </li>
-              <li className="li-box">Pricing </li>
-              <li className="li-box">
-                totalDebit {this.state.extract.totalDebit}
-              </li>
-            </ul>
+        <script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js" />
+        <div
+          className="ico cover"
+          style={{
+            // backgroundImage: `url(/images/header-banner-1.png)`,
+            // backgroundPosition: "top center",
+            backgroundColor: "#345d9d",
+          }}
+        >
+          <div className="row center 960y 10p wrap">
+            <div className="1s 5p">
+              <a href="/">
+                <img
+                  src="/images/logo-contemplato.png"
+                  alt="image1"
+                  width="135"
+                  border="0"
+                />
+              </a>
+            </div>
+            <div className="2s 5p row">
+              <a
+                href="https://contemplato.wikidot.com/"
+                target="_blank"
+                className="blanc 5p"
+                style={{ marginRight: "30px" }}
+              >
+                Wiki
+              </a>
+              <a
+                href="https://www.contemplay.com.br/"
+                target="_blank"
+                className="blanc 5p"
+                style={{ marginRight: "30px" }}
+              >
+                Portal do corretor
+              </a>
+              <a href="/" className="blanc 5p" style={{ marginRight: "30px" }}>
+                Avalie
+              </a>
+            </div>
+          </div>
 
-            <ul>
-              <li className="li-box">
-                {this.state.extract.credit} XXXXXXXXXXXX
-              </li>
-              <li className="li-box">
-                {this.state.extract.debit} XXXXXXXXXXXX
-              </li>
-              <li className="li-box">{this.state.extract.paid} XXXXXXXXXXXX</li>
-              <li className="li-box">
-                {this.state.extract.portion} XXXXXXXXXXXX
-              </li>
-              <li className="li-box">
-                {this.state.extract.pricing} XXXXXXXXXXXX
-              </li>
-              <li className="li-box">
-                {this.state.extract.totalDebit} XXXXXXXXXXXX
-              </li>
-            </ul>
+          <div className="content 960y 10p wrap col">
+            <h1 className="title-header blanc" style={{ marginBottom: "20px" }}>
+              {" "}
+              Detalhes da cota
+            </h1>
+            <div
+              className="Blanc box-div cen"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <ul>
+                <li className="li-box">Credit</li>
+                <li className="li-box">Debit </li>
+                <li className="li-box">Paid </li>
+                <li className="li-box">Portion </li>
+                <li className="li-box">Pricing </li>
+                <li className="li-box">
+                  totalDebit {this.state.extract.totalDebit}
+                </li>
+              </ul>
+
+              <ul>
+                <li className="li-box">
+                  {this.state.extract.credit} XXXXXXXXXXXX
+                </li>
+                <li className="li-box">
+                  {this.state.extract.debit} XXXXXXXXXXXX
+                </li>
+                <li className="li-box">
+                  {this.state.extract.paid} XXXXXXXXXXXX
+                </li>
+                <li className="li-box">
+                  {this.state.extract.portion} XXXXXXXXXXXX
+                </li>
+                <li className="li-box">
+                  {this.state.extract.pricing} XXXXXXXXXXXX
+                </li>
+                <li className="li-box">
+                  {this.state.extract.totalDebit} XXXXXXXXXXXX
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
+
+        {/* <div
+          className="ico cover"
+          style={{
+            backgroundImage: `url(/images/header-bottom.png)`,
+            backgroundPosition: "bottom center",
+            height: "80px",
+          }}
+        >
+          {" "}
+        </div> */}
 
         <div className="content 960y 10p wrap col">
           <form
@@ -781,11 +838,14 @@ class meuConsorcio extends React.Component {
                   width: "100%",
                   height: "74px",
                   borderRadius: "5px",
-                  backgroundColor: " #4AEE78",
+                  backgroundColor: "#345d9d",
                 }}
                 type="submit"
               >
-                <p className="title-h1" style={{ textAlign: "center" }}>
+                <p
+                  className="title-header blanc"
+                  style={{ textAlign: "center" }}
+                >
                   {/* Realizar pagamento*/}
                   {this.buttonPayment(this.state.paymentType)}
                 </p>
@@ -794,6 +854,8 @@ class meuConsorcio extends React.Component {
             <br />
           </form>
         </div>
+
+        <Footer />
       </>
     );
   }

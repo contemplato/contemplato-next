@@ -844,7 +844,7 @@ class Avalie extends React.Component {
               <br />
               <br />
               <img
-                src="/images/quem-somos-2.png"
+                src="/images/quem-somos-2.jpeg"
                 alt="image14"
                 width="100%"
                 style={{ maxWidth: "400px" }}
