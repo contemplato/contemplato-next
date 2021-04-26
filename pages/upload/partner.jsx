@@ -48,7 +48,7 @@ class others extends Component {
 
     if(file!==null){
       const { data } = await axios.post(
-        "http://localhost:3005/p/post/contemplato/upload_arch/default",
+        "http://core-content-cc-co.umbler.net/p/post/contemplato/upload_arch/default",
         {
           key: this.state.input.key || "",
         },
