@@ -46,7 +46,7 @@ class others extends Component {
 
     let file = this.state.image;
 
-    if(file!==null){
+    if (file !== null) {
       const { data } = await axios.post(
         "http://core-content-cc-co.umbler.net/p/post/contemplato/upload_arch/default",
         {
@@ -66,7 +66,7 @@ class others extends Component {
           for (let _ of file) {
             const chave = this.state.input.key;
             const rename = chave + "_" + Date.now();
-            const type = _.type.split("/")[1];
+            const type = _.name.split(".")[1];
             let d = new Date();
             let mes = d.toLocaleString("pt-br", { month: "long" });
             let ano = d.getFullYear();
@@ -92,7 +92,6 @@ class others extends Component {
     } else {
       alert("Não há arquivo anexado.");
     }
-
   };
 
   render() {
@@ -252,7 +251,7 @@ class others extends Component {
           <button
             style={{
               width: "100%",
-              border:0,
+              border: 0,
               borderRadius: "5px",
               backgroundColor: "#345d9d",
               marginBottom: "18%",
