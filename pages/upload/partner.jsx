@@ -254,7 +254,7 @@ class others extends Component {
               border: 0,
               borderRadius: "5px",
               backgroundColor: "#345d9d",
-              marginBottom: "18%",
+              marginBottom: "252px",
             }}
             onClick={this.handleSubmit}
           >
