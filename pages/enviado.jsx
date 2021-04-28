@@ -527,7 +527,7 @@ class EnvioForm extends React.Component {
               <br />
               <br />
               <img
-                src="/images/quem-somos-2.png"
+                src="/images/quem-somos-2.jpeg"
                 alt="quemSomos2"
                 width="100%"
                 style={{ maxWidth: "400px" }}
@@ -565,7 +565,7 @@ class EnvioForm extends React.Component {
           <div className="row wrap">
             <div className="2s 5p row center" style={{ maxWidth: "230px" }}>
               <img
-                src="https://www.pinheironeto.com.br/style%20library/_imgs/logo.png"
+                src="/images/logo-PinheiroNeto.png"
                 alt="PinheiroNeto Advogados"
                 width="100%"
                 style={{
@@ -580,7 +580,7 @@ class EnvioForm extends React.Component {
               style={{ maxWidth: "230px", marginLeft: "10px" }}
             >
               <img
-                src="https://www.conteacapital.com.br/wp-content/uploads/2020/01/logo_contea2_hor.png"
+                src="/images/logo-contea.png"
                 alt="Contea Capital"
                 width="100%"
                 style={{ maxWidth: "230px" }}
