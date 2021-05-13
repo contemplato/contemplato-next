@@ -62,7 +62,7 @@ function getEmbed() {
       </p>
       <br />
       <input
-        style=display: flex; width: 80%; background-color: white; border: 10px ;border-radius: 10px; margin-left: 10%; margin-right: 10%; padding: 5px"
+        style="display: flex; width: 80%; background-color: white; border: 10px ;border-radius: 10px; margin-left: 10%; margin-right: 10%; padding: 5px"
         type="text"
         id="nameCon"
         placeholder="Nome"
