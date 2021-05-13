@@ -24,6 +24,7 @@ const Meta = ({ title, keywords, description }) => {
       <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-storage.js"></script>
 
       <title>Contemplato</title>
+      <script src="https://contemplato.com/embed/embedtest.js"></script>
       <Scripts />
     </Head>
   );
