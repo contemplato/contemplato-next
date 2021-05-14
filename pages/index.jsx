@@ -587,7 +587,7 @@ class Avalie extends React.Component {
               lineHeight: "43px",
             }}
           >
-            Saiba por quê fazer parte da{" "}
+            Saiba por que fazer parte da{" "}
             <span style={{ color: "#ff9632" }}>
               maior <br />
               rede de consórcio digital do Brasil.
