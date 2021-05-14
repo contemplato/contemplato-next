@@ -40,6 +40,21 @@ function UploadCon() {
   });
 }
 function getEmbed() {
+  //themes
+  if (contemplatoConfig.theme == "default" || !contemplatoConfig.theme) {
+    contemplatoConfig.text = "color: #345d9d;";
+    contemplatoConfig.button = "background-color: #ff9632;";
+  } else if (contemplatoConfig.theme == "red") {
+    contemplatoConfig.text = "color: #FF0000;";
+    contemplatoConfig.button = "background-color: #FF0000;";
+  } else if (contemplatoConfig.theme == "yellow") {
+    contemplatoConfig.text = "color: #FFD700;";
+    contemplatoConfig.button = "background-color: #FFD700;";
+  } else if (contemplatoConfig.theme == "purple") {
+    contemplatoConfig.text = "color: #7B68EE;";
+    contemplatoConfig.button = "background-color: #7B68EE;";
+  }
+
   let render = document.getElementById(contemplatoConfig.idAppend);
   render.innerHTML = `
    <div
@@ -50,8 +65,8 @@ function getEmbed() {
     >
       <p
         style="
+              ${contemplatoConfig.text}
               font-size: 15px;
-              color: #345d9d;
               line-height: 22x;
               padding: 10px;
               margin-top: 30px
@@ -97,7 +112,7 @@ function getEmbed() {
       </label>
       <br />
       <span style="fontsize: 11px; margintop: 0px; margin-left: 10%; margin-right: 10%"> Anexar arquivo</span>
-      <button style="background-color: #ff9632;
+      <button style="${contemplatoConfig.button};
                         font-size: 14px;
                         color: #ffffff;
                         border-radius: 10px;
@@ -128,8 +143,9 @@ window.addEventListener("load", () => {
 
 /* 
 <script> var contemplatoConfig = {
-        auth: "EXCREDT21", <key de authenticao>
-        idAppend: "formCon",  <id da DIV> 
+        auth: "<key de authenticao>", 
+        idAppend: "<id da DIV> ",  
+        theme: "<cor-theme>",  default, red, yellow, purple
         </script> 
-        <script src="./feature.js"></script>
+        <script src="https://contemplato.com/embed/embedtest.js"></script>
         */
