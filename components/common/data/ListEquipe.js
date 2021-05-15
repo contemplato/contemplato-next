@@ -15,14 +15,14 @@ const equipe = [
     description: "CEO",
   },
   {
-    img: `/images/debora.jpg`,
-    title: "Debora Martins",
-    description: "Analista comercial",
-  },
-  {
     img: `/images/profile_rodrigo.png`,
     title: "Rodrigo Buttura",
     description:"CTO",
+  },
+  {
+    img: `/images/debora.jpg`,
+    title: "Debora Martins",
+    description: "Analista comercial",
   },
   {
     img: `/images/Gabriel.jpg`,

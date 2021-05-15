@@ -23,7 +23,7 @@ function UploadCon() {
     formDataCon.append(form.key, form.value);
   });
 
-  const url = "https://webapi-contemplato-co.umbler.net/";
+  const url = "https://webapi-contemplato-co.umbler.net/test";
   let config = {
     method: "POST",
     headers: {
