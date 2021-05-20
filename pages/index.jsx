@@ -168,7 +168,7 @@ class Avalie extends React.Component {
                 Comprar
               </a> */}
               <a
-                href="https://contemplato.wikidot.com/"
+                href="/wiki/Inicio-wiki"
                 className="blanc 5p"
                 style={{ marginRight: "30px" }}
               >
@@ -229,7 +229,7 @@ class Avalie extends React.Component {
                   <li>
                     <a
                       className="aMenu"
-                      href="https://contemplato.wikidot.com/"
+                      href="/wiki/Inicio-wiki"
                       target="_blank"
                     >
                       Wiki
