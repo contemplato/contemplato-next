@@ -179,6 +179,11 @@ a {
   max-width: 680px;
 }
 
+[class*="360y"] {
+  width: 100%;
+  max-width: 360px;
+}
+
 [class*="1024y"] {
   width: 100%;
   max-width: 1024px;

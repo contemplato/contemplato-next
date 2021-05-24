@@ -8,6 +8,7 @@ import ListEquipe from "../components/common/data/ListEquipe";
 
 import Footer from "../components/common/footer/Footer";
 import maskPhone from "../components/common/utils/masks/phone";
+import Alert from "../components/common/alert/index";
 
 import EquipeCard from "../components/common/Avalie/EquipeCard";
 import WikiList from "../components/common/data/WikiList";
@@ -97,7 +98,7 @@ class Avalie extends React.Component {
       }
     );
     console.log(data);
-    if (!data.status) alert(data.message);
+    if (!data.status) Alert(data);
     else {
       let file = this.state.image;
       let upload = [];
@@ -136,6 +137,8 @@ class Avalie extends React.Component {
     let screen = document.querySelector(".slide").offsetWidth;
     document.querySelector(".slide").scrollLeft += screen;
   };
+
+  // Alert({message: "asdas", status: true})
 
   render() {
     return (
@@ -186,8 +189,12 @@ class Avalie extends React.Component {
             <nav
               style={{
                 backgroundColor: "#345d9d",
-                width: "100%",
+                width: "95%",
                 padding: "10px",
+                position: "fixed",
+                marginTop: "10px",
+                top: "0",
+                zIndex: "99",
               }}
               className="20r none show"
             >
@@ -211,12 +218,19 @@ class Avalie extends React.Component {
                     <CloseIcon
                       className="blanc menu-icon "
                       fontSize="large"
-                      style={{ marginRight: "0px", positon: "absolute" }}
+                      style={{
+                        color: "white",
+                        marginRight: "0px",
+                        positon: "absolute",
+                      }}
                     />
                   ) : (
                     <FormatListBulletedIcon
                       className="blanc menu-icon 10r"
                       fontSize="large"
+                      style={{
+                        color: "white",
+                      }}
                     />
                   )}{" "}
                 </IconButton>
@@ -300,6 +314,7 @@ class Avalie extends React.Component {
                 </p>
                 <br />
 
+                <div id="error-emited"></div>
                 {/*  */}
 
                 {/* input nome */}
