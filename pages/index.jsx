@@ -189,7 +189,7 @@ class Avalie extends React.Component {
             <nav
               style={{
                 backgroundColor: "#345d9d",
-                width: "95%",
+                width: "92%",
                 padding: "10px",
                 position: "fixed",
                 marginTop: "10px",
@@ -1023,6 +1023,22 @@ class Avalie extends React.Component {
             </div>
           </div>
         </div> */}
+
+        {/* <img
+          src="/images/whatsapp-logo.png"
+          alt="logo-whatsApp"
+          width="100px"
+          style={{ float: "right", position: "fixed", zIndex: "99" }}
+        /> */}
+
+        <a
+          href="https://api.whatsapp.com/send?phone=5511932967865&text=Ol%C3%A1"
+          target="_blank"
+        >
+          <div className="button-whatsapp">
+            <img src="/images/whatsapp-logo.png" alt="Whatsapp" width="35px" />
+          </div>
+        </a>
 
         <Footer />
       </>

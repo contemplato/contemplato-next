@@ -311,6 +311,25 @@ button:hover {
   filter: brightness(100);
 }
 
+.button-whatsapp {
+  position: fixed;
+  right: 40px;
+  bottom: 10px;
+  background: #0d7b00;
+  z-index: 999;
+  padding: 15px;
+  border-radius: 50px;
+  transition: 0.5s;
+}
+
+.button-whatsapp:hover {
+  right: 0;
+  bottom: 0;
+  border-radius: 140px 0px 0px 0px;
+  padding: 70px;
+  transition: 0.5s;
+}
+
 .wiki {
   min-width: calc(100% / 6);
 }
