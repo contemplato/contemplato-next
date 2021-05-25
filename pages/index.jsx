@@ -1032,7 +1032,7 @@ class Avalie extends React.Component {
         /> */}
 
         <a
-          href="https://api.whatsapp.com/send?phone=5511932967865&text=Ol%C3%A1"
+          href="https://api.whatsapp.com/send?phone=5511932967865&text=Ol%C3%A1!%20Tenho%20interesse%20em%20vender%20minha%20cota"
           target="_blank"
         >
           <div className="button-whatsapp">

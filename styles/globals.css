@@ -313,7 +313,7 @@ button:hover {
 
 .button-whatsapp {
   position: fixed;
-  right: 40px;
+  right: 25px;
   bottom: 10px;
   background: #0d7b00;
   z-index: 999;
