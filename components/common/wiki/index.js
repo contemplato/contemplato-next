@@ -11,7 +11,8 @@ const wiki = {
 <p><a href="https://www.bcb.gov.br/">Banco central</a><br>
 <a href="https://www.contemplato.com">Contemplato</a><br>
 <a href="https://www.desconsorcio.com.br/quero-vender">Precisando vender sua cota?</a></p>
-</div>`,
+</div>
+`,
   },
   contemplacao: {
     title: "<h1>Contemplação</h1>",

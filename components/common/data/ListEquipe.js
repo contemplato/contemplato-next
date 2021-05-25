@@ -17,18 +17,18 @@ const equipe = [
   {
     img: `/images/profile_rodrigo.png`,
     title: "Rodrigo Buttura",
-    description:"CTO",
+    description: "CTO",
   },
   {
     img: `/images/debora.jpg`,
     title: "Debora Martins",
     description: "Analista comercial",
   },
-  {
-    img: `/images/Gabriel.jpg`,
-    title: "Gabriel Lara",
-    description: "Developer",
-  },
+  // {
+  //   img: `/images/Gabriel.jpg`,
+  //   title: "Gabriel Lara",
+  //   description: "Developer",
+  // },
   {
     img: `/images/Khaled.jpg`,
     title: "Khaled Khalil",
@@ -44,6 +44,6 @@ const equipe = [
     title: "Thiago Kazuya",
     description: "Developer",
   },
-]
+];
 
-export default equipe
+export default equipe;

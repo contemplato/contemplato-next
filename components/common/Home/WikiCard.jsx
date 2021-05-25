@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 function WikiCard(props) {
   return (
@@ -7,7 +7,7 @@ function WikiCard(props) {
       className="f-1 Blanc bt-hover-blue row wiki 40p"
       style={{ cursor: "pointer" }}
       onClick={() => {
-        window.open(`${props.url}`, "_blank")
+        window.open(`${props.url}`, `${props.target}`);
       }}
     >
       <div className="col cen">
@@ -22,7 +22,7 @@ function WikiCard(props) {
         <span className="fo11 5p"> {props.text} </span>
       </div>
     </div>
-  )
+  );
 }
 
-export default WikiCard
+export default WikiCard;

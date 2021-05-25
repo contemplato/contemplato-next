@@ -936,6 +936,7 @@ class Avalie extends React.Component {
               text={item.text}
               image={item.image}
               url={item.url}
+              target={"_blank"}
               idy={index.toString()}
             />
           ))}

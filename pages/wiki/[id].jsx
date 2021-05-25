@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import Footer from "../../components/common/footer/Footer";
 import wiki from "../../components/common/wiki/index";
+import WikiList from "../../components/common/data/WikiList";
+import WikiCard from "../../components/common/Home/WikiCard";
 
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -145,6 +147,26 @@ export default class extends Component {
         >
           <div dangerouslySetInnerHTML={{ __html: wiki[propsId].title }} />
           <div dangerouslySetInnerHTML={{ __html: wiki[propsId].value }} />
+
+          <h1 style={{ color: "#434443", marginTop: "50px" }} align="center">
+            {" "}
+            Wiki Contemplato{" "}
+          </h1>
+          <div
+            id="content-wiki"
+            className=" 1280y row"
+            style={{ flexFlow: "wrap" }}
+          >
+            {WikiList.map((item, index) => (
+              <WikiCard
+                text={item.text}
+                image={item.image}
+                url={item.url}
+                target={"_top"}
+                idy={index.toString()}
+              />
+            ))}
+          </div>
         </div>
 
         <Footer />
