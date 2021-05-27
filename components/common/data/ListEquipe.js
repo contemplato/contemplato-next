@@ -24,20 +24,25 @@ const equipe = [
     title: "Debora Martins",
     description: "Analista comercial",
   },
-  // {
-  //   img: `/images/Gabriel.jpg`,
-  //   title: "Gabriel Lara",
-  //   description: "Developer",
-  // },
   {
     img: `/images/Khaled.jpg`,
     title: "Khaled Khalil",
     description: "Developer",
   },
   {
+    img: `/images/Lara.jpg`,
+    title: "Lara Miranda",
+    description: "Atendimento",
+  },
+  {
     img: `/images/Rebeka.jpg`,
     title: "Rebeka Matias",
     description: "Finance",
+  },
+  {
+    img: `/images/Rodolfo.jpg`,
+    title: "Rodolfo Angelini",
+    description: "Diretor de criação",
   },
   {
     img: `/images/Thiago.jpg`,
