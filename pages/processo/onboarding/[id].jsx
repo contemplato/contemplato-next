@@ -456,11 +456,13 @@ class Form extends Component {
     this.setState({
       alterarCam: true,
     });
+    console.log("true", this.state.alterarCam);
   };
   altCamf = () => {
     this.setState({
       alterarCam: false,
     });
+    console.log("false", this.state.alterarCam);
   };
 
   render() {
@@ -1003,7 +1005,7 @@ class Form extends Component {
                     {/* alterar camera */}
                     {this.state.alterarCam ? (
                       <button
-                        onClick={this.altCamt}
+                        onClick={this.altCamf}
                         className="100w 10p 5r"
                         style={{
                           backgroundColor: "#345d9d",
@@ -1016,7 +1018,7 @@ class Form extends Component {
                       </button>
                     ) : (
                       <button
-                        onClick={this.altCamf}
+                        onClick={this.altCamt}
                         className="100w 10p 5r"
                         style={{
                           backgroundColor: "#345d9d",
