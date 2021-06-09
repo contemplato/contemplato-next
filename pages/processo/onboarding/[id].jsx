@@ -459,7 +459,7 @@ class Form extends Component {
     const videoConstraints = {
       width: 1280,
       height: 720,
-      facingMode: this.state.alterarCam ? "environment" : "user",
+      facingMode: this.state.alterarCam ? "user" : "environment",
     };
 
     return (
@@ -994,7 +994,6 @@ class Form extends Component {
                       <button
                         onClick={() => {
                           this.setState({ alterarCam: false });
-                          console.log("false", this.state.alterarCam);
                         }}
                         className="100w 10p 5r"
                         style={{
@@ -1010,7 +1009,6 @@ class Form extends Component {
                       <button
                         onClick={() => {
                           this.setState({ alterarCam: true });
-                          console.log("true", this.state.alterarCam);
                         }}
                         className="100w 10p 5r"
                         style={{
