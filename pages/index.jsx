@@ -964,13 +964,21 @@ class Avalie extends React.Component {
           <ArrowLeftIcon
             fontSize="large"
             onClick={this.prev}
-            style={{ marginRight: "5px", marginBottom: "15px" }}
+            style={{
+              marginRight: "5px",
+              marginBottom: "15px",
+              cursor: "pointer",
+            }}
           />
 
           <ArrowRightIcon
             fontSize="large"
             onClick={this.next}
-            style={{ marginLeft: "5px", marginBottom: "15px" }}
+            style={{
+              marginLeft: "5px",
+              marginBottom: "15px",
+              cursor: "pointer",
+            }}
           />
           {/* <button
             onClick={this.prev}
