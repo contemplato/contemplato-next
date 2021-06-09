@@ -976,104 +976,107 @@ class Form extends Component {
                       )}
                     </div>
                     {this.state.capture1 == "" ? (
-                      <div className="col center">
+                      <div className="col center sizeCam">
                         <Webcam
                           audio={false}
-                          height={250}
                           ref={this.setRef}
                           screenshotFormat="image/png"
+                          height={250}
                           width={400}
                           videoConstraints={videoConstraints}
+                          className="camMobile"
                         />
                       </div>
                     ) : (
                       <img src={this.state.capture1} alt="foto1" />
                     )}
-                    {/* alterar camera */}
-                    {this.state.alterarCam ? (
-                      <button
-                        onClick={() => {
-                          this.setState({ alterarCam: false });
-                        }}
-                        className="100w 10p 5r"
-                        style={{
-                          backgroundColor: "#345d9d",
-                          fontSize: "14px",
-                          color: "#ffffff",
-                        }}
-                      >
-                        {" "}
-                        Alterar Câmera
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          this.setState({ alterarCam: true });
-                        }}
-                        className="100w 10p 5r"
-                        style={{
-                          backgroundColor: "#345d9d",
-                          fontSize: "14px",
-                          color: "#ffffff",
-                        }}
-                      >
-                        Alterar Câmera
-                      </button>
-                    )}
-                    {/*  */}
-                    {this.state.capture1 ? (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          this.setState({ capture1: "" });
-                        }}
-                        className="100w 10p 5r"
-                        style={{
-                          backgroundColor: "#345d9d",
-                          fontSize: "14px",
-                          color: "#ffffff",
-                          marginTop: "10px",
-                        }}
-                      >
-                        Tirar outra foto
-                      </button>
-                    ) : (
-                      <button
-                        onClick={(e) => {
-                          this.capture1();
-                        }}
-                        className="100w 10p 5r"
-                        style={{
-                          backgroundColor: "#345d9d",
-                          fontSize: "14px",
-                          color: "#ffffff",
-                          marginTop: "10px",
-                        }}
-                      >
-                        Tirar foto
-                      </button>
-                    )}
+                    <div className="camButton">
+                      {/* alterar camera */}
+                      {this.state.alterarCam ? (
+                        <button
+                          onClick={() => {
+                            this.setState({ alterarCam: false });
+                          }}
+                          className="100w 10p 5r"
+                          style={{
+                            backgroundColor: "#345d9d",
+                            fontSize: "14px",
+                            color: "#ffffff",
+                          }}
+                        >
+                          {" "}
+                          Alterar Câmera
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            this.setState({ alterarCam: true });
+                          }}
+                          className="100w 10p 5r"
+                          style={{
+                            backgroundColor: "#345d9d",
+                            fontSize: "14px",
+                            color: "#ffffff",
+                          }}
+                        >
+                          Alterar Câmera
+                        </button>
+                      )}
+                      {/*  */}
+                      {this.state.capture1 ? (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            this.setState({ capture1: "" });
+                          }}
+                          className="100w 10p 5r"
+                          style={{
+                            backgroundColor: "#345d9d",
+                            fontSize: "14px",
+                            color: "#ffffff",
+                            marginTop: "10px",
+                          }}
+                        >
+                          Tirar outra foto
+                        </button>
+                      ) : (
+                        <button
+                          onClick={(e) => {
+                            this.capture1();
+                          }}
+                          className="100w 10p 5r"
+                          style={{
+                            backgroundColor: "#345d9d",
+                            fontSize: "14px",
+                            color: "#ffffff",
+                            marginTop: "10px",
+                          }}
+                        >
+                          Tirar foto
+                        </button>
+                      )}
 
-                    {/* confirmar foto */}
-                    {this.state.capture1 ? (
-                      <button
-                        onClick={(e) => {
-                          this.submitFoto();
-                        }}
-                        className="100w 10p 5r"
-                        style={{
-                          backgroundColor: "#345d9d",
-                          fontSize: "14px",
-                          color: "#ffffff",
-                          marginTop: "10px",
-                        }}
-                      >
-                        Confirmar foto
-                      </button>
-                    ) : (
-                      <p></p>
-                    )}
-                    {/*  */}
+                      {/* confirmar foto */}
+                      {this.state.capture1 ? (
+                        <button
+                          onClick={(e) => {
+                            this.submitFoto();
+                          }}
+                          className="100w 10p 5r"
+                          style={{
+                            backgroundColor: "#345d9d",
+                            fontSize: "14px",
+                            color: "#ffffff",
+                            marginTop: "10px",
+                          }}
+                        >
+                          Confirmar foto
+                        </button>
+                      ) : (
+                        <p></p>
+                      )}
+                      {/*  */}
+                    </div>
                   </div>
                 ) : (
                   <div style={{ marginTop: "30px", textAlign: "center" }}>

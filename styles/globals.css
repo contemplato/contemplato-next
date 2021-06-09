@@ -550,6 +550,19 @@ details[open] {
 }
 
 @media screen and (max-width: 800px) {
+  .sizeCam {
+    margin-bottom: 20px;
+  }
+  .camButton {
+    bottom: 50px;
+  }
+
+  .camMobile {
+    height: 500px;
+    width: 400px;
+    object-fit: fill;
+    position: static;
+  }
   .wiki {
     min-width: calc(100% / 2);
   }
