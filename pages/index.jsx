@@ -17,6 +17,8 @@ import Wiki from "../components/common/Home/WikiCard";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 // images
 // import headerBottom from "../images/header-bottom.png"
@@ -959,16 +961,27 @@ class Avalie extends React.Component {
           ))}
         </div>
         <div className="cen 10p">
-          <button
+          <ArrowLeftIcon
+            fontSize="large"
+            onClick={this.prev}
+            style={{ marginRight: "5px", marginBottom: "15px" }}
+          />
+
+          <ArrowRightIcon
+            fontSize="large"
+            onClick={this.next}
+            style={{ marginLeft: "5px", marginBottom: "15px" }}
+          />
+          {/* <button
             onClick={this.prev}
             className="Blue 5p 5r"
             style={{ marginRight: "5px", marginBottom: "15px" }}
-          ></button>
-          <button
+          ></button> */}
+          {/* <button
             onClick={this.next}
             className="Blue 5p 5r"
             style={{ marginLeft: "5px", marginBottom: "15px" }}
-          ></button>
+          ></button> */}
         </div>
 
         {/* Outros serviços */}
