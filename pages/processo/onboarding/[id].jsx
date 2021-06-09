@@ -1,7 +1,7 @@
 import React, { Component, createRef } from "react";
 import axios from "axios";
 
-import maskPhone from "../../../components/common/utils/masks/phone";
+import maskPhone from "../../../components/common/utils/masks/phoneOn2";
 import maskCpf from "../../../components/common/utils/masks/cpf";
 import maskRg from "../../../components/common/utils/masks/rg";
 import maskData from "../../../components/common/utils/masks/data";
@@ -459,7 +459,7 @@ class Form extends Component {
     const videoConstraints = {
       width: 1280,
       height: 720,
-      ConnectingMode: { exact: "environment" },
+      facingMode: this.state.alterarCam ? "environment" : "user",
     };
 
     return (
