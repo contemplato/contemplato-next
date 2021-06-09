@@ -452,19 +452,6 @@ class Form extends Component {
     this.setState({ capture1: "" });
   };
 
-  altCamt = () => {
-    this.setState({
-      alterarCam: true,
-    });
-    console.log("true", this.state.alterarCam);
-  };
-  altCamf = () => {
-    this.setState({
-      alterarCam: false,
-    });
-    console.log("false", this.state.alterarCam);
-  };
-
   render() {
     if (!this.state.modalSubmit) {
       this.handleReq(this.props.id);
@@ -472,7 +459,7 @@ class Form extends Component {
     const videoConstraints = {
       width: 1280,
       height: 720,
-      ConnectingMode: this.state.alterarCam ? "user" : { exact: "environment" },
+      ConnectingMode: { exact: "environment" },
     };
 
     return (
@@ -1005,7 +992,10 @@ class Form extends Component {
                     {/* alterar camera */}
                     {this.state.alterarCam ? (
                       <button
-                        onClick={this.altCamf}
+                        onClick={() => {
+                          this.setState({ alterarCam: false });
+                          console.log("false", this.state.alterarCam);
+                        }}
                         className="100w 10p 5r"
                         style={{
                           backgroundColor: "#345d9d",
@@ -1018,7 +1008,10 @@ class Form extends Component {
                       </button>
                     ) : (
                       <button
-                        onClick={this.altCamt}
+                        onClick={() => {
+                          this.setState({ alterarCam: true });
+                          console.log("true", this.state.alterarCam);
+                        }}
                         className="100w 10p 5r"
                         style={{
                           backgroundColor: "#345d9d",
