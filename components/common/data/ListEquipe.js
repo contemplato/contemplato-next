@@ -39,11 +39,11 @@ const equipe = [
     title: "Rebeka Matias",
     description: "Finance",
   },
-  {
-    img: `/images/Rodolfo.jpg`,
-    title: "Rodolfo Angelini",
-    description: "Diretor de criação",
-  },
+  // {
+  //   img: `/images/Rodolfo.jpg`,
+  //   title: "Rodolfo Angelini",
+  //   description: "Diretor de criação",
+  // },
   {
     img: `/images/Thiago.jpg`,
     title: "Thiago Kazuya",
