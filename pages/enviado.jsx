@@ -619,15 +619,15 @@ class EnvioForm extends React.Component {
             />
           ))}
         </div>
-        <div class="cen 10p">
+        <div className="cen 10p">
           <button
             onClick={this.prev}
-            class="Blue 5p 5r"
+            className="Blue 5p 5r"
             style={{ marginRight: "5px", marginBottom: "15px" }}
           ></button>
           <button
             onClick={this.next}
-            class="Blue 5p 5r"
+            className="Blue 5p 5r"
             style={{ marginLeft: "5px", marginBottom: "15px" }}
           ></button>
         </div>

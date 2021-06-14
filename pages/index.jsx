@@ -20,6 +20,8 @@ import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
+import * as gtag from "../components/common/lib/gtag";
+
 // images
 // import headerBottom from "../images/header-bottom.png"
 // import icoAnexo from "../images/ico-anexo.png"
@@ -85,6 +87,14 @@ class Avalie extends React.Component {
 
   handleUpload = async (event) => {
     event.preventDefault();
+
+    gtag.event({
+      action: "add_to_cart",
+      category: "ecommerce",
+      label: "Item added",
+      value: "Playing cards",
+    });
+
     const { data } = await axios.post(
       "http://core-content-cc-co.umbler.net/p/post/contemplato/avalie/default",
       {
@@ -142,6 +152,16 @@ class Avalie extends React.Component {
   };
 
   // Alert({message: "asdas", status: true})
+
+  //function event to googleAdSense
+  addToCart = () => {
+    gtag.event({
+      action: "add_to_cart",
+      category: "ecommerce",
+      label: "Item added",
+      value: "Playing cards",
+    });
+  };
 
   render() {
     return (
@@ -333,7 +353,7 @@ class Avalie extends React.Component {
                     placeholder="Nome sobrenome*"
                   />
 
-                  <label htmlfor="display" className="fo12 black">
+                  <label htmlFor="display" className="fo12 black">
                     {" "}
                     Nome sobrenome*{" "}
                   </label>
@@ -354,7 +374,7 @@ class Avalie extends React.Component {
                   />
                   {/* <div>{this.state.errors.email}</div> */}
 
-                  <label htmlfor="email" className="fo12 black">
+                  <label htmlFor="email" className="fo12 black">
                     {" "}
                     E-mail{" "}
                   </label>
@@ -376,7 +396,7 @@ class Avalie extends React.Component {
                   />
                   {/* <div>{this.state.errors.telefone}</div> */}
 
-                  <label htmlfor="phone" className="fo12 black">
+                  <label htmlFor="phone" className="fo12 black">
                     {" "}
                     Telefone{" "}
                   </label>
@@ -1057,6 +1077,7 @@ class Avalie extends React.Component {
         <a
           href="https://api.whatsapp.com/send?phone=5511932967865&text=Ol%C3%A1!%20Tenho%20interesse%20em%20vender%20minha%20cota"
           target="_blank"
+          onClick={this.addToCart}
         >
           <div className="button-whatsapp">
             <img src="/images/whatsapp-logo.png" alt="Whatsapp" width="35px" />

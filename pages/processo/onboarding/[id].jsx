@@ -12,6 +12,7 @@ class Form extends Component {
     super(props);
     this.state = {
       modalSubmit: false,
+      verifIdent: false,
       input: {},
       alterarCam: false,
       capture1: "",
@@ -95,7 +96,6 @@ class Form extends Component {
       rg: () => maskRg(event),
       cpf: () => maskCpf(event),
       phone: () => maskPhone(event),
-      birth: () => maskData(event),
     };
     const inputMaskFunction = inputsMasks[event.target.name];
 
@@ -237,9 +237,8 @@ class Form extends Component {
     } else return false;
   };
 
-  handleUpload = async (event) => {
+  handleInfoProfile = async (event) => {
     event.preventDefault();
-
     if (
       this.inputCpfRef.current.value == "" ||
       this.inputCpfRef.current.value == null
@@ -249,6 +248,13 @@ class Form extends Component {
       ).innerHTML = `<div style="background-color: red; border-radius: 5px;
       text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
       Digite o CPF
+      </div>`;
+    } else if (this.validaCpfCnpj(this.inputCpfRef.current.value) == false) {
+      document.getElementById(
+        "error"
+      ).innerHTML = `<div style="background-color: red; border-radius: 5px;
+      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
+      Digite um CPF/CNPJ válido
       </div>`;
     }
     // else if (
@@ -332,13 +338,6 @@ class Form extends Component {
       text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
       Digite a Estado
       </div>`;
-    } else if (this.validaCpfCnpj(this.inputCpfRef.current.value) == false) {
-      document.getElementById(
-        "error"
-      ).innerHTML = `<div style="background-color: red; border-radius: 5px;
-      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
-      Digite um CPF/CNPJ válido
-      </div>`;
     } else if (this.validPhone(this.inputPhoneRef.current.value) == false) {
       document.getElementById(
         "error"
@@ -377,10 +376,67 @@ class Form extends Component {
     //   Digite o número da cota
     //   </div>`;
     // }
-    else if (
-      this.state.documents.length == [] ||
-      this.state.documents.length < 2
-    ) {
+    else {
+      const { data } = await axios.post(
+        "<link requisicao>",
+        {
+          document: this.inputCpfRef.current.value || "",
+          birth_date: this.inputBirthRef.current.value || "",
+          display: this.inputDisplayRef.current.value || "",
+          phone: this.inputPhoneRef.current.value || "",
+          rg: this.inputRgRef.current.value || "",
+          email: this.inputEmailRef.current.value || "",
+          endereco:
+            this.inputRuaRef.current.value +
+              "-" +
+              this.inputNumeroRef.current.value +
+              " " +
+              this.inputBairroRef.current.value +
+              " " +
+              this.inputCidadeRef.current.value +
+              "-" +
+              this.inputEstadoRef.current.value +
+              " " +
+              this.inputCEPRef.current.value || "",
+          complement: this.inputComplementoRef.current.value || "",
+          grupo: this.inputGrupoRef.current.value || "",
+          cota: this.inputCotaRef.current.value || "",
+        },
+        {
+          headers: {
+            Authorization: "APP",
+          },
+        }
+      );
+
+      // console.log(this.inputDisplayRef.current.value);
+      // console.log(this.inputPhoneRef.current.value);
+      // console.log(this.inputCpfRef.current.value);
+      // console.log(this.inputRgRef.current.value);
+      // console.log(this.inputEmailRef.current.value);
+      // console.log(
+      // this.inputRuaRef.current.value +
+      //   "-" +
+      //   this.inputNumeroRef.current.value +
+      //   " " +
+      //   this.inputBairroRef.current.value +
+      //   " " +
+      //   this.inputCidadeRef.current.value +
+      //   "-" +
+      //   this.inputEstadoRef.current.value +
+      //   " " +
+      //   this.inputCEPRef.current.value
+      // );
+      // console.log(this.inputComplementoRef.current.value);
+      // console.log(this.inputGrupoRef.current.value);
+      // console.log(this.inputCotaRef.current.value);
+      // console.log(this.inputBirthRef.current.value);
+    }
+  };
+
+  UploadPhotos = async (event) => {
+    event.preventDefault();
+    if (this.state.documents.length == [] || this.state.documents.length < 2) {
       document.getElementById(
         "error"
       ).innerHTML = `<div style="background-color: red; border-radius: 5px;
@@ -388,30 +444,18 @@ class Form extends Component {
       Tire as fotos dos documentos
       </div>`;
     } else {
-      // console.log(this.inputDisplayRef.current.value);
-      // console.log(this.inputPhoneRef.current.value);
-      // console.log(this.inputCpfRef.current.value);
-      // console.log(this.inputRgRef.current.value);
-      // console.log(this.inputEmailRef.current.value);
-      // endereco
-      // console.log(
-      //   this.inputRuaRef.current.value +
-      //     "-" +
-      //     this.inputNumeroRef.current.value +
-      //     " " +
-      //     this.inputBairroRef.current.value +
-      //     " " +
-      //     this.inputCidadeRef.current.value +
-      //     "-" +
-      //     this.inputEstadoRef.current.value +
-      //     " " +
-      //     this.inputCEPRef.current.value
+      // const { data } = axios.post(
+      //   "<link requisicao>",
+      //   {
+      //     documents: this.state.documents,
+      //   },
+      //   {
+      //     headers: {
+      //       Authorization: "APP",
+      //     },
+      //   }
       // );
-      // console.log(this.inputComplementoRef.current.value)
-      // console.log(this.inputGrupoRef.current.value);
-      // console.log(this.inputCotaRef.current.value);
-      // console.log(this.inputBirthRef.current.value);
-      // console.log(this.state.documents);
+      console.log(this.state.documents);
 
       this.setState({ modalSubmit: true });
     }
@@ -961,144 +1005,201 @@ class Form extends Component {
                     style={{ marginTop: "0", marginLeft: "5px" }}
                   ></p>
                 </div>
+
+                {/* button envio de dados pessoais */}
+                <div className="2s 5p">
+                  <button
+                    id="on-load"
+                    className="100w 10p 5r"
+                    style={{
+                      backgroundColor: "#345d9d",
+                      fontSize: "14px",
+                      color: "#ffffff",
+                      marginTop: "10px",
+                    }}
+                    onClick={this.handleInfoProfile}
+                  >
+                    Enviar
+                  </button>
+                </div>
+                {/*  */}
               </details>
 
-              <details>
-                <summary>Verificação de identidade</summary>
-
-                {this.state.documents.length < 2 ? (
-                  <div>
-                    <div style={{ marginTop: "20px" }}>
-                      {this.state.documents < 1 ? (
-                        <b>Foto do documento</b>
-                      ) : (
-                        <b>Selfie com o documento</b>
-                      )}
-                    </div>
-                    {this.state.capture1 == "" ? (
-                      <div className="col center sizeCam">
-                        <Webcam
-                          audio={false}
-                          ref={this.setRef}
-                          screenshotFormat="image/png"
-                          height={250}
-                          width={400}
-                          videoConstraints={videoConstraints}
-                          className="camMobile"
-                        />
-                      </div>
-                    ) : (
-                      <img src={this.state.capture1} alt="foto1" />
-                    )}
-                    <div className="camButton">
-                      {/* alterar camera */}
-                      {this.state.alterarCam ? (
-                        <button
-                          onClick={() => {
-                            this.setState({ alterarCam: false });
-                          }}
-                          className="100w 10p 5r"
-                          style={{
-                            backgroundColor: "#345d9d",
-                            fontSize: "14px",
-                            color: "#ffffff",
-                          }}
-                        >
-                          {" "}
-                          Alterar Câmera
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            this.setState({ alterarCam: true });
-                          }}
-                          className="100w 10p 5r"
-                          style={{
-                            backgroundColor: "#345d9d",
-                            fontSize: "14px",
-                            color: "#ffffff",
-                          }}
-                        >
-                          Alterar Câmera
-                        </button>
-                      )}
-                      {/*  */}
-                      {this.state.capture1 ? (
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            this.setState({ capture1: "" });
-                          }}
-                          className="100w 10p 5r"
-                          style={{
-                            backgroundColor: "#345d9d",
-                            fontSize: "14px",
-                            color: "#ffffff",
-                            marginTop: "10px",
-                          }}
-                        >
-                          Tirar outra foto
-                        </button>
-                      ) : (
-                        <button
-                          onClick={(e) => {
-                            this.capture1();
-                          }}
-                          className="100w 10p 5r"
-                          style={{
-                            backgroundColor: "#345d9d",
-                            fontSize: "14px",
-                            color: "#ffffff",
-                            marginTop: "10px",
-                          }}
-                        >
-                          Tirar foto
-                        </button>
-                      )}
-
-                      {/* confirmar foto */}
-                      {this.state.capture1 ? (
-                        <button
-                          onClick={(e) => {
-                            this.submitFoto();
-                          }}
-                          className="100w 10p 5r"
-                          style={{
-                            backgroundColor: "#345d9d",
-                            fontSize: "14px",
-                            color: "#ffffff",
-                            marginTop: "10px",
-                          }}
-                        >
-                          Confirmar foto
-                        </button>
-                      ) : (
-                        <p></p>
-                      )}
-                      {/*  */}
-                    </div>
-                  </div>
-                ) : (
-                  <div style={{ marginTop: "30px", textAlign: "center" }}>
-                    <b>Fotos salvas!</b>
-                  </div>
-                )}
-              </details>
-
-              <div className="2s 5p">
+              {/* button verificacao de identidade */}
+              {this.state.verifIdent ? (
                 <button
-                  id="on-load"
+                  onClick={() => {
+                    this.setState({ verifIdent: false });
+                  }}
                   className="100w 10p 5r"
                   style={{
-                    backgroundColor: "#345d9d",
+                    backgroundColor: "#1e8cf9",
                     fontSize: "14px",
                     color: "#ffffff",
                   }}
-                  onClick={this.handleUpload}
                 >
-                  Confirmar
+                  {" "}
+                  Verificacao Identidade
                 </button>
-              </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    this.setState({ verifIdent: true });
+                  }}
+                  className="100w 10p 5r"
+                  style={{
+                    backgroundColor: "#1e8cf9",
+                    fontSize: "14px",
+                    color: "#ffffff",
+                  }}
+                >
+                  Verificacao Identidade
+                </button>
+              )}
+              {/*  */}
+
+              {/* verificacao de identidade */}
+              {this.state.verifIdent ? (
+                <details>
+                  <summary>Verificação de identidade</summary>
+
+                  {this.state.documents.length < 2 ? (
+                    <div>
+                      <div style={{ marginTop: "20px" }}>
+                        {this.state.documents < 1 ? (
+                          <b>Foto do documento</b>
+                        ) : (
+                          <b>Selfie com o documento</b>
+                        )}
+                      </div>
+                      {this.state.capture1 == "" ? (
+                        <div className="col center sizeCam">
+                          <Webcam
+                            audio={false}
+                            ref={this.setRef}
+                            screenshotFormat="image/png"
+                            height={250}
+                            width={400}
+                            videoConstraints={videoConstraints}
+                            className="camMobile"
+                          />
+                        </div>
+                      ) : (
+                        <img src={this.state.capture1} alt="foto1" />
+                      )}
+                      <div className="camButton">
+                        {/* alterar camera */}
+                        {this.state.alterarCam ? (
+                          <button
+                            onClick={() => {
+                              this.setState({ alterarCam: false });
+                            }}
+                            className="100w 10p 5r"
+                            style={{
+                              backgroundColor: "#345d9d",
+                              fontSize: "14px",
+                              color: "#ffffff",
+                            }}
+                          >
+                            {" "}
+                            Alterar Câmera
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              this.setState({ alterarCam: true });
+                            }}
+                            className="100w 10p 5r"
+                            style={{
+                              backgroundColor: "#345d9d",
+                              fontSize: "14px",
+                              color: "#ffffff",
+                            }}
+                          >
+                            Alterar Câmera
+                          </button>
+                        )}
+                        {/*  */}
+                        {this.state.capture1 ? (
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              this.setState({ capture1: "" });
+                            }}
+                            className="100w 10p 5r"
+                            style={{
+                              backgroundColor: "#345d9d",
+                              fontSize: "14px",
+                              color: "#ffffff",
+                              marginTop: "10px",
+                            }}
+                          >
+                            Tirar outra foto
+                          </button>
+                        ) : (
+                          <button
+                            onClick={(e) => {
+                              this.capture1();
+                            }}
+                            className="100w 10p 5r"
+                            style={{
+                              backgroundColor: "#345d9d",
+                              fontSize: "14px",
+                              color: "#ffffff",
+                              marginTop: "10px",
+                            }}
+                          >
+                            Tirar foto
+                          </button>
+                        )}
+
+                        {/* confirmar foto */}
+                        {this.state.capture1 ? (
+                          <button
+                            onClick={(e) => {
+                              this.submitFoto();
+                            }}
+                            className="100w 10p 5r"
+                            style={{
+                              backgroundColor: "#345d9d",
+                              fontSize: "14px",
+                              color: "#ffffff",
+                              marginTop: "10px",
+                            }}
+                          >
+                            Confirmar foto
+                          </button>
+                        ) : (
+                          <p></p>
+                        )}
+                        {/*  */}
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ marginTop: "30px", textAlign: "center" }}>
+                      <b>Fotos salvas!</b>
+                    </div>
+                  )}
+
+                  <div className="2s 5p">
+                    <button
+                      id="on-load"
+                      className="100w 10p 5r"
+                      style={{
+                        backgroundColor: "#345d9d",
+                        fontSize: "14px",
+                        color: "#ffffff",
+                      }}
+                      onClick={this.UploadPhotos}
+                    >
+                      Enviar Fotos
+                    </button>
+                  </div>
+                </details>
+              ) : (
+                <div>verificacao de identidade</div>
+              )}
+              {/*  */}
             </div>
           )}
         </div>
