@@ -378,7 +378,7 @@ class Form extends Component {
     // }
     else {
       const { data } = await axios.post(
-        "<link requisicao>",
+        "http://webapi-server-contempla-to.umbler.net/bgchecked/physical_person",
         {
           document: this.inputCpfRef.current.value || "",
           birth_date: this.inputBirthRef.current.value || "",
@@ -386,7 +386,7 @@ class Form extends Component {
           phone: this.inputPhoneRef.current.value || "",
           rg: this.inputRgRef.current.value || "",
           email: this.inputEmailRef.current.value || "",
-          endereco:
+          address:
             this.inputRuaRef.current.value +
               "-" +
               this.inputNumeroRef.current.value +
@@ -399,8 +399,8 @@ class Form extends Component {
               " " +
               this.inputCEPRef.current.value || "",
           complement: this.inputComplementoRef.current.value || "",
-          grupo: this.inputGrupoRef.current.value || "",
-          cota: this.inputCotaRef.current.value || "",
+          group: this.inputGrupoRef.current.value || "",
+          quota: this.inputCotaRef.current.value || "",
         },
         {
           headers: {
@@ -409,23 +409,43 @@ class Form extends Component {
         }
       );
 
+      // console.log(data.status);
+
+      if (data.status == true) {
+        this.setState({ verifIdent: true });
+        document.getElementById(
+          "error"
+        ).innerHTML = `<div style="background-color: green; border-radius: 5px;
+      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
+      formulario enviado
+      </div>`;
+      }
+      if (data.status == false) {
+        document.getElementById(
+          "error"
+        ).innerHTML = `<div style="background-color: red; border-radius: 5px;
+      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
+      Falha ao enviar formulario
+      </div>`;
+      }
+
       // console.log(this.inputDisplayRef.current.value);
       // console.log(this.inputPhoneRef.current.value);
       // console.log(this.inputCpfRef.current.value);
       // console.log(this.inputRgRef.current.value);
       // console.log(this.inputEmailRef.current.value);
       // console.log(
-      // this.inputRuaRef.current.value +
-      //   "-" +
-      //   this.inputNumeroRef.current.value +
-      //   " " +
-      //   this.inputBairroRef.current.value +
-      //   " " +
-      //   this.inputCidadeRef.current.value +
-      //   "-" +
-      //   this.inputEstadoRef.current.value +
-      //   " " +
-      //   this.inputCEPRef.current.value
+      //   this.inputRuaRef.current.value +
+      //     "-" +
+      //     this.inputNumeroRef.current.value +
+      //     " " +
+      //     this.inputBairroRef.current.value +
+      //     " " +
+      //     this.inputCidadeRef.current.value +
+      //     "-" +
+      //     this.inputEstadoRef.current.value +
+      //     " " +
+      //     this.inputCEPRef.current.value
       // );
       // console.log(this.inputComplementoRef.current.value);
       // console.log(this.inputGrupoRef.current.value);
@@ -444,18 +464,19 @@ class Form extends Component {
       Tire as fotos dos documentos
       </div>`;
     } else {
-      // const { data } = axios.post(
-      //   "<link requisicao>",
-      //   {
-      //     documents: this.state.documents,
-      //   },
-      //   {
-      //     headers: {
-      //       Authorization: "APP",
-      //     },
-      //   }
-      // );
+      const { data } = axios.post(
+        "http://webapi-server-contempla-to.umbler.net/facematch/document",
+        {
+          images: this.state.documents,
+        },
+        {
+          headers: {
+            Authorization: "APP",
+          },
+        }
+      );
       console.log(this.state.documents);
+      console.log(data);
 
       this.setState({ modalSubmit: true });
     }
@@ -574,7 +595,7 @@ class Form extends Component {
                 </div>
               </div>
               <div id="error"></div>
-              <details>
+              <details open>
                 <summary>Formulário</summary>
 
                 <br />
@@ -709,7 +730,7 @@ class Form extends Component {
                         className="Blanc 10p 10r"
                         required=""
                         maxLength="10"
-                        max="2021-12-30"
+                        max="2003-06-14"
                         ref={this.inputBirthRef}
                         placeholder="Data de nascimento*"
                         style={{
@@ -719,7 +740,6 @@ class Form extends Component {
                           width: "117%",
                         }}
                       />
-
                       <label htmlFor="birth" className="fo12 black">
                         {" "}
                         Birth{" "}
@@ -1026,7 +1046,7 @@ class Form extends Component {
               </details>
 
               {/* button verificacao de identidade */}
-              {this.state.verifIdent ? (
+              {/* {this.state.verifIdent ? (
                 <button
                   onClick={() => {
                     this.setState({ verifIdent: false });
@@ -1056,7 +1076,7 @@ class Form extends Component {
                   Verificacao Identidade
                 </button>
               )}
-              {/*  */}
+               */}
 
               {/* verificacao de identidade */}
               {this.state.verifIdent ? (
@@ -1197,7 +1217,7 @@ class Form extends Component {
                   </div>
                 </details>
               ) : (
-                <div>verificacao de identidade</div>
+                <div></div>
               )}
               {/*  */}
             </div>
