@@ -428,29 +428,6 @@ class Form extends Component {
       Falha ao enviar formulario
       </div>`;
       }
-
-      // console.log(this.inputDisplayRef.current.value);
-      // console.log(this.inputPhoneRef.current.value);
-      // console.log(this.inputCpfRef.current.value);
-      // console.log(this.inputRgRef.current.value);
-      // console.log(this.inputEmailRef.current.value);
-      // console.log(
-      //   this.inputRuaRef.current.value +
-      //     "-" +
-      //     this.inputNumeroRef.current.value +
-      //     " " +
-      //     this.inputBairroRef.current.value +
-      //     " " +
-      //     this.inputCidadeRef.current.value +
-      //     "-" +
-      //     this.inputEstadoRef.current.value +
-      //     " " +
-      //     this.inputCEPRef.current.value
-      // );
-      // console.log(this.inputComplementoRef.current.value);
-      // console.log(this.inputGrupoRef.current.value);
-      // console.log(this.inputCotaRef.current.value);
-      // console.log(this.inputBirthRef.current.value);
     }
   };
 
@@ -475,8 +452,8 @@ class Form extends Component {
           },
         }
       );
-      console.log(this.state.documents);
-      console.log(data);
+      // console.log(this.state.documents);
+      // console.log(data);
 
       this.setState({ modalSubmit: true });
     }
@@ -515,6 +492,16 @@ class Form extends Component {
       documents: [...this.state.documents, this.state.capture1],
     });
     this.setState({ capture1: "" });
+  };
+
+  _onFocus = (e) => {
+    e.currentTarget.type = "date";
+    e.currentTarget.style.width = "117%";
+  };
+  _onBlur = (e) => {
+    e.currentTarget.type = "text";
+    e.currentTarget.placeholder = "Data de nascimento";
+    e.currentTarget.style.width = "100%";
   };
 
   render() {
@@ -723,21 +710,22 @@ class Form extends Component {
                     <div className="over-input">
                       <input
                         id="birth"
-                        type="date"
                         name="birth"
+                        type="text"
+                        onFocus={this._onFocus}
+                        onBlur={this._onBlur}
                         value={this.state.input.birth}
                         onChange={this.onChange}
                         className="Blanc 10p 10r"
-                        required=""
                         maxLength="10"
                         max="2003-06-14"
                         ref={this.inputBirthRef}
-                        placeholder="Data de nascimento*"
+                        placeholder="Data de nascimento"
                         style={{
                           backgroundColor: "#F5F5F5",
                           marginLeft: "15px",
                           marginRight: "0",
-                          width: "117%",
+                          width: "100%",
                         }}
                       />
                       <label htmlFor="birth" className="fo12 black">
