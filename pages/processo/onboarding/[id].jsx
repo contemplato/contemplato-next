@@ -4,7 +4,6 @@ import axios from "axios";
 import maskPhone from "../../../components/common/utils/masks/phoneOn2";
 import maskCpf from "../../../components/common/utils/masks/cpf";
 import maskRg from "../../../components/common/utils/masks/rg";
-import maskData from "../../../components/common/utils/masks/data";
 import Webcam from "react-webcam";
 
 class Form extends Component {
@@ -237,9 +236,43 @@ class Form extends Component {
     } else return false;
   };
 
+  validateEmail = (email) => {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   handleInfoProfile = async (event) => {
     event.preventDefault();
     if (
+      this.inputDisplayRef.current.value == "" ||
+      this.inputDisplayRef.current.value == null ||
+      this.inputDisplayRef.current.value.length <= 3
+    ) {
+      document.getElementById(
+        "error"
+      ).innerHTML = `<div style="background-color: red; border-radius: 5px;
+      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
+      Digite o seu nome
+      </div>`;
+    } else if (
+      this.inputPhoneRef.current.value == "" ||
+      this.inputPhoneRef.current.value == null
+    ) {
+      document.getElementById(
+        "error"
+      ).innerHTML = `<div style="background-color: red; border-radius: 5px;
+      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
+      Digite o telefone
+      </div>`;
+    } else if (this.validPhone(this.inputPhoneRef.current.value) == false) {
+      document.getElementById(
+        "error"
+      ).innerHTML = `<div style="background-color: red; border-radius: 5px;
+      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
+      Digite um Telefone válido
+      </div>`;
+    } else if (
       this.inputCpfRef.current.value == "" ||
       this.inputCpfRef.current.value == null
     ) {
@@ -256,19 +289,42 @@ class Form extends Component {
       text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
       Digite um CPF/CNPJ válido
       </div>`;
-    }
-    // else if (
-    //   this.inputRgRef.current.value == "" ||
-    //   this.inputRgRef.current.value == null
-    // ) {
-    //   document.getElementById(
-    //     "error"
-    //   ).innerHTML = `<div style="background-color: red; border-radius: 5px;
-    //   text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
-    //   Digite o RG
-    //   </div>`;
-    // }
-    else if (
+    } else if (
+      this.inputRgRef.current.value == "" ||
+      this.inputRgRef.current.value == null ||
+      this.inputRgRef.current.value <= 10
+    ) {
+      document.getElementById(
+        "error"
+      ).innerHTML = `<div style="background-color: red; border-radius: 5px;
+      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
+      Digite o RG
+      </div>`;
+    } else if (this.validRg(this.inputRgRef.current.value) == false) {
+      document.getElementById(
+        "error"
+      ).innerHTML = `<div style="background-color: red; border-radius: 5px;
+      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
+      Digite um RG válido
+      </div>`;
+    } else if (
+      this.inputEmailRef.current.value == "" ||
+      this.inputEmailRef.current.value == null
+    ) {
+      document.getElementById(
+        "error"
+      ).innerHTML = `<div style="background-color: red; border-radius: 5px;
+      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
+      Digite o email
+      </div>`;
+    } else if (this.validateEmail(this.inputEmailRef.current.value) == false) {
+      document.getElementById(
+        "error"
+      ).innerHTML = `<div style="background-color: red; border-radius: 5px;
+      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
+      Digite um email válido
+      </div>`;
+    } else if (
       this.inputBirthRef.current.value == "" ||
       this.inputBirthRef.current.value == null
     ) {
@@ -338,22 +394,7 @@ class Form extends Component {
       text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
       Digite a Estado
       </div>`;
-    } else if (this.validPhone(this.inputPhoneRef.current.value) == false) {
-      document.getElementById(
-        "error"
-      ).innerHTML = `<div style="background-color: red; border-radius: 5px;
-      text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
-      Digite um Telefone válido
-      </div>`;
     }
-    // else if (this.validRg(this.inputRgRef.current.value) == false) {
-    //   document.getElementById(
-    //     "error"
-    //   ).innerHTML = `<div style="background-color: red; border-radius: 5px;
-    //   text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
-    //   Digite um RG válido
-    //   </div>`;
-    // }
     // else if (
     //   this.inputGrupoRef.current.value == "" ||
     //   this.inputGrupoRef.current.value == null
