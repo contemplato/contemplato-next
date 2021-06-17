@@ -110,8 +110,8 @@ class Avalie extends React.Component {
         },
       }
     );
-    console.log(this.state.input.phone);
-    console.log(data);
+    // console.log(this.state.input.phone);
+    // console.log(data);
     if (!data.status) Alert(data);
     else {
       let file = this.state.image;

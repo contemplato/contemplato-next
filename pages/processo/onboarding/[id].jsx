@@ -49,9 +49,9 @@ class Form extends Component {
   };
 
   handleReq = (id) => {
-   axios
+    axios
       .get(
-        `http://webapi-server-contempla-to.umbler.net/contemplato/onboarding/${id}`,
+        `https://webapi-server-contempla-to.umbler.net/contemplato/onboarding/${id}`,
         {
           headers: {
             Authorization: "APP-AVALIE",
@@ -59,7 +59,7 @@ class Form extends Component {
         }
       )
       .then((data) => {
-        if(typeof data.data == "object"){
+        if (typeof data.data == "object") {
           document.getElementById("email").value = data.data.data.email;
           document.getElementById("display").value = data.data.data.display;
           document.getElementById("phone").value = data.data.data.phone;
@@ -224,7 +224,7 @@ class Form extends Component {
   };
 
   validPhone = (phone) => {
-    let regexPhone = /\(\d{2}\) \d{4,5}\-\d{4,5}\b/;
+    let regexPhone = /\(\d{2}\)\d{4,5}\-\d{4,5}\b/;
     if (regexPhone.test(phone)) {
       return true;
     } else return false;
@@ -420,7 +420,7 @@ class Form extends Component {
     // }
     else {
       const { data } = await axios.post(
-        "http://webapi-server-contempla-to.umbler.net/bgchecked/validate_person",
+        `https://webapi-server-contempla-to.umbler.net/bgchecked/validate_person/${this.props.id}`,
         {
           document: this.inputCpfRef.current.value || "",
           birth: this.inputBirthRef.current.value || "",
@@ -429,14 +429,13 @@ class Form extends Component {
           document2: this.inputRgRef.current.value || "",
           district: this.inputBairroRef.current.value || "",
           number: this.inputNumeroRef.current.value,
-          city:this.inputCidadeRef.current.value,
-          state:this.inputEstadoRef.current.value,
+          city: this.inputCidadeRef.current.value,
+          state: this.inputEstadoRef.current.value,
           address: this.inputRuaRef.current.value,
-          codePostal:this.inputCEPRef.current.value || "",
+          codePostal: this.inputCEPRef.current.value || "",
           complement: this.inputComplementoRef.current.value || "",
           group: this.inputGrupoRef.current.value || "",
           quota: this.inputCotaRef.current.value || "",
-          id:this.props.id
         },
         {
           headers: {
@@ -478,10 +477,10 @@ class Form extends Component {
       </div>`;
     } else {
       const { data } = axios.post(
-        "http://webapi-server-contempla-to.umbler.net/facematch/document",
+        "https://webapi-server-contempla-to.umbler.net/facematch/document",
         {
           images: this.state.documents,
-          id:this.props.id
+          id: this.props.id,
         },
         {
           headers: {
@@ -504,7 +503,7 @@ class Form extends Component {
       return;
     }
 
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+    fetch(`http://viacep.com.br/ws/${cep}/json/`)
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
