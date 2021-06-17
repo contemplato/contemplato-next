@@ -96,7 +96,8 @@ class Avalie extends React.Component {
     });
 
     const { data } = await axios.post(
-      "http://core-content-cc-co.umbler.net/p/post/contemplato/avalie/default",
+      /* "http://core-content-cc-co.umbler.net/p/post/contemplato/avalie/default", */
+      "http://webapi-server-contempla-to.umbler.net/contemplato/avalie",
       {
         display: this.state.input.display || "",
         email: this.state.input.email || "",
@@ -105,7 +106,7 @@ class Avalie extends React.Component {
       },
       {
         headers: {
-          Authorization: "APP-NAME",
+          Authorization: "APP-AVALIE",
         },
       }
     );

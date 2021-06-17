@@ -49,44 +49,45 @@ class Form extends Component {
   };
 
   handleReq = (id) => {
-    const result = axios
+   axios
       .get(
-        `https://webapi-server-contempla-to.umbler.net/dossie/onboarding/${id}`,
+        `http://webapi-server-contempla-to.umbler.net/contemplato/onboarding/${id}`,
         {
           headers: {
-            Authorization: "APP",
+            Authorization: "APP-AVALIE",
           },
         }
       )
       .then((data) => {
-        // console.log(data.data.data);
-        document.getElementById("email").value = data.data.data.email;
-        document.getElementById("display").value = data.data.data.display;
-        document.getElementById("phone").value = data.data.data.phone;
+        if(typeof data.data == "object"){
+          document.getElementById("email").value = data.data.data.email;
+          document.getElementById("display").value = data.data.data.display;
+          document.getElementById("phone").value = data.data.data.phone;
 
-        document.getElementById(
-          "credit"
-        ).innerHTML = `R$ ${data.data.data.credit}`;
+          document.getElementById(
+            "credit"
+          ).innerHTML = `R$ ${data.data.data.credit}`;
 
-        document.getElementById(
-          "debit"
-        ).innerHTML = `R$ ${data.data.data.debit}`;
+          document.getElementById(
+            "debit"
+          ).innerHTML = `R$ ${data.data.data.debit}`;
 
-        document.getElementById(
-          "adm"
-        ).innerHTML = `${data.data.data.displayAdmin}`;
+          document.getElementById(
+            "adm"
+          ).innerHTML = `${data.data.data.displayAdmin}`;
 
-        document.getElementById(
-          "pricing"
-        ).innerHTML = `R$ ${data.data.data.pricing}`;
+          document.getElementById(
+            "pricing"
+          ).innerHTML = `R$ ${data.data.data.pricing}`;
 
-        document.getElementById(
-          "bem"
-        ).innerHTML = `${data.data.data.displayItem}`;
+          document.getElementById(
+            "bem"
+          ).innerHTML = `${data.data.data.displayItem}`;
 
-        document.getElementById(
-          "tipo"
-        ).innerHTML = `${data.data.data.displayType}`;
+          document.getElementById(
+            "tipo"
+          ).innerHTML = `${data.data.data.displayType}`;
+        }
       });
   };
 
@@ -419,33 +420,27 @@ class Form extends Component {
     // }
     else {
       const { data } = await axios.post(
-        "http://webapi-server-contempla-to.umbler.net/bgchecked/physical_person",
+        "http://webapi-server-contempla-to.umbler.net/bgchecked/validate_person",
         {
           document: this.inputCpfRef.current.value || "",
-          birth_date: this.inputBirthRef.current.value || "",
+          birth: this.inputBirthRef.current.value || "",
           display: this.inputDisplayRef.current.value || "",
           phone: this.inputPhoneRef.current.value || "",
-          rg: this.inputRgRef.current.value || "",
-          email: this.inputEmailRef.current.value || "",
-          address:
-            this.inputRuaRef.current.value +
-              "-" +
-              this.inputNumeroRef.current.value +
-              " " +
-              this.inputBairroRef.current.value +
-              " " +
-              this.inputCidadeRef.current.value +
-              "-" +
-              this.inputEstadoRef.current.value +
-              " " +
-              this.inputCEPRef.current.value || "",
+          document2: this.inputRgRef.current.value || "",
+          district: this.inputBairroRef.current.value || "",
+          number: this.inputNumeroRef.current.value,
+          city:this.inputCidadeRef.current.value,
+          state:this.inputEstadoRef.current.value,
+          address: this.inputRuaRef.current.value,
+          codePostal:this.inputCEPRef.current.value || "",
           complement: this.inputComplementoRef.current.value || "",
           group: this.inputGrupoRef.current.value || "",
           quota: this.inputCotaRef.current.value || "",
+          id:this.props.id
         },
         {
           headers: {
-            Authorization: "APP",
+            Authorization: "APP-AVALIE",
           },
         }
       );
@@ -486,10 +481,11 @@ class Form extends Component {
         "http://webapi-server-contempla-to.umbler.net/facematch/document",
         {
           images: this.state.documents,
+          id:this.props.id
         },
         {
           headers: {
-            Authorization: "APP",
+            Authorization: "APP-AVALIE",
           },
         }
       );
