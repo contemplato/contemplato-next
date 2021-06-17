@@ -51,7 +51,7 @@ class Form extends Component {
   handleReq = (id) => {
    axios
       .get(
-        `http://webapi-server-contempla-to.umbler.net/contemplato/onboarding/${id}`,
+        `https://webapi-server-contempla-to.umbler.net/contemplato/onboarding/${id}`,
         {
           headers: {
             Authorization: "APP-AVALIE",
@@ -420,7 +420,7 @@ class Form extends Component {
     // }
     else {
       const { data } = await axios.post(
-        "http://webapi-server-contempla-to.umbler.net/bgchecked/validate_person",
+        "https://webapi-server-contempla-to.umbler.net/bgchecked/validate_person",
         {
           document: this.inputCpfRef.current.value || "",
           birth: this.inputBirthRef.current.value || "",
