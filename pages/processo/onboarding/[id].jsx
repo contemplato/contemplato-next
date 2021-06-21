@@ -73,7 +73,11 @@ class Form extends Component {
           document.getElementById("email").value = data.data.data.email || " ";
           document.getElementById("display").value =
             data.data.data.display || "";
-          document.getElementById("phone").value = data.data.data.phone || " ";
+          document.getElementById("phone").value =
+            data.data.data.phone.substring(0, 4) +
+              " " +
+              data.data.data.phone.substring(4, data.data.data.phone.length) ||
+            " ";
 
           document.getElementById(
             "credit"
@@ -236,7 +240,8 @@ class Form extends Component {
   };
 
   validPhone = (phone) => {
-    let regexPhone = /\(\d{2}\)\d{4,5}\-\d{4,5}\b/;
+    // let regexPhone = /\(\d{2}\)\d{5,6}\-\d{4,5}\b/;
+    let regexPhone = /([\(])?([0-9]{2})(.) ([0-9]{5})([\-])?([0-9]{4})/g;
     if (regexPhone.test(phone)) {
       return true;
     } else return false;
@@ -846,7 +851,7 @@ class Form extends Component {
                           className="Blanc 100w 10p 10r"
                           required=""
                           ref={this.inputPhoneRef}
-                          maxLength={14}
+                          maxLength={15}
                           placeholder="Telefone*"
                           style={{
                             backgroundColor: "#F5F5F5",
