@@ -74,10 +74,11 @@ class Form extends Component {
           document.getElementById("display").value =
             data.data.data.display || "";
           document.getElementById("phone").value =
-            data.data.data.phone.substring(0, 4) +
-              " " +
-              data.data.data.phone.substring(4, data.data.data.phone.length) ||
-            " ";
+            data.data.data.phone.substring(5, 5) !== " "
+              ? data.data.data.phone
+              : data.data.data.phone.substring(0, 4) +
+                " " +
+                data.data.data.phone.substring(4, data.data.data.phone.length);
 
           document.getElementById(
             "credit"
