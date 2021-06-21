@@ -7,6 +7,7 @@ import Layout from "../components/seo/Layout";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
+
   useEffect(() => {
     const handleRouteChange = (url) => {
       gtag.pageview(url);
