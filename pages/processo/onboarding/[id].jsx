@@ -846,7 +846,7 @@ class Form extends Component {
                           className="Blanc 100w 10p 10r"
                           required=""
                           ref={this.inputPhoneRef}
-                          maxLength={15}
+                          maxLength={14}
                           placeholder="Telefone*"
                           style={{
                             backgroundColor: "#F5F5F5",

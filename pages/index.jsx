@@ -89,8 +89,8 @@ class Avalie extends React.Component {
     event.preventDefault();
 
     gtag.event({
-      action: "add_to_cart",
-      category: "ecommerce",
+      action: "submit_form",
+      category: "Contact",
       label: "Item added",
       value: "Playing cards",
     });
@@ -154,7 +154,7 @@ class Avalie extends React.Component {
 
   // Alert({message: "asdas", status: true})
 
-  //function event to googleAdSense
+  //function event to googleAnalitics
   addToCart = () => {
     gtag.event({
       action: "add_to_cart",
