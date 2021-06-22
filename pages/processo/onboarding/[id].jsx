@@ -48,16 +48,16 @@ class Form extends Component {
 
   closeModal = () => {
     this.setState({ modalSubmit: false });
-    this.setState({ verifIdent: false });
-    this.setState({ documents: [] });
-    this.setState({ loading: false });
+    // this.setState({ verifIdent: false });
+    // this.setState({ documents: [] });
+    // this.setState({ loading: false });
   };
 
-  closeModalFoto = () => {
-    this.setState({ modalSubmit: false });
-    this.setState({ documents: [] });
-    this.setState({ loading: false });
-  };
+  // closeModalFoto = () => {
+  //   this.setState({ modalSubmit: false });
+  //   this.setState({ documents: [] });
+  //   this.setState({ loading: false });
+  // };
 
   handleReq = (id) => {
     axios
