@@ -437,23 +437,11 @@ class Form extends Component {
     //   </div>`;
     // }
     else {
-      const { data } = await axios.post(
-        `https://webapi-server-contempla-to.umbler.net/bgchecked/validate_person/${this.props.id}`,
+      const { data: token } = await axios.post(
+        `https://webapi-server-contempla-to.umbler.net/bgchecked/generate_token`,
         {
-          document: this.inputCpfRef.current.value || "",
+          document: this.inputCpfRef.current.value.replace(/[^\d]*/g, "") || "",
           birth: this.inputBirthRef.current.value || "",
-          display: this.inputDisplayRef.current.value || "",
-          phone: this.inputPhoneRef.current.value || "",
-          document2: this.inputRgRef.current.value || "",
-          district: this.inputBairroRef.current.value || "",
-          number: this.inputNumeroRef.current.value,
-          city: this.inputCidadeRef.current.value,
-          state: this.inputEstadoRef.current.value,
-          address: this.inputRuaRef.current.value,
-          codePostal: this.inputCEPRef.current.value || "",
-          complement: this.inputComplementoRef.current.value || "",
-          group: this.inputGrupoRef.current.value || "",
-          quota: this.inputCotaRef.current.value || "",
         },
         {
           headers: {
@@ -461,6 +449,41 @@ class Form extends Component {
           },
         }
       );
+      console.log(token);
+      const data = await new Promise((resolve) => {
+        const requestInterval = setInterval(async () => {
+          const { data: infoProfile } = await axios.put(
+            `https://webapi-server-contempla-to.umbler.net/bgchecked/update_onboarding/${this.props.id}`,
+            {
+              token: token.token,
+              document: this.inputCpfRef.current.value || "",
+              birth: this.inputBirthRef.current.value || "",
+              display: this.inputDisplayRef.current.value || "",
+              email: this.inputEmailRef.current.value || "",
+              phone: this.inputPhoneRef.current.value || "",
+              document2: this.inputRgRef.current.value || "",
+              district: this.inputBairroRef.current.value || "",
+              number: this.inputNumeroRef.current.value,
+              city: this.inputCidadeRef.current.value,
+              state: this.inputEstadoRef.current.value,
+              address: this.inputRuaRef.current.value,
+              codePostal: this.inputCEPRef.current.value || "",
+              complement: this.inputComplementoRef.current.value || "",
+              group: this.inputGrupoRef.current.value || "",
+              quota: this.inputCotaRef.current.value || "",
+            },
+            {
+              headers: {
+                Authorization: "APP-AVALIE",
+              },
+            }
+          );
+          if (infoProfile.status) {
+            clearInterval(requestInterval);
+            resolve(infoProfile);
+          }
+        }, 2000);
+      });
 
       // console.log(data.status);
 
@@ -500,7 +523,10 @@ class Form extends Component {
       const { data } = axios.post(
         `http://webapi-server-contempla-to.umbler.net/facematch/document/${this.props.id}`,
         {
-          images: this.state.documents,
+          name: "khaled m",
+          email: "kha.led002@hotmail.com",
+          phone: "(13)99199-7041",
+          images: this.state.documents || "",
           // [imagetest, imagetest]
         },
         {
@@ -566,7 +592,7 @@ class Form extends Component {
       <div
         style={{
           backgroundImage: `url(/images/bg_contemplay_login.png)`,
-          backgroundSize: "40%",
+          backgroundSize: "38%",
           backgroundPosition: "top right",
           backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
@@ -584,7 +610,7 @@ class Form extends Component {
             }}
           >
             {" "}
-            Criar <b style={{ color: "#345d9d" }}> Conta </b>
+            Finalize seu <b style={{ color: "#345d9d" }}> cadastro</b>
           </p>
 
           {this.state.modalSubmit ? (
