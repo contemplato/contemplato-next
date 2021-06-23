@@ -87,7 +87,6 @@ class Avalie extends React.Component {
 
   handleUpload = async (event) => {
     event.preventDefault();
-
     gtag.event({
       action: "submit_form",
       category: "Contact",
@@ -156,8 +155,9 @@ class Avalie extends React.Component {
 
   //function event to googleAnalitics
   addToCart = () => {
+    console.log("chamou");
     gtag.event({
-      action: "add_to_cart",
+      action: "Whatsapp",
       category: "ecommerce",
       label: "Item added",
       value: "Playing cards",
@@ -1084,6 +1084,8 @@ class Avalie extends React.Component {
             <img src="/images/whatsapp-logo.png" alt="Whatsapp" width="35px" />
           </div>
         </a>
+
+        <button onClick={this.addToCart}>analitics</button>
 
         <Footer />
       </>
