@@ -1085,8 +1085,6 @@ class Avalie extends React.Component {
           </div>
         </a>
 
-        <button onClick={this.addToCart}>analitics</button>
-
         <Footer />
       </>
     );
