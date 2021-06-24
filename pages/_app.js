@@ -5,7 +5,7 @@ import * as gtag from "../components/common/lib/gtag";
 import "../styles/globals.css";
 import Layout from "../components/seo/Layout";
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   const router = useRouter();
   useEffect(() => {
     const handleRouteChange = (url) => {
@@ -18,10 +18,10 @@ function MyApp({ Component, pageProps }) {
   }, [router.events]);
 
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    // <Layout>
+    <Component {...pageProps} />
+    // </Layout>
   );
 }
 
-export default MyApp;
+export default App;

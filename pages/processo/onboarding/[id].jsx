@@ -4,12 +4,14 @@ import axios from "axios";
 import maskPhone from "../../../components/common/utils/masks/phoneOn2";
 import maskCpf from "../../../components/common/utils/masks/cpf";
 import maskRg from "../../../components/common/utils/masks/rg";
+import maskDate from "../../../components/common/utils/masks/data";
 import Webcam from "react-webcam";
 
 class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      linkInvalid: false,
       modalSubmit: false,
       verifIdent: false,
       input: {},
@@ -46,10 +48,19 @@ class Form extends Component {
 
   closeModal = () => {
     this.setState({ modalSubmit: false });
+    // this.setState({ verifIdent: false });
+    // this.setState({ documents: [] });
+    // this.setState({ loading: false });
   };
 
+  // closeModalFoto = () => {
+  //   this.setState({ modalSubmit: false });
+  //   this.setState({ documents: [] });
+  //   this.setState({ loading: false });
+  // };
+
   handleReq = (id) => {
-   axios
+    axios
       .get(
         `https://webapi-server-contempla-to.umbler.net/contemplato/onboarding/${id}`,
         {
@@ -59,10 +70,33 @@ class Form extends Component {
         }
       )
       .then((data) => {
-        if(typeof data.data == "object"){
-          document.getElementById("email").value = data.data.data.email;
-          document.getElementById("display").value = data.data.data.display;
-          document.getElementById("phone").value = data.data.data.phone;
+        if (data.data.data.email == null || data.data.data.email == undefined) {
+          this.setState({ linkInvalid: true });
+        } else if (
+          data.data.data.display == null ||
+          data.data.data.display == undefined
+        ) {
+          this.setState({ linkInvalid: true });
+        } else if (
+          data.data.data.phone == null ||
+          data.data.data.phone == undefined
+        ) {
+          this.setState({ linkInvalid: true });
+        } else if (
+          data.data.data.phone == null ||
+          data.data.data.phone == undefined
+        ) {
+          this.setState({ linkInvalid: true });
+        } else if (typeof data.data == "object") {
+          document.getElementById("email").value = data.data.data.email || " ";
+          document.getElementById("display").value =
+            data.data.data.display || "";
+          document.getElementById("phone").value =
+            data.data.data.phone.substring(5, 5) !== " "
+              ? data.data.data.phone
+              : data.data.data.phone.substring(0, 4) +
+                " " +
+                data.data.data.phone.substring(4, data.data.data.phone.length);
 
           document.getElementById(
             "credit"
@@ -96,6 +130,7 @@ class Form extends Component {
       rg: () => maskRg(event),
       cpf: () => maskCpf(event),
       phone: () => maskPhone(event),
+      birth: () => maskDate(event),
     };
     const inputMaskFunction = inputsMasks[event.target.name];
 
@@ -224,7 +259,8 @@ class Form extends Component {
   };
 
   validPhone = (phone) => {
-    let regexPhone = /\(\d{2}\) \d{4,5}\-\d{4,5}\b/;
+    // let regexPhone = /\(\d{2}\)\d{5,6}\-\d{4,5}\b/;
+    let regexPhone = /([\(])?([0-9]{2})(.) ([0-9]{5})([\-])?([0-9]{4})/g;
     if (regexPhone.test(phone)) {
       return true;
     } else return false;
@@ -419,24 +455,16 @@ class Form extends Component {
     //   </div>`;
     // }
     else {
+<<<<<<< HEAD
       const { data } = await axios.post(
         "https://webapi-server-contempla-to.umbler.net/bgchecked/validate_person",
+=======
+      const { data: token } = await axios.post(
+        `https://webapi-server-contempla-to.umbler.net/bgchecked/generate_token`,
+>>>>>>> 4219ee13450e2d14feb6dacb66548b651318e357
         {
-          document: this.inputCpfRef.current.value || "",
+          document: this.inputCpfRef.current.value.replace(/[^\d]*/g, "") || "",
           birth: this.inputBirthRef.current.value || "",
-          display: this.inputDisplayRef.current.value || "",
-          phone: this.inputPhoneRef.current.value || "",
-          document2: this.inputRgRef.current.value || "",
-          district: this.inputBairroRef.current.value || "",
-          number: this.inputNumeroRef.current.value,
-          city:this.inputCidadeRef.current.value,
-          state:this.inputEstadoRef.current.value,
-          address: this.inputRuaRef.current.value,
-          codePostal:this.inputCEPRef.current.value || "",
-          complement: this.inputComplementoRef.current.value || "",
-          group: this.inputGrupoRef.current.value || "",
-          quota: this.inputCotaRef.current.value || "",
-          id:this.props.id
         },
         {
           headers: {
@@ -444,6 +472,41 @@ class Form extends Component {
           },
         }
       );
+      // console.log(token);
+      const data = await new Promise((resolve) => {
+        const requestInterval = setInterval(async () => {
+          const { data: infoProfile } = await axios.put(
+            `https://webapi-server-contempla-to.umbler.net/bgchecked/update_onboarding/${this.props.id}`,
+            {
+              token: token.token,
+              document: this.inputCpfRef.current.value || "",
+              birth: this.inputBirthRef.current.value || "",
+              display: this.inputDisplayRef.current.value || "",
+              email: this.inputEmailRef.current.value || "",
+              phone: this.inputPhoneRef.current.value || "",
+              document2: this.inputRgRef.current.value || "",
+              district: this.inputBairroRef.current.value || "",
+              number: this.inputNumeroRef.current.value,
+              city: this.inputCidadeRef.current.value,
+              state: this.inputEstadoRef.current.value,
+              address: this.inputRuaRef.current.value,
+              codePostal: this.inputCEPRef.current.value || "",
+              complement: this.inputComplementoRef.current.value || "",
+              group: this.inputGrupoRef.current.value || "",
+              quota: this.inputCotaRef.current.value || "",
+            },
+            {
+              headers: {
+                Authorization: "APP-AVALIE",
+              },
+            }
+          );
+          if (infoProfile.status) {
+            clearInterval(requestInterval);
+            resolve(infoProfile);
+          }
+        }, 2000);
+      });
 
       // console.log(data.status);
 
@@ -453,7 +516,7 @@ class Form extends Component {
           "error"
         ).innerHTML = `<div style="background-color: green; border-radius: 5px;
       text-align: center; color: white; border: 10px; margin-bottom: 5px; padding: 5px">
-      formulario enviado
+      Formulário enviado
       </div>`;
       }
       if (data.status == false) {
@@ -478,10 +541,13 @@ class Form extends Component {
       </div>`;
     } else {
       const { data } = axios.post(
-        "http://webapi-server-contempla-to.umbler.net/facematch/document",
+        `http://webapi-server-contempla-to.umbler.net/facematch/document/${this.props.id}`,
         {
-          images: this.state.documents,
-          id:this.props.id
+          // name: this.inputDisplayRef.current.value || "",
+          // email: this.inputEmailRef.current.value || "",
+          // phone: this.inputPhoneRef.current.value || "",
+          images: this.state.documents || "",
+          // [imagetest, imagetest]
         },
         {
           headers: {
@@ -492,6 +558,7 @@ class Form extends Component {
       // console.log(this.state.documents);
       // console.log(data);
 
+      // this.setState({ InvalidImage: data.result.data.affectedRows });
       this.setState({ modalSubmit: true });
     }
   };
@@ -504,7 +571,7 @@ class Form extends Component {
       return;
     }
 
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+    fetch(`http://viacep.com.br/ws/${cep}/json/`)
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
@@ -531,18 +598,8 @@ class Form extends Component {
     this.setState({ capture1: "" });
   };
 
-  _onFocus = (e) => {
-    e.currentTarget.type = "date";
-    e.currentTarget.style.width = "117%";
-  };
-  _onBlur = (e) => {
-    e.currentTarget.type = "text";
-    e.currentTarget.placeholder = "Data de nascimento";
-    e.currentTarget.style.width = "100%";
-  };
-
   render() {
-    if (!this.state.modalSubmit) {
+    if (!this.state.verifIdent) {
       this.handleReq(this.props.id);
     }
     const videoConstraints = {
@@ -555,7 +612,7 @@ class Form extends Component {
       <div
         style={{
           backgroundImage: `url(/images/bg_contemplay_login.png)`,
-          backgroundSize: "40%",
+          backgroundSize: "38%",
           backgroundPosition: "top right",
           backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
@@ -573,505 +630,75 @@ class Form extends Component {
             }}
           >
             {" "}
-            Criar <b style={{ color: "#345d9d" }}> Conta </b>
+            Finalize seu <b style={{ color: "#345d9d" }}> cadastro</b>
           </p>
 
-          {this.state.modalSubmit ? (
-            <div
-              className="content 5r 30p Blanc shadow col"
-              style={{ width: "600px" }}
-            >
-              <h1 className="center">Muito Obrigado!</h1>
-              <b className="center">Formulário enviado com sucesso.</b>
-              <br />
-              <div className="2s 5p">
-                <button
-                  className="100w 10p 5r"
-                  style={{
-                    backgroundColor: "#345d9d",
-                    fontSize: "14px",
-                    color: "#ffffff",
-                  }}
-                  onClick={this.closeModal}
-                >
-                  Fechar
-                </button>
+          {this.state.linkInvalid ? (
+            <div>
+              <div
+                className="content 5r 30p Blanc shadow col"
+                style={{ width: "600px" }}
+              >
+                <h1 className="center">LINK INVÁLIDO</h1>
               </div>
             </div>
           ) : (
-            <div
-              className="content 5r 30p Blanc shadow col"
-              style={{ width: "500px" }}
-            >
-              <div className="row center">
+            <div>
+              {this.state.modalSubmit ? (
                 <div>
-                  <img
-                    src="/images/ico_contemplay_key_login.png"
-                    alt="ico-login"
-                    width="48"
-                  />
-                </div>
-
-                <div
-                  style={{ fontSize: 16, color: "#4a4a4a", paddingLeft: 14 }}
-                >
-                  Cadastro Contemplato
-                </div>
-              </div>
-              <div id="error"></div>
-              <details open>
-                <summary>Formulário</summary>
-
-                <br />
-                <div className="col wrap">
-                  <h5 style={{ marginBottom: "10px", marginTop: "0px" }}>
-                    Dados pessoais
-                  </h5>
-                  <div className="row" style={{ marginBottom: "10px" }}>
-                    <div className="over-input">
-                      <input
-                        id="display"
-                        type="text"
-                        name="display"
-                        value={this.state.input.display}
-                        onChange={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        required=""
-                        ref={this.inputDisplayRef}
-                        placeholder="Nome sobrenome*"
-                        style={{ backgroundColor: "#F5F5F5" }}
-                      />
-
-                      <label htmlFor="display" className="fo12 black">
-                        {" "}
-                        Nome sobrenome*{" "}
-                      </label>
-                    </div>
-                    {/* input Telefone */}
-                    <div className="over-input">
-                      <input
-                        id="phone"
-                        type="tel"
-                        name="phone"
-                        value={this.state.input.phone}
-                        onChange={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        required=""
-                        ref={this.inputPhoneRef}
-                        maxLength={15}
-                        placeholder="Telefone*"
-                        style={{
-                          backgroundColor: "#F5F5F5",
-                          marginLeft: "15px",
-                        }}
-                      />
-                      <label htmlFor="phone" className="fo12 black">
-                        {" "}
-                        Telefone{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-                  </div>
-                  <div className="row" style={{ marginBottom: "10px" }}>
-                    {/* CPF */}
-                    <div className="over-input">
-                      <input
-                        id="cpf"
-                        type="text"
-                        name="cpf"
-                        value={this.state.input.cpf}
-                        onInput={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        // maxLength="14"
-                        required=""
-                        ref={this.inputCpfRef}
-                        placeholder="CPF/CNPJ*"
-                        style={{ backgroundColor: "#F5F5F5" }}
-                      />
-
-                      <label htmlFor="cpf" className="fo12 black">
-                        {" "}
-                        CPF{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-
-                    {/* RG */}
-                    <div className="over-input">
-                      <input
-                        id="rg"
-                        type="text"
-                        name="rg"
-                        value={this.state.input.rg}
-                        onChange={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        maxLength="12"
-                        ref={this.inputRgRef}
-                        required=""
-                        placeholder="RG"
-                        style={{
-                          backgroundColor: "#F5F5F5",
-                          marginLeft: "15px",
-                        }}
-                      />
-
-                      <label htmlFor="rg" className="fo12 black">
-                        {" "}
-                        RG{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-                  </div>
-                  <div className="row" style={{ marginBottom: "10px" }}>
-                    {/* Email */}
-                    <div className="over-input">
-                      <input
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={this.state.input.email}
-                        onChange={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        required=""
-                        ref={this.inputEmailRef}
-                        placeholder="E-mail*"
-                        style={{ backgroundColor: "#F5F5F5" }}
-                      />
-                      <label htmlFor="email" className="fo12 black">
-                        {" "}
-                        E-mail*{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-                    {/* data de nascimento  */}
-                    <div className="over-input">
-                      <input
-                        id="birth"
-                        name="birth"
-                        type="text"
-                        onFocus={this._onFocus}
-                        onBlur={this._onBlur}
-                        value={this.state.input.birth}
-                        onChange={this.onChange}
-                        className="Blanc 10p 10r"
-                        maxLength="10"
-                        max="2003-06-14"
-                        ref={this.inputBirthRef}
-                        placeholder="Data de nascimento"
-                        style={{
-                          backgroundColor: "#F5F5F5",
-                          marginLeft: "15px",
-                          marginRight: "0",
-                          width: "100%",
-                        }}
-                      />
-                      <label htmlFor="birth" className="fo12 black">
-                        {" "}
-                        Birth{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-                  </div>
-
-                  <h5 style={{ marginBottom: "10px", marginTop: "0px" }}>
-                    Endereço
-                  </h5>
-                  <div className="row" style={{ marginBottom: "10px" }}>
-                    {/* CEP */}
-                    <div className="over-input">
-                      <input
-                        id="CEP"
-                        type="text"
-                        name="CEP"
-                        value={this.state.input.CEP}
-                        onBlur={this.searchCEP}
-                        // onChange={this.searchCEP}
-                        className="Blanc 100w 10p 10r"
-                        required=""
-                        ref={this.inputCEPRef}
-                        placeholder="CEP*"
-                        style={{ backgroundColor: "#F5F5F5" }}
-                      />
-
-                      <label htmlFor="CEP" className="fo12 black">
-                        {" "}
-                        CEP*{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-
-                    {/* Rua */}
-                    <div className="over-input">
-                      <input
-                        id="rua"
-                        type="text"
-                        name="rua"
-                        value={this.state.input.rua}
-                        // onChange={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        required=""
-                        ref={this.inputRuaRef}
-                        placeholder="Rua*"
-                        style={{
-                          backgroundColor: "#F5F5F5",
-                          marginLeft: "15px",
-                        }}
-                      />
-
-                      <label htmlFor="rua" className="fo12 black">
-                        {" "}
-                        Rua{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-                  </div>
-
-                  <div className="row" style={{ marginBottom: "10px" }}>
-                    {/* numero do endereco */}
-                    <div className="over-input">
-                      <input
-                        id="numero"
-                        type="text"
-                        name="numero"
-                        value={this.state.input.numero}
-                        // onChange={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        required=""
-                        ref={this.inputNumeroRef}
-                        placeholder="Número*"
-                        style={{ backgroundColor: "#F5F5F5" }}
-                      />
-
-                      <label htmlFor="numero" className="fo12 black">
-                        {" "}
-                        Número*{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-
-                    {/* bairro */}
-                    <div className="over-input">
-                      <input
-                        id="bairro"
-                        type="text"
-                        name="bairro"
-                        value={this.state.input.bairro}
-                        onChange={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        required=""
-                        ref={this.inputBairroRef}
-                        placeholder="Bairro*"
-                        style={{
-                          backgroundColor: "#F5F5F5",
-                          marginLeft: "15px",
-                        }}
-                      />
-
-                      <label htmlFor="bairro" className="fo12 black">
-                        {" "}
-                        Bairro*{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-                  </div>
-
-                  <div className="row" style={{ marginBottom: "10px" }}>
-                    {/* cidade */}
-                    <div className="over-input">
-                      <input
-                        id="cidade"
-                        type="text"
-                        name="cidade"
-                        value={this.state.input.cidade}
-                        onChange={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        required=""
-                        ref={this.inputCidadeRef}
-                        placeholder="Cidade*"
-                        style={{
-                          backgroundColor: "#F5F5F5",
-                        }}
-                      />
-
-                      <label htmlFor="cidade" className="fo12 black">
-                        {" "}
-                        Cidade*{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-
-                    {/* estado */}
-                    <div className="over-input">
-                      <input
-                        id="estado"
-                        type="text"
-                        name="estado"
-                        value={this.state.input.estado}
-                        onChange={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        required=""
-                        ref={this.inputEstadoRef}
-                        placeholder="Estado*"
-                        style={{
-                          backgroundColor: "#F5F5F5",
-                          marginLeft: "15px",
-                        }}
-                      />
-
-                      <label htmlFor="estado" className="fo12 black">
-                        {" "}
-                        Estado*{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-                  </div>
-
-                  {/* Complemento */}
-                  <div className="over-input">
-                    <input
-                      id="complemento"
-                      type="text"
-                      name="complemento"
-                      value={this.state.input.complemento}
-                      // onChange={this.onChange}
-                      className="Blanc 100w 10p 10r"
-                      required=""
-                      ref={this.inputComplementoRef}
-                      placeholder="Complemento (opcional)"
-                      style={{ backgroundColor: "#F5F5F5" }}
-                    />
-
-                    <label htmlFor="complemento" className="fo12 black">
-                      {" "}
-                      Complemento (opcional){" "}
-                    </label>
-                  </div>
-                  {/*  */}
-
-                  <h5 style={{ marginBottom: "10px", marginTop: "0px" }}>
-                    Informações do Consórcio
-                  </h5>
-                  <div className="row" style={{ marginBottom: "10px" }}>
-                    {/* número do grupo */}
-                    <div className="over-input">
-                      <input
-                        id="grupo"
-                        type="text"
-                        name="grupo"
-                        value={this.state.input.grupo}
-                        onChange={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        required=""
-                        ref={this.inputGrupoRef}
-                        placeholder="Número do grupo"
-                        style={{ backgroundColor: "#F5F5F5" }}
-                      />
-
-                      <label htmlFor="grupo" className="fo12 black">
-                        {" "}
-                        Número do grupo{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-
-                    {/* Número da Cota */}
-                    <div className="over-input">
-                      <input
-                        id="cota"
-                        type="text"
-                        name="cota"
-                        value={this.state.input.cota}
-                        onChange={this.onChange}
-                        className="Blanc 100w 10p 10r"
-                        required=""
-                        ref={this.inputCotaRef}
-                        placeholder="Número da Cota"
-                        style={{
-                          backgroundColor: "#F5F5F5",
-                          marginLeft: "15px",
-                        }}
-                      />
-
-                      <label htmlFor="cota" className="fo12 black">
-                        {" "}
-                        Número da Cota{" "}
-                      </label>
-                    </div>
-                    {/*  */}
-                  </div>
-                </div>
-                {/*  */}
-                <br />
-
-                <div className="row">
-                  <b>Administradorora:</b>
-                  <p id="adm" style={{ marginTop: "0", marginLeft: "5px" }}></p>
-                </div>
-
-                <div className="row">
-                  <b>Bem:</b>
-                  <p id="bem" style={{ marginTop: "0", marginLeft: "5px" }}></p>
-                </div>
-
-                <div className="row">
-                  <b>Tipo:</b>
-                  <p
-                    id="tipo"
-                    style={{ marginTop: "0", marginLeft: "5px" }}
-                  ></p>
-                </div>
-
-                <div className="row">
-                  <b style={{ maxWidth: "180px" }}>Preço de compra: </b>
-
-                  <p
-                    id="pricing"
-                    style={{
-                      marginTop: "0",
-                      marginLeft: "20px",
-                    }}
-                  ></p>
-                </div>
-                <div className="row">
-                  <b>Crédito:</b>
-                  <p
-                    id="credit"
-                    style={{
-                      marginTop: "0",
-                      marginLeft: "5px",
-                    }}
-                  ></p>
-                </div>
-
-                <div className="row">
-                  <b>Saldo devedor: </b>
-                  <p
-                    id="debit"
-                    style={{ marginTop: "0", marginLeft: "5px" }}
-                  ></p>
-                </div>
-
-                {/* button envio de dados pessoais */}
-                <div className="2s 5p">
-                  <button
-                    id="on-load"
-                    className="100w 10p 5r"
-                    style={{
-                      backgroundColor: "#345d9d",
-                      fontSize: "14px",
-                      color: "#ffffff",
-                      marginTop: "10px",
-                    }}
-                    onClick={this.handleInfoProfile}
+                  <div
+                    className="content 5r 30p Blanc shadow col"
+                    style={{ width: "600px" }}
                   >
-                    Enviar
-                  </button>
+                    <h1 className="center">Muito Obrigado!</h1>
+                    <b className="center">
+                      Seus dados foram enviados para análise.
+                    </b>
+                    <b className="center">Aguarde nosso contato.</b>
+                    <br />
+                    <div className="2s 5p">
+                      <button
+                        className="100w 10p 5r"
+                        style={{
+                          backgroundColor: "#345d9d",
+                          fontSize: "14px",
+                          color: "#ffffff",
+                        }}
+                        onClick={this.closeModal}
+                      >
+                        Fechar
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                {/*  */}
-              </details>
+              ) : (
+                <div
+                  className="content 5r 30p Blanc shadow col"
+                  style={{ width: "500px" }}
+                >
+                  <div className="row center">
+                    <div>
+                      <img
+                        src="/images/ico_contemplay_key_login.png"
+                        alt="ico-login"
+                        width="48"
+                      />
+                    </div>
 
-              {/* button verificacao de identidade */}
-              {/* {this.state.verifIdent ? (
+                    <div
+                      style={{
+                        fontSize: 16,
+                        color: "#4a4a4a",
+                        paddingLeft: 14,
+                      }}
+                    >
+                      Cadastro Contemplato
+                    </div>
+                  </div>
+                  <div id="error"></div>
+
+                  {/* button verificacao de identidade */}
+                  {/* {this.state.verifIdent ? (
                 <button
                   onClick={() => {
                     this.setState({ verifIdent: false });
@@ -1103,148 +730,607 @@ class Form extends Component {
               )}
                */}
 
-              {/* verificacao de identidade */}
-              {this.state.verifIdent ? (
-                <details>
-                  <summary>Verificação de identidade</summary>
+                  {/* verificacao de identidade */}
+                  {this.state.verifIdent ? (
+                    <details open>
+                      <summary>Verificação de identidade</summary>
 
-                  {this.state.documents.length < 2 ? (
-                    <div>
-                      <div style={{ marginTop: "20px" }}>
-                        {this.state.documents < 1 ? (
-                          <b>Foto do documento</b>
-                        ) : (
-                          <b>Selfie com o documento</b>
-                        )}
-                      </div>
-                      {this.state.capture1 == "" ? (
-                        <div className="col center sizeCam">
-                          <Webcam
-                            audio={false}
-                            ref={this.setRef}
-                            screenshotFormat="image/png"
-                            height={250}
-                            width={400}
-                            videoConstraints={videoConstraints}
-                            className="camMobile"
-                          />
+                      {this.state.documents.length < 2 ? (
+                        <div>
+                          <div style={{ marginTop: "20px" }}>
+                            {this.state.documents < 1 ? (
+                              <b>Foto do documento</b>
+                            ) : (
+                              <b>Selfie com o documento</b>
+                            )}
+                          </div>
+                          {this.state.capture1 == "" ? (
+                            <div className="col center sizeCam">
+                              <Webcam
+                                audio={false}
+                                ref={this.setRef}
+                                screenshotFormat="image/png"
+                                height={250}
+                                width={400}
+                                videoConstraints={videoConstraints}
+                                className="camMobile"
+                              />
+                            </div>
+                          ) : (
+                            <img src={this.state.capture1} alt="foto1" />
+                          )}
+                          <div className="camButton">
+                            {/* alterar camera */}
+                            {this.state.alterarCam ? (
+                              <button
+                                onClick={() => {
+                                  this.setState({ alterarCam: false });
+                                }}
+                                className="100w 10p 5r"
+                                style={{
+                                  backgroundColor: "#345d9d",
+                                  fontSize: "14px",
+                                  color: "#ffffff",
+                                }}
+                              >
+                                {" "}
+                                Alterar Câmera
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => {
+                                  this.setState({ alterarCam: true });
+                                }}
+                                className="100w 10p 5r"
+                                style={{
+                                  backgroundColor: "#345d9d",
+                                  fontSize: "14px",
+                                  color: "#ffffff",
+                                }}
+                              >
+                                Alterar Câmera
+                              </button>
+                            )}
+                            {/*  */}
+                            {this.state.capture1 ? (
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  this.setState({ capture1: "" });
+                                }}
+                                className="100w 10p 5r"
+                                style={{
+                                  backgroundColor: "#345d9d",
+                                  fontSize: "14px",
+                                  color: "#ffffff",
+                                  marginTop: "10px",
+                                }}
+                              >
+                                Tirar outra foto
+                              </button>
+                            ) : (
+                              <button
+                                onClick={(e) => {
+                                  this.capture1();
+                                }}
+                                className="100w 10p 5r"
+                                style={{
+                                  backgroundColor: "#345d9d",
+                                  fontSize: "14px",
+                                  color: "#ffffff",
+                                  marginTop: "10px",
+                                }}
+                              >
+                                Tirar foto
+                              </button>
+                            )}
+
+                            {/* confirmar foto */}
+                            {this.state.capture1 ? (
+                              <button
+                                onClick={(e) => {
+                                  this.submitFoto();
+                                }}
+                                className="100w 10p 5r"
+                                style={{
+                                  backgroundColor: "#345d9d",
+                                  fontSize: "14px",
+                                  color: "#ffffff",
+                                  marginTop: "10px",
+                                }}
+                              >
+                                Confirmar foto
+                              </button>
+                            ) : (
+                              <p></p>
+                            )}
+                            {/*  */}
+                          </div>
                         </div>
                       ) : (
-                        <img src={this.state.capture1} alt="foto1" />
+                        <div
+                          style={{
+                            marginTop: "30px",
+                            marginBottom: "30px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <b>Fotos salvas!</b>
+                        </div>
                       )}
-                      <div className="camButton">
-                        {/* alterar camera */}
-                        {this.state.alterarCam ? (
-                          <button
-                            onClick={() => {
-                              this.setState({ alterarCam: false });
-                            }}
-                            className="100w 10p 5r"
-                            style={{
-                              backgroundColor: "#345d9d",
-                              fontSize: "14px",
-                              color: "#ffffff",
-                            }}
-                          >
-                            {" "}
-                            Alterar Câmera
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => {
-                              this.setState({ alterarCam: true });
-                            }}
-                            className="100w 10p 5r"
-                            style={{
-                              backgroundColor: "#345d9d",
-                              fontSize: "14px",
-                              color: "#ffffff",
-                            }}
-                          >
-                            Alterar Câmera
-                          </button>
-                        )}
-                        {/*  */}
-                        {this.state.capture1 ? (
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              this.setState({ capture1: "" });
-                            }}
-                            className="100w 10p 5r"
-                            style={{
-                              backgroundColor: "#345d9d",
-                              fontSize: "14px",
-                              color: "#ffffff",
-                              marginTop: "10px",
-                            }}
-                          >
-                            Tirar outra foto
-                          </button>
-                        ) : (
-                          <button
-                            onClick={(e) => {
-                              this.capture1();
-                            }}
-                            className="100w 10p 5r"
-                            style={{
-                              backgroundColor: "#345d9d",
-                              fontSize: "14px",
-                              color: "#ffffff",
-                              marginTop: "10px",
-                            }}
-                          >
-                            Tirar foto
-                          </button>
-                        )}
-
-                        {/* confirmar foto */}
-                        {this.state.capture1 ? (
-                          <button
-                            onClick={(e) => {
-                              this.submitFoto();
-                            }}
-                            className="100w 10p 5r"
-                            style={{
-                              backgroundColor: "#345d9d",
-                              fontSize: "14px",
-                              color: "#ffffff",
-                              marginTop: "10px",
-                            }}
-                          >
-                            Confirmar foto
-                          </button>
-                        ) : (
-                          <p></p>
-                        )}
-                        {/*  */}
+                      <div className="2s 5p">
+                        <button
+                          id="on-load"
+                          className="100w 10p 5r"
+                          style={{
+                            backgroundColor: "#345d9d",
+                            fontSize: "14px",
+                            color: "#ffffff",
+                          }}
+                          onClick={this.UploadPhotos}
+                        >
+                          Enviar Fotos
+                        </button>
                       </div>
-                    </div>
+                    </details>
                   ) : (
-                    <div style={{ marginTop: "30px", textAlign: "center" }}>
-                      <b>Fotos salvas!</b>
-                    </div>
-                  )}
+                    <details open>
+                      <summary>Formulário</summary>
 
-                  <div className="2s 5p">
-                    <button
-                      id="on-load"
-                      className="100w 10p 5r"
-                      style={{
-                        backgroundColor: "#345d9d",
-                        fontSize: "14px",
-                        color: "#ffffff",
-                      }}
-                      onClick={this.UploadPhotos}
-                    >
-                      Enviar Fotos
-                    </button>
-                  </div>
-                </details>
-              ) : (
-                <div></div>
+                      <br />
+                      <div className="col wrap">
+                        <h5 style={{ marginBottom: "10px", marginTop: "0px" }}>
+                          Dados pessoais
+                        </h5>
+                        <div className="row" style={{ marginBottom: "10px" }}>
+                          <div className="over-input">
+                            <input
+                              id="display"
+                              type="text"
+                              name="display"
+                              value={this.state.input.display}
+                              onChange={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              required=""
+                              ref={this.inputDisplayRef}
+                              placeholder="Nome sobrenome*"
+                              style={{ backgroundColor: "#F5F5F5" }}
+                            />
+
+                            <label htmlFor="display" className="fo12 black">
+                              {" "}
+                              Nome sobrenome*{" "}
+                            </label>
+                          </div>
+                          {/* input Telefone */}
+                          <div className="over-input">
+                            <input
+                              id="phone"
+                              type="tel"
+                              name="phone"
+                              value={this.state.input.phone}
+                              onChange={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              required=""
+                              ref={this.inputPhoneRef}
+                              maxLength={15}
+                              placeholder="Telefone*"
+                              style={{
+                                backgroundColor: "#F5F5F5",
+                                marginLeft: "15px",
+                              }}
+                            />
+                            <label htmlFor="phone" className="fo12 black">
+                              {" "}
+                              Telefone{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+                        </div>
+                        <div className="row" style={{ marginBottom: "10px" }}>
+                          {/* CPF */}
+                          <div className="over-input">
+                            <input
+                              id="cpf"
+                              type="text"
+                              name="cpf"
+                              value={this.state.input.cpf}
+                              onInput={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              // maxLength="14"
+                              required=""
+                              ref={this.inputCpfRef}
+                              placeholder="CPF/CNPJ*"
+                              style={{ backgroundColor: "#F5F5F5" }}
+                            />
+
+                            <label htmlFor="cpf" className="fo12 black">
+                              {" "}
+                              CPF{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+
+                          {/* RG */}
+                          <div className="over-input">
+                            <input
+                              id="rg"
+                              type="text"
+                              name="rg"
+                              value={this.state.input.rg}
+                              onChange={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              maxLength="12"
+                              ref={this.inputRgRef}
+                              required=""
+                              placeholder="RG"
+                              style={{
+                                backgroundColor: "#F5F5F5",
+                                marginLeft: "15px",
+                              }}
+                            />
+
+                            <label htmlFor="rg" className="fo12 black">
+                              {" "}
+                              RG{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+                        </div>
+                        <div className="row" style={{ marginBottom: "10px" }}>
+                          {/* Email */}
+                          <div className="over-input">
+                            <input
+                              id="email"
+                              type="email"
+                              name="email"
+                              value={this.state.input.email}
+                              onChange={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              required=""
+                              ref={this.inputEmailRef}
+                              placeholder="E-mail*"
+                              style={{ backgroundColor: "#F5F5F5" }}
+                            />
+                            <label htmlFor="email" className="fo12 black">
+                              {" "}
+                              E-mail*{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+                          {/* data de nascimento  */}
+                          <div className="over-input">
+                            <input
+                              id="birth"
+                              name="birth"
+                              type="tel"
+                              maxLength="10"
+                              value={this.state.input.birth}
+                              onChange={this.onChange}
+                              className="Blanc 10p 10r"
+                              ref={this.inputBirthRef}
+                              placeholder="Data de nascimento"
+                              style={{
+                                backgroundColor: "#F5F5F5",
+                                marginLeft: "15px",
+                                marginRight: "0",
+                                width: "100%",
+                              }}
+                            />
+                            {/* <label htmlFor="birth" className="fo12 black">
+                          {" "}
+                          Data de nascimento{" "}
+                        </label> */}
+                          </div>
+                          {/*  */}
+                        </div>
+
+                        <h5 style={{ marginBottom: "10px", marginTop: "0px" }}>
+                          Endereço
+                        </h5>
+                        <div className="row" style={{ marginBottom: "10px" }}>
+                          {/* CEP */}
+                          <div className="over-input">
+                            <input
+                              id="CEP"
+                              type="text"
+                              name="CEP"
+                              value={this.state.input.CEP}
+                              onBlur={this.searchCEP}
+                              // onChange={this.searchCEP}
+                              className="Blanc 100w 10p 10r"
+                              required=""
+                              ref={this.inputCEPRef}
+                              placeholder="CEP*"
+                              style={{ backgroundColor: "#F5F5F5" }}
+                            />
+
+                            <label htmlFor="CEP" className="fo12 black">
+                              {" "}
+                              CEP*{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+
+                          {/* Rua */}
+                          <div className="over-input">
+                            <input
+                              id="rua"
+                              type="text"
+                              name="rua"
+                              value={this.state.input.rua}
+                              // onChange={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              required=""
+                              ref={this.inputRuaRef}
+                              placeholder="Rua*"
+                              style={{
+                                backgroundColor: "#F5F5F5",
+                                marginLeft: "15px",
+                              }}
+                            />
+
+                            <label htmlFor="rua" className="fo12 black">
+                              {" "}
+                              Rua{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+                        </div>
+
+                        <div className="row" style={{ marginBottom: "10px" }}>
+                          {/* numero do endereco */}
+                          <div className="over-input">
+                            <input
+                              id="numero"
+                              type="text"
+                              name="numero"
+                              value={this.state.input.numero}
+                              // onChange={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              required=""
+                              ref={this.inputNumeroRef}
+                              placeholder="Número*"
+                              style={{ backgroundColor: "#F5F5F5" }}
+                            />
+
+                            <label htmlFor="numero" className="fo12 black">
+                              {" "}
+                              Número*{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+
+                          {/* bairro */}
+                          <div className="over-input">
+                            <input
+                              id="bairro"
+                              type="text"
+                              name="bairro"
+                              value={this.state.input.bairro}
+                              onChange={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              required=""
+                              ref={this.inputBairroRef}
+                              placeholder="Bairro*"
+                              style={{
+                                backgroundColor: "#F5F5F5",
+                                marginLeft: "15px",
+                              }}
+                            />
+
+                            <label htmlFor="bairro" className="fo12 black">
+                              {" "}
+                              Bairro*{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+                        </div>
+
+                        <div className="row" style={{ marginBottom: "10px" }}>
+                          {/* cidade */}
+                          <div className="over-input">
+                            <input
+                              id="cidade"
+                              type="text"
+                              name="cidade"
+                              value={this.state.input.cidade}
+                              onChange={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              required=""
+                              ref={this.inputCidadeRef}
+                              placeholder="Cidade*"
+                              style={{
+                                backgroundColor: "#F5F5F5",
+                              }}
+                            />
+
+                            <label htmlFor="cidade" className="fo12 black">
+                              {" "}
+                              Cidade*{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+
+                          {/* estado */}
+                          <div className="over-input">
+                            <input
+                              id="estado"
+                              type="text"
+                              name="estado"
+                              value={this.state.input.estado}
+                              onChange={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              required=""
+                              ref={this.inputEstadoRef}
+                              placeholder="Estado*"
+                              style={{
+                                backgroundColor: "#F5F5F5",
+                                marginLeft: "15px",
+                              }}
+                            />
+
+                            <label htmlFor="estado" className="fo12 black">
+                              {" "}
+                              Estado*{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+                        </div>
+
+                        {/* Complemento */}
+                        <div className="over-input">
+                          <input
+                            id="complemento"
+                            type="text"
+                            name="complemento"
+                            value={this.state.input.complemento}
+                            // onChange={this.onChange}
+                            className="Blanc 100w 10p 10r"
+                            required=""
+                            ref={this.inputComplementoRef}
+                            placeholder="Complemento (opcional)"
+                            style={{ backgroundColor: "#F5F5F5" }}
+                          />
+
+                          <label htmlFor="complemento" className="fo12 black">
+                            {" "}
+                            Complemento (opcional){" "}
+                          </label>
+                        </div>
+                        {/*  */}
+
+                        <h5 style={{ marginBottom: "10px", marginTop: "0px" }}>
+                          Informações do Consórcio
+                        </h5>
+                        <div className="row" style={{ marginBottom: "10px" }}>
+                          {/* número do grupo */}
+                          <div className="over-input">
+                            <input
+                              id="grupo"
+                              type="text"
+                              name="grupo"
+                              value={this.state.input.grupo}
+                              onChange={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              required=""
+                              ref={this.inputGrupoRef}
+                              placeholder="Número do grupo"
+                              style={{ backgroundColor: "#F5F5F5" }}
+                            />
+
+                            <label htmlFor="grupo" className="fo12 black">
+                              {" "}
+                              Número do grupo{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+
+                          {/* Número da Cota */}
+                          <div className="over-input">
+                            <input
+                              id="cota"
+                              type="text"
+                              name="cota"
+                              value={this.state.input.cota}
+                              onChange={this.onChange}
+                              className="Blanc 100w 10p 10r"
+                              required=""
+                              ref={this.inputCotaRef}
+                              placeholder="Número da Cota"
+                              style={{
+                                backgroundColor: "#F5F5F5",
+                                marginLeft: "15px",
+                              }}
+                            />
+
+                            <label htmlFor="cota" className="fo12 black">
+                              {" "}
+                              Número da Cota{" "}
+                            </label>
+                          </div>
+                          {/*  */}
+                        </div>
+                      </div>
+                      {/*  */}
+                      <br />
+
+                      <div className="row">
+                        <b>Administradorora:</b>
+                        <p
+                          id="adm"
+                          style={{ marginTop: "0", marginLeft: "5px" }}
+                        ></p>
+                      </div>
+
+                      <div className="row">
+                        <b>Bem:</b>
+                        <p
+                          id="bem"
+                          style={{ marginTop: "0", marginLeft: "5px" }}
+                        ></p>
+                      </div>
+
+                      <div className="row">
+                        <b>Tipo:</b>
+                        <p
+                          id="tipo"
+                          style={{ marginTop: "0", marginLeft: "5px" }}
+                        ></p>
+                      </div>
+
+                      <div className="row">
+                        <b style={{ maxWidth: "180px" }}>Preço de compra: </b>
+
+                        <p
+                          id="pricing"
+                          style={{
+                            marginTop: "0",
+                            marginLeft: "20px",
+                          }}
+                        ></p>
+                      </div>
+                      <div className="row">
+                        <b>Crédito:</b>
+                        <p
+                          id="credit"
+                          style={{
+                            marginTop: "0",
+                            marginLeft: "5px",
+                          }}
+                        ></p>
+                      </div>
+
+                      <div className="row">
+                        <b>Saldo devedor: </b>
+                        <p
+                          id="debit"
+                          style={{ marginTop: "0", marginLeft: "5px" }}
+                        ></p>
+                      </div>
+
+                      {/* button envio de dados pessoais */}
+                      <div className="2s 5p">
+                        <button
+                          id="on-load"
+                          className="100w 10p 5r"
+                          style={{
+                            backgroundColor: "#345d9d",
+                            fontSize: "14px",
+                            color: "#ffffff",
+                            marginTop: "10px",
+                          }}
+                          onClick={this.handleInfoProfile}
+                        >
+                          Enviar
+                        </button>
+                      </div>
+                      {/*  */}
+                    </details>
+                  )}
+                  {/*  */}
+                </div>
               )}
-              {/*  */}
             </div>
           )}
         </div>

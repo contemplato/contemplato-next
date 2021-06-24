@@ -2,7 +2,7 @@ import React from "react";
 
 export default () => (
   <React.Fragment>
-    <script
+    {/* <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=UA-157797116-1"
     />
@@ -12,6 +12,6 @@ export default () => (
         {dataLayer.push(arguments)};
         gtag('js', new Date()); gtag('config', 'UA-157797116-1')`,
       }}
-    />
+    /> */}
   </React.Fragment>
 );

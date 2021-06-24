@@ -87,10 +87,9 @@ class Avalie extends React.Component {
 
   handleUpload = async (event) => {
     event.preventDefault();
-
     gtag.event({
-      action: "add_to_cart",
-      category: "ecommerce",
+      action: "submit_form",
+      category: "Contact",
       label: "Item added",
       value: "Playing cards",
     });
@@ -110,8 +109,8 @@ class Avalie extends React.Component {
         },
       }
     );
-    console.log(this.state.input.phone);
-    console.log(data);
+    // console.log(this.state.input.phone);
+    // console.log(data);
     if (!data.status) Alert(data);
     else {
       let file = this.state.image;
@@ -154,10 +153,11 @@ class Avalie extends React.Component {
 
   // Alert({message: "asdas", status: true})
 
-  //function event to googleAdSense
+  //function event to googleAnalitics
   addToCart = () => {
+    console.log("chamou");
     gtag.event({
-      action: "add_to_cart",
+      action: "Whatsapp",
       category: "ecommerce",
       label: "Item added",
       value: "Playing cards",

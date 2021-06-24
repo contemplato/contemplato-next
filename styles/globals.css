@@ -549,6 +549,21 @@ details[open] {
   color: #000000;
 }
 
+.c-loader {
+  animation: is-rotating 1s infinite;
+  border: 6px solid #f4f4f4;
+  border-radius: 50%;
+  border-top-color: #345d9d;
+  height: 50px;
+  width: 50px;
+}
+
+@keyframes is-rotating {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
 @media screen and (max-width: 800px) {
   .sizeCam {
     margin-bottom: 20px;
