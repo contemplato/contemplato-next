@@ -554,8 +554,8 @@ details[open] {
   border: 6px solid #f4f4f4;
   border-radius: 50%;
   border-top-color: #345d9d;
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
 }
 
 @keyframes is-rotating {

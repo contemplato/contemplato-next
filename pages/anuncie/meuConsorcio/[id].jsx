@@ -237,7 +237,7 @@ class meuConsorcio extends React.Component {
       console.log("carregando");
 
       const { data } = await axios.post(
-        "http://core-content-cc-co.umbler.net/p/post/payment/checkout/default",
+        "https://core-content-cc-co.umbler.net/p/post/payment/checkout/default",
         {
           headers: {
             Authorization: "APP-NAME",
@@ -335,7 +335,7 @@ class meuConsorcio extends React.Component {
       console.log(this.state.extract);
       axios
         .post(
-          `http://core-content-cc-co.umbler.net/p/post/contemplato/meuconsorcio/${this.props.router.query.id}`,
+          `https://core-content-cc-co.umbler.net/p/post/contemplato/meuconsorcio/${this.props.router.query.id}`,
           {},
           {
             headers: {
