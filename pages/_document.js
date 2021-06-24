@@ -15,10 +15,11 @@ export default class MyDocument extends Document {
           <script
             dangerouslySetInnerHTML={{
               __html: `
-              <!-- Global site tag (gtag.js) - Google Ads: 668732255 -->
-              <script async src="https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}"></script>
-              <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date()); gtag('config', '${GA_TRACKING_ID}'); </script>
+              <!-- Global site tag (gtag.js) - Google Ads: 668732255 --> 
+              <script async src="https://www.googletagmanager.com/gtag/js?id=AW-668732255"></script> 
+              <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} 
+              gtag('js', new Date()); gtag('config', 'AW-668732255'); </script> 
+
 
               <!-- Event snippet for Contemplato - Lead Quero Comprar conversion page In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
               <script> function gtag_report_conversion(url)

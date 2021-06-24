@@ -134,7 +134,8 @@ class Avalie extends React.Component {
           alert(error);
         }
       } else {
-        document.location.href = "/enviado";
+        // document.location.href = "/enviado";
+        return gtag_report_conversion("https://contemplato.com/enviado");
       }
     }
   };
