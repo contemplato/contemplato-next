@@ -87,16 +87,16 @@ class Avalie extends React.Component {
 
   handleUpload = async (event) => {
     event.preventDefault();
-    gtag.event({
-      action: "submit_form",
-      category: "Contact",
-      label: "Item added",
-      value: "Playing cards",
-    });
+    // gtag.event({
+    //   action: "submit_form",
+    //   category: "Contact",
+    //   label: "Item added",
+    //   value: "Playing cards",
+    // });
 
     const { data } = await axios.post(
       /* "http://core-content-cc-co.umbler.net/p/post/contemplato/avalie/default", */
-      "http://webapi-server-contempla-to.umbler.net/contemplato/avalie",
+      "https://webapi-server-contempla-to.umbler.net/contemplato/avalie",
       {
         display: this.state.input.display || "",
         email: this.state.input.email || "",
