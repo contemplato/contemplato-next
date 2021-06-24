@@ -26,9 +26,14 @@ export default class MyDocument extends Document {
               { var callback = function () { if (typeof(url) != 'undefined'){ window.location = url; } };
               gtag('event', 'conversion', { 'send_to': 'AW-668732255/Px9VCOmLw9ABEN-W8L4C', 'event_callback': callback }); return false; }
               </script>
+
+              <!-- Event snippet for Whatsapp conversion page -->
+              <script> gtag('event', 'conversion', {'send_to': 'AW-668732255/DKhmCLin0N0BEN-W8L4C'}); </script>
           `,
             }}
           />
+
+          <title>Contemplato</title>
         </Head>
         <body>
           <Main />
