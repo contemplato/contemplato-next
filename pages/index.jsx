@@ -20,8 +20,6 @@ import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
-import * as gtag from "../components/common/lib/gtag";
-
 // images
 // import headerBottom from "../images/header-bottom.png"
 // import icoAnexo from "../images/ico-anexo.png"
@@ -122,7 +120,7 @@ class Avalie extends React.Component {
           const rename = Math.random().toString(36).substring(5);
           let task = await firebase
             .storage()
-            .ref(`Documentos/CRM/Avaliacao/${data.result.id}/${rename}.${type}`)
+            .ref(`Documentos/CRM/Avaliacao/${data.data.id}/${rename}.${type}`)
             .put(_, { contentType: _.type });
           upload.push(task);
         }
@@ -155,15 +153,15 @@ class Avalie extends React.Component {
   // Alert({message: "asdas", status: true})
 
   //function event to googleAnalitics
-  addToCart = () => {
-    console.log("chamou");
-    gtag.event({
-      action: "Whatsapp",
-      category: "ecommerce",
-      label: "Item added",
-      value: "Playing cards",
-    });
-  };
+  // addToCart = () => {
+  //   console.log("chamou");
+  //   gtag.event({
+  //     action: "Whatsapp",
+  //     category: "ecommerce",
+  //     label: "Item added",
+  //     value: "Playing cards",
+  //   });
+  // };
 
   render() {
     return (
@@ -958,11 +956,11 @@ class Avalie extends React.Component {
         >
           {WikiList.map((item, index) => (
             <Wiki
+              idy={index.toString()}
               text={item.text}
               image={item.image}
               url={item.url}
               target={"_blank"}
-              idy={index.toString()}
             />
           ))}
         </div>
@@ -1079,7 +1077,7 @@ class Avalie extends React.Component {
         <a
           href="https://api.whatsapp.com/send?phone=5511932967865&text=Ol%C3%A1!%20Tenho%20interesse%20em%20vender%20minha%20cota"
           target="_blank"
-          onClick={this.addToCart}
+          // onClick={this.addToCart}
         >
           <div className="button-whatsapp">
             <img src="/images/whatsapp-logo.png" alt="Whatsapp" width="35px" />
