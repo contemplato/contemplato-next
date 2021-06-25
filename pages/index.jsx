@@ -956,7 +956,7 @@ class Avalie extends React.Component {
         >
           {WikiList.map((item, index) => (
             <Wiki
-              idy={index.toString()}
+              key={index.toString()}
               text={item.text}
               image={item.image}
               url={item.url}
@@ -972,7 +972,7 @@ class Avalie extends React.Component {
         <div className="1280y cen slide">
           {ListEquipe.map((el, index) => (
             <EquipeCard
-              idy={index.toString()}
+              key={index.toString()}
               start={this.state.start}
               img={el.img}
               title={el.title}
