@@ -41,7 +41,7 @@ function UploadCon() {
 }
 function getEmbed() {
   //themes
-  if (contemplatoConfig.theme == "default" || !contemplatoConfig.theme) {
+  if (contemplatoConfig && contemplatoConfig.theme == "default" || !contemplatoConfig.theme) {
     contemplatoConfig.text = "color: #345d9d;";
     contemplatoConfig.button = "background-color: #ff9632;";
   } else if (contemplatoConfig.theme == "red") {

@@ -93,8 +93,7 @@ class Avalie extends React.Component {
     // });
 
     const { data } = await axios.post(
-      /* "http://core-content-cc-co.umbler.net/p/post/contemplato/avalie/default", */
-      "https://webapi-server-contempla-to.umbler.net/contemplato/avalie",
+      process.env.APP_URL_WEBAPI,
       {
         display: this.state.input.display || "",
         email: this.state.input.email || "",
@@ -103,12 +102,11 @@ class Avalie extends React.Component {
       },
       {
         headers: {
-          Authorization: "APP-AVALIE",
+          Authorization: process.env.APP_AUTHORIZATION,
         },
       }
     );
-    // console.log(this.state.input.phone);
-    // console.log(data);
+
     if (!data.status) Alert(data);
     else {
       let file = this.state.image;
@@ -120,20 +118,22 @@ class Avalie extends React.Component {
           const rename = Math.random().toString(36).substring(5);
           let task = await firebase
             .storage()
-            .ref(`Documentos/CRM/Avaliacao/${data.data.id}/${rename}.${type}`)
+            .ref(`${process.env.APP_DIRECTORY}${data.data.id}/${rename}.${type}`)
             .put(_, { contentType: _.type });
           upload.push(task);
         }
 
         try {
           Promise.all([...upload]);
-          document.location.href = "/enviado";
+          console.log('AQUI')
+          //document.location.href = "/enviado";
+          return gtag_report_conversion(process.env.URL_LOCAL+"/enviado?lead=extrato");
         } catch (error) {
           alert(error);
         }
       } else {
-        // document.location.href = "/enviado";
-        return gtag_report_conversion("https://contemplato.com/enviado");
+        //document.location.href = "/enviado";
+        return gtag_report_conversion(process.env.URL_LOCAL+"/enviado?lead=no-extrato");
       }
     }
   };
