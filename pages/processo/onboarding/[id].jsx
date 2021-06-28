@@ -468,7 +468,7 @@ class Form extends Component {
         }
       );
       // console.log(token);
-      const data = await new Promise((resolve) => {
+      /* const data =  */await new Promise((resolve) => {
         const requestInterval = setInterval(async () => {
           const { data: infoProfile } = await axios.put(
             `https://webapi-server-contempla-to.umbler.net/bgchecked/update_onboarding/${this.props.id}`,
