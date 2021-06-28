@@ -456,7 +456,7 @@ class Form extends Component {
     // }
     else {
       const { data } = await axios.post(
-        "https://webapi-server-contempla-to.umbler.net/bgchecked/validate_person",
+        "https://webapi-server-contempla-to.umbler.net/bgchecked/generate_token",
         {
           document: this.inputCpfRef.current.value.replace(/[^\d]*/g, "") || "",
           birth: this.inputBirthRef.current.value || "",
