@@ -18,6 +18,7 @@ class others extends Component {
       input: {},
       image: null,
       anexo: false,
+      loading: false,
     };
     this.showMenu = this.showMenu.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -48,19 +49,23 @@ class others extends Component {
 
     if (file !== null) {
       const { data } = await axios.post(
-        "http://core-content-cc-co.umbler.net/p/post/contemplato/upload_arch/default",
+        "https://webapi-server-contempla-to.umbler.net/contemplato/uploadcpartner",
         {
           key: this.state.input.key || "",
         },
         {
           headers: {
-            Authorization: "APP-NAME",
+            Authorization: "APP-AVALIE",
           },
         }
       );
       //console.log(data);
       if (!data.status) alert("Verifique sua chave de envio.");
       else {
+        this.setState({
+          loading: true,
+        });
+
         let upload = [];
         if (file !== null) {
           for (let _ of file) {
@@ -248,20 +253,28 @@ class others extends Component {
             </label>
           </div>
           <br />
-          <button
-            style={{
-              width: "100%",
-              border: 0,
-              borderRadius: "5px",
-              backgroundColor: "#345d9d",
-              marginBottom: "252px",
-            }}
-            onClick={this.handleSubmit}
-          >
-            <p className="title-header blanc" style={{ textAlign: "center" }}>
-              Enviar
-            </p>
-          </button>
+
+          {this.state.loading ? (
+            <div
+              className="c-loader cen"
+              style={{ marginBottom: "135px", marginTop: "30px" }}
+            ></div>
+          ) : (
+            <button
+              style={{
+                width: "100%",
+                border: 0,
+                borderRadius: "5px",
+                backgroundColor: "#345d9d",
+                marginBottom: "252px",
+              }}
+              onClick={this.handleSubmit}
+            >
+              <p className="title-header blanc" style={{ textAlign: "center" }}>
+                Enviar
+              </p>
+            </button>
+          )}
         </div>
 
         <Footer />

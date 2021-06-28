@@ -541,7 +541,7 @@ class Form extends Component {
       </div>`;
     } else {
       const { data } = axios.post(
-        `http://webapi-server-contempla-to.umbler.net/facematch/document/${this.props.id}`,
+        `https://webapi-server-contempla-to.umbler.net/facematch/document/${this.props.id}`,
         {
           // name: this.inputDisplayRef.current.value || "",
           // email: this.inputEmailRef.current.value || "",
@@ -571,7 +571,7 @@ class Form extends Component {
       return;
     }
 
-    fetch(`http://viacep.com.br/ws/${cep}/json/`)
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
@@ -963,7 +963,7 @@ class Form extends Component {
                               maxLength="12"
                               ref={this.inputRgRef}
                               required=""
-                              placeholder="RG"
+                              placeholder="RG*"
                               style={{
                                 backgroundColor: "#F5F5F5",
                                 marginLeft: "15px",
@@ -1009,7 +1009,7 @@ class Form extends Component {
                               onChange={this.onChange}
                               className="Blanc 10p 10r"
                               ref={this.inputBirthRef}
-                              placeholder="Data de nascimento"
+                              placeholder="Data de nascimento*"
                               style={{
                                 backgroundColor: "#F5F5F5",
                                 marginLeft: "15px",
@@ -1201,7 +1201,7 @@ class Form extends Component {
                         {/*  */}
 
                         <h5 style={{ marginBottom: "10px", marginTop: "0px" }}>
-                          Informações do Consórcio
+                          Informações do Consórcio (Não Obrigatório)
                         </h5>
                         <div className="row" style={{ marginBottom: "10px" }}>
                           {/* número do grupo */}
