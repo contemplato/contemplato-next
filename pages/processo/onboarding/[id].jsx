@@ -1,5 +1,7 @@
 import React, { Component, createRef } from "react";
 import axios from "axios";
+// import OAuth2Login from "react-simple-oauth2-login";
+// import { GoogleContacts } from "google-contacts";
 
 import maskPhone from "../../../components/common/utils/masks/phoneOn2";
 import maskCpf from "../../../components/common/utils/masks/cpf";
@@ -11,6 +13,7 @@ class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingEnviar: false,
       linkInvalid: false,
       modalSubmit: false,
       verifIdent: false,
@@ -46,9 +49,17 @@ class Form extends Component {
     };
   }
 
+  // componentDidMount = () => {
+  //   const c = new GoogleContacts({
+  //     token: "AIzaSyCwzzRfDdHW2UOfG0B4ZOxZMGFR88iDKJs",
+  //   });
+  //   console.log(c);
+  // };
+
   closeModal = () => {
     this.setState({ modalSubmit: false });
-    // this.setState({ verifIdent: false });
+    this.setState({ verifIdent: false });
+    this.setState({ loadingEnviar: false });
     // this.setState({ documents: [] });
     // this.setState({ loading: false });
   };
@@ -455,6 +466,8 @@ class Form extends Component {
     //   </div>`;
     // }
     else {
+      this.setState({ loadingEnviar: true });
+
       const { data } = await axios.post(
         "https://webapi-server-contempla-to.umbler.net/bgchecked/generate_token",
         {
@@ -467,13 +480,13 @@ class Form extends Component {
           },
         }
       );
-      // console.log(token);
-      /* const data =  */await new Promise((resolve) => {
+      // console.log(data);
+      const infoProfileReq = await new Promise((resolve) => {
         const requestInterval = setInterval(async () => {
           const { data: infoProfile } = await axios.put(
             `https://webapi-server-contempla-to.umbler.net/bgchecked/update_onboarding/${this.props.id}`,
             {
-              token: token.token,
+              token: data.token,
               document: this.inputCpfRef.current.value || "",
               birth: this.inputBirthRef.current.value || "",
               display: this.inputDisplayRef.current.value || "",
@@ -503,9 +516,9 @@ class Form extends Component {
         }, 2000);
       });
 
-      // console.log(data.status);
+      // console.log(infoProfileReq.status);
 
-      if (data.status == true) {
+      if (infoProfileReq.status == true) {
         this.setState({ verifIdent: true });
         document.getElementById(
           "error"
@@ -514,7 +527,7 @@ class Form extends Component {
       Formulário enviado
       </div>`;
       }
-      if (data.status == false) {
+      if (infoProfileReq.status == false) {
         document.getElementById(
           "error"
         ).innerHTML = `<div style="background-color: red; border-radius: 5px;
@@ -535,7 +548,7 @@ class Form extends Component {
       Tire as fotos dos documentos
       </div>`;
     } else {
-      const { data } = axios.post(
+      axios.post(
         `https://webapi-server-contempla-to.umbler.net/facematch/document/${this.props.id}`,
         {
           // name: this.inputDisplayRef.current.value || "",
@@ -614,6 +627,14 @@ class Form extends Component {
           height: "100vh",
         }}
       >
+        {/* <OAuth2Login
+          authorizationUrl="https://accounts.google.com/o/oauth2/auth"
+          responseType="token"
+          clientId="812055271618-u6fddtt1kndlpinq07b59ri1j8165jbo.apps.googleusercontent.com"
+          redirectUri="http://localhost:8080/processo/onboarding/MQ=="
+          onSuccess={() => console.log("sucesso")}
+          onFailure={() => console.log("deu merda")}
+        /> */}
         {/* <div>ID: {this.props.id} </div> */}
         <div className="680y col">
           <p
@@ -1304,23 +1325,25 @@ class Form extends Component {
                         ></p>
                       </div>
 
-                      {/* button envio de dados pessoais */}
-                      <div className="2s 5p">
-                        <button
-                          id="on-load"
-                          className="100w 10p 5r"
-                          style={{
-                            backgroundColor: "#345d9d",
-                            fontSize: "14px",
-                            color: "#ffffff",
-                            marginTop: "10px",
-                          }}
-                          onClick={this.handleInfoProfile}
-                        >
-                          Enviar
-                        </button>
-                      </div>
-                      {/*  */}
+                      {this.state.loadingEnviar ? (
+                        <div className="c-loader cen"></div>
+                      ) : (
+                        <div className="2s 5p">
+                          <button
+                            id="on-load"
+                            className="100w 10p 5r"
+                            style={{
+                              backgroundColor: "#345d9d",
+                              fontSize: "14px",
+                              color: "#ffffff",
+                              marginTop: "10px",
+                            }}
+                            onClick={this.handleInfoProfile}
+                          >
+                            Enviar
+                          </button>
+                        </div>
+                      )}
                     </details>
                   )}
                   {/*  */}
